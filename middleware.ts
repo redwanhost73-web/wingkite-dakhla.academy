@@ -2,9 +2,9 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 // Country code → locale mapping
+// Only locales that exist under app/ may be used here: fr, en, es, ar.
 // FR: France, Belgium, Switzerland (FR part), Morocco, Luxembourg, Senegal, Ivory Coast, etc.
 // ES: Spain, Mexico, Argentina, Colombia, Chile, etc.
-// NL: Netherlands, Belgium (NL part)
 // EN: everything else
 const COUNTRY_TO_LOCALE: Record<string, string> = {
   // French
@@ -41,8 +41,15 @@ const COUNTRY_TO_LOCALE: Record<string, string> = {
   SV: 'es', // El Salvador
   CU: 'es', // Cuba
 
-  // Dutch / Netherlands
-  NL: 'nl', // Netherlands
+  // Arabic
+  SA: 'ar', // Saudi Arabia
+  AE: 'ar', // United Arab Emirates
+  QA: 'ar', // Qatar
+  KW: 'ar', // Kuwait
+  BH: 'ar', // Bahrain
+  OM: 'ar', // Oman
+  JO: 'ar', // Jordan
+  EG: 'ar', // Egypt
 }
 
 // Parse Accept-Language header for a best-match locale
@@ -60,7 +67,7 @@ function getLocaleFromAcceptLanguage(header: string | null): string {
   for (const { lang } of langs) {
     if (lang === 'fr') return 'fr'
     if (lang === 'es') return 'es'
-    if (lang === 'nl') return 'nl'
+    if (lang === 'ar') return 'ar'
     if (lang === 'en') return 'en'
   }
   return 'en'

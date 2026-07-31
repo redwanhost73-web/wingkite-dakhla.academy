@@ -49,10 +49,16 @@ export function useSiteConfig() {
   const [isLoaded, setIsLoaded] = useState(false)
   
   useEffect(() => {
-    const supabase = createClient()
-    
     async function fetchConfig() {
       try {
+        const supabase = createClient()
+
+        // Supabase not configured: keep the defaults below.
+        if (!supabase) {
+          setIsLoaded(true)
+          return
+        }
+
         const [imagesRes, pricingRes, textsRes] = await Promise.all([
           supabase.from('site_images').select('*'),
           supabase.from('site_pricing').select('*').order('id'),

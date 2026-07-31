@@ -12,14 +12,14 @@ export default async function RootPage() {
     FR: 'fr', BE: 'fr', MA: 'fr', LU: 'fr', CH: 'fr', MC: 'fr',
     SN: 'fr', CI: 'fr', CM: 'fr', TN: 'fr', DZ: 'fr',
     ES: 'es', MX: 'es', AR: 'es', CO: 'es', CL: 'es',
-    NL: 'nl',
+    SA: 'ar', AE: 'ar', QA: 'ar', KW: 'ar', BH: 'ar', OM: 'ar', JO: 'ar', EG: 'ar',
   }
   const locale = (country && countryToLocale[country]) ??
     (() => {
       const al = headersList.get('accept-language') ?? ''
       if (al.startsWith('fr')) return 'fr'
       if (al.startsWith('es')) return 'es'
-      if (al.startsWith('nl')) return 'nl'
+      if (al.startsWith('ar')) return 'ar'
       return 'en'
     })()
 
