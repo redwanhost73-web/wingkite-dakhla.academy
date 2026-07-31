@@ -1,0 +1,296 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "Over ons",
+    "pricing": "Prijzen",
+    "contact": "Contact",
+    "book": "Reserveren"
+  },
+  "home": {
+    "hero": {
+      "title": "Leer Wing & Kite in Dakhla",
+      "subtitle": "Ontdek watersport op een van de beste spots ter wereld. Wingfoil- en kitesurflessen voor alle niveaus in de lagune van Dakhla.",
+      "cta": "Bekijk prijzen",
+      "ctaSecondary": "Neem contact op"
+    },
+    "services": {
+      "title": "Onze Activiteiten",
+      "subtitle": "Lessen aangepast aan alle niveaus, van beginner tot expert",
+      "wingfoil": {
+        "title": "Wingfoil",
+        "description": "Leer vliegen boven het water met een vleugel en een foil. Een uniek gevoel van vrijheid."
+      },
+      "kitesurf": {
+        "title": "Kitesurf",
+        "description": "Beheers de kunst van het kitesurfen met onze gecertificeerde instructeurs. Gegarandeerde adrenaline."
+      },
+      "rental": {
+        "title": "Materiaalverhuur",
+        "description": "Professionele uitrusting beschikbaar voor verhuur. Vleugels, boards, foils en wetsuits."
+      }
+    },
+    "why": {
+      "title": "Waarom kiezen voor Dakhla?",
+      "subtitle": "De perfecte spot om te leren en vooruit te gaan",
+      "wind": {
+        "title": "Constante Wind",
+        "description": "300+ dagen wind per jaar met ideale leeromstandigheden."
+      },
+      "lagoon": {
+        "title": "Vlakke Lagune",
+        "description": "Ondiep en kalm water, perfect voor beginners."
+      },
+      "weather": {
+        "title": "Ideaal Klimaat",
+        "description": "Aangenaam weer het hele jaar door, tussen 20°C en 30°C."
+      },
+      "instructors": {
+        "title": "Gecertificeerde Instructeurs",
+        "description": "Ons gepassioneerde team begeleidt jou in jouw progressie."
+      }
+    },
+    "gallery": {
+      "title": "Galerij",
+      "subtitle": "Ontdek onze wereld in beelden"
+    },
+    "cta": {
+      "title": "Klaar om te Stijgen?",
+      "subtitle": "Boek je les en beleef een onvergetelijke ervaring in Dakhla.",
+      "button": "Nu reserveren"
+    }
+  },
+  "about": {
+    "hero": {
+      "title": "Ons Verhaal",
+      "subtitle": "Een passie voor watersport in het hart van de Sahara"
+    },
+    "mission": {
+      "title": "Onze Missie",
+      "description": "Wing Kite Dakhla Academy is geboren uit een passie voor glijsporten en de liefde voor deze unieke plek. Onze missie is deze passie te delen door kwaliteitslessen te geven in een uitzonderlijke omgeving."
+    },
+    "story": {
+      "title": "De Academie",
+      "p1": "Gelegen aan de oevers van de lagune van Dakhla biedt onze school ideale omstandigheden om wingfoil en kitesurf veilig te leren.",
+      "p2": "Of je nu beginner of gevorderde rider bent, ons team van gecertificeerde instructeurs begeleidt je om op jouw tempo vooruit te gaan.",
+      "p3": "We gebruiken recent materiaal aangepast aan elk niveau voor een optimale ervaring."
+    },
+    "values": {
+      "title": "Onze Waarden",
+      "safety": {
+        "title": "Veiligheid",
+        "description": "Jouw veiligheid is onze absolute prioriteit. Kwaliteitsuitrusting en professionele begeleiding."
+      },
+      "passion": {
+        "title": "Passie",
+        "description": "We delen onze liefde voor sport met elke leerling, voor onvergetelijke sessies."
+      },
+      "progress": {
+        "title": "Progressie",
+        "description": "Bewezen pedagogische methoden om jou efficiënt vooruit te helpen."
+      },
+      "respect": {
+        "title": "Respect",
+        "description": "Respect voor het milieu en de andere gebruikers van de lagune."
+      }
+    },
+    "location": {
+      "title": "Dakhla, Paradijs van de Wind",
+      "description": "Gelegen tussen de Sahara en de Atlantische Oceaan biedt Dakhla uitzonderlijke omstandigheden voor watersport. De lagune, beschermd tegen golven, geniet van regelmatige wind en warm water het hele jaar door."
+    }
+  },
+  "pricing": {
+    "hero": {
+      "title": "Onze Prijzen",
+      "subtitle": "Pakketten aangepast aan alle niveaus en budgetten"
+    },
+    "courses": {
+      "discovery": {
+        "title": "Kennismaking",
+        "duration": "2 uur",
+        "description": "Inleiding tot de basis. Ideaal om de sport te ontdekken.",
+        "features": ["Theoretische inleiding", "Uitrusting inbegrepen", "1 sessie van 2u", "Herinneringsfoto's"]
+      },
+      "beginner": {
+        "title": "Beginner",
+        "duration": "6 uur",
+        "description": "Compleet pakket om de basisvaardigheden te beheersen.",
+        "features": ["3 sessies van 2u", "Uitrusting inbegrepen", "Persoonlijke begeleiding", "Video-analyse"],
+        "popular": true
+      },
+      "intermediate": {
+        "title": "Verbetering",
+        "duration": "9 uur",
+        "description": "Voor riders die naar het volgende niveau willen.",
+        "features": ["3 sessies van 3u", "Premium uitrusting", "Geavanceerde coaching", "Video-analyse"]
+      },
+      "private": {
+        "title": "Privéles",
+        "duration": "1 uur",
+        "description": "Exclusieve aandacht van de instructeur.",
+        "features": ["1 intensief uur", "Programma op maat", "Snelle progressie", "Flexibele uren"]
+      }
+    },
+    "rental": {
+      "title": "Materiaalverhuur",
+      "subtitle": "Voor zelfstandige riders",
+      "items": {
+        "wing": "Vleugel (Wing)",
+        "board": "Board + Foil",
+        "kite": "Complete kite",
+        "wetsuit": "Wetsuit",
+        "full": "Compleet pakket"
+      },
+      "hour": "/ uur",
+      "day": "/ dag"
+    },
+    "note": {
+      "title": "Goed om te weten",
+      "items": [
+        "Alle prijzen zijn inclusief uitrusting en verzekering",
+        "Maatpakketten beschikbaar op aanvraag",
+        "Kortingen voor groepen en families",
+        "Gratis annulering 24u van tevoren"
+      ]
+    },
+    "cta": {
+      "title": "Vragen over onze prijzen?",
+      "subtitle": "Neem contact op voor een persoonlijke offerte",
+      "button": "Neem contact op"
+    }
+  },
+  "contact": {
+    "hero": {
+      "title": "Neem contact op",
+      "subtitle": "Vragen? Wil je reserveren? We zijn er voor jou."
+    },
+    "form": {
+      "name": "Volledige naam",
+      "email": "E-mail",
+      "phone": "Telefoon (optioneel)",
+      "subject": "Onderwerp",
+      "subjects": {
+        "booking": "Lesreservering",
+        "info": "Informatieverzoek",
+        "rental": "Materiaalverhuur",
+        "other": "Anders"
+      },
+      "message": "Jouw bericht",
+      "submit": "Bericht versturen",
+      "success": "Bericht verzonden! We reageren zo snel mogelijk.",
+      "error": "Er is een fout opgetreden. Probeer het opnieuw."
+    },
+    "info": {
+      "title": "Onze gegevens",
+      "address": { "label": "Adres", "value": "Lagune van Dakhla, Dakhla, Marokko" },
+      "phone": { "label": "Telefoon", "value": "+212 766 910 203" },
+      "email": { "label": "E-mail", "value": "contact@wingkitedakhla.com" },
+      "hours": { "label": "Openingstijden", "value": "Elke dag: 9u - 18u" }
+    },
+    "social": { "title": "Volg ons" }
+  },
+  "footer": {
+    "description": "Wingfoil- en kitesurfschool in Dakhla, Marokko. Leer met gepassioneerde professionals op een van de beste spots ter wereld.",
+    "quickLinks": "Snelle links",
+    "contact": "Contact",
+    "followUs": "Volg ons",
+    "rights": "Alle rechten voorbehouden."
+  },
+  "common": {
+    "learnMore": "Meer weten",
+    "bookNow": "Reserveren",
+    "price": "Prijs",
+    "from": "Vanaf",
+    "per": "per",
+    "hour": "uur",
+    "hours": "uren",
+    "day": "dag",
+    "morocco": "Marokko",
+    "discover": "Ontdekken",
+    "viewPricing": "Bekijk prijzen",
+    "learnMoreBtn": "Meer weten",
+    "quickLinks": "Snelle links",
+    "followUs": "Volg ons",
+    "contact": "Contact",
+    "address": "Adres",
+    "phone": "Telefoon",
+    "hours": "Openingstijden",
+    "everyDay": "Elke dag",
+    "perfectSpot": "De perfecte spot",
+    "dakhlaLagoon": "Dakhla-lagune",
+    "flatWater": "Vlak water",
+    "constantWind": "Constante wind",
+    "guaranteedSun": "Gegarandeerde zon",
+    "whyChooseUs": "Waarom kiezen voor ons?",
+    "excellence": "Excellentie in het hart van Dakhla",
+    "certifiedInstructors": "Gecertificeerde instructeurs",
+    "constantWindDesc": "300+ windkeuren per jaar met ideale leeromstandigheden.",
+    "perfectLagoon": "Perfecte lagune",
+    "smallGroups": "Kleine groepen",
+    "years": "jaren",
+    "students": "Getrainde studenten",
+    "rating": "Beoordeling",
+    "activitiesTitle": "Activiteiten",
+    "wingkitesurf": "Wingfoil en Kitesurf",
+    "more": "En meer",
+    "courses": "Lessen aangepast aan alle niveaus in de beste lagune ter wereld.",
+    "readyToDeploy": "Klaar om te stijgen?",
+    "bookLesson": "Boek je les en beleef een onvergetelijke ervaring in Dakhla.",
+    "ourStory": "Ons verhaal",
+    "passion": "Passie, expertise en toewijding voor meer dan 10 jaar",
+    "ourMission": "Onze missie",
+    "sharePassion": "Deel onze passie voor wingfoil en kitesurf",
+    "ourValues": "Onze waarden",
+    "whatDefines": "Wat ons definieert",
+    "safety": "Veiligheid",
+    "safetyDesc": "Jouw veiligheid is onze absolute prioriteit. Gecertificeerde uitrusting en strikte protocollen.",
+    "passionDesc": "We leven en ademen watersport. Onze passie is aanstekelijk!",
+    "progress": "Voortgang",
+    "progressDesc": "Bewezen onderwijsmethoden voor snelle en duurzame voortgang.",
+    "respect": "Respect",
+    "respectDesc": "Respect voor het milieu en medegebruikers op de spot.",
+    "ourTeam": "Ons team",
+    "certifiedInstructorsTeam": "Gepassioneerde en gecertificeerde instructeurs",
+    "ourSpot": "Onze spot",
+    "dakhlaPlanet": "De Dakhla-lagune",
+    "oneOfBest": "Beschouwd als een van de beste spots ter wereld voor wingfoil en kitesurf biedt de lagune van Dakhla het hele jaar ideale omstandigheden.",
+    "contactUs": "Neem contact op",
+    "questionsAnswers": "We zijn hier om al jouw vragen te beantwoorden",
+    "sendMessage": "Stuur ons een bericht",
+    "getBackSoon": "We reageren zo snel mogelijk.",
+    "contactInfo": "Contactgegevens",
+    "followUsLink": "Volg ons",
+    "enjoyedExperience": "Heb je je ervaring genoten?",
+    "leaveReview": "Laat ons een recensie achter op Google!",
+    "leaveReviewBtn": "Laat een recensie achter",
+    "contactWhatsApp": "Neem contact met ons op via WhatsApp",
+    "quickResponseGuaranteed": "Snelle respons gegarandeerd",
+    "whereFind": "Waar je ons vindt",
+    "locatedBeautiful": "Gelegen aan de prachtige Dakhla-lagune, Marokko",
+    "openGoogleMaps": "Openen in Google Maps",
+    "byPlane": "Per vliegtuig",
+    "dakhlaAirport": "Luchthaven Dakhla (VIL) - 15 minuten met de auto",
+    "byCar": "Per auto",
+    "fromDakhlaCityCenter": "Vanuit het stadscentrum van Dakhla - 20 minuten",
+    "transfer": "Transfer",
+    "transferAvailable": "Transferservice beschikbaar op aanvraag",
+    "faq": "Veelgestelde vragen",
+    "offerBeginners": "Bieden jullie lessen voor beginners?",
+    "yesBeginners": "Ja! We hebben lessen speciaal ontworpen voor beginners met aangepaste uitrusting.",
+    "provideEquipment": "Leveren jullie uitrusting?",
+    "allEquipmentIncluded": "Alle uitrusting is inbegrepen in onze lessen: vleugel, board, wetsuit en vest.",
+    "bestSeason": "Wat is het beste seizoen?",
+    "dakhlaManyConditions": "Dakhla biedt het hele jaar ideale omstandigheden met 300+ windkeuren.",
+    "howBook": "Hoe reserveer ik?",
+    "contactByPhone": "Neem contact met ons op per telefoon, WhatsApp, e-mail of via dit formulier.",
+    "readyJoinUs": "Klaar om je bij ons aan te sluiten?",
+    "bookAndExperience": "Boek je les en beleef een onvergetelijke ervaring in Dakhla.",
+    "certificated": "IKO/VDWS gecertificeerd",
+    "smallGroupsTag": "Kleine groepen",
+    "certifiedTag": "IKO/VDWS gecertificeerd",
+    "protectedLagoon": "Beschermde lagune, ideaal voor beginners",
+    "windPerYear": "300+ windkeuren per jaar",
+    "pleasantClimate": "Aangenaam klimaat het hele jaar door",
+    "viewPricingBtn": "Bekijk prijzen",
+    "contactUsBtn": "Neem contact op"
+  }
+}

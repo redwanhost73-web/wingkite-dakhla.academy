@@ -1,0 +1,296 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "about": "Acerca de",
+    "pricing": "Precios",
+    "contact": "Contacto",
+    "book": "Reservar"
+  },
+  "home": {
+    "hero": {
+      "title": "Aprende Wing & Kite en Dakhla",
+      "subtitle": "Descubre los deportes acuáticos en uno de los mejores spots del mundo. Clases de wingfoil y kitesurf para todos los niveles en la laguna de Dakhla.",
+      "cta": "Ver precios",
+      "ctaSecondary": "Contáctanos"
+    },
+    "services": {
+      "title": "Nuestras Actividades",
+      "subtitle": "Clases adaptadas a todos los niveles, desde principiante hasta experto",
+      "wingfoil": {
+        "title": "Wingfoil",
+        "description": "Aprende a volar sobre el agua con un ala y un foil. Una sensación única de libertad."
+      },
+      "kitesurf": {
+        "title": "Kitesurf",
+        "description": "Domina el arte del kitesurf con nuestros instructores certificados. Adrenalina garantizada."
+      },
+      "rental": {
+        "title": "Alquiler de Material",
+        "description": "Equipamiento profesional disponible para alquiler. Alas, tablas, foils y trajes."
+      }
+    },
+    "why": {
+      "title": "¿Por qué elegir Dakhla?",
+      "subtitle": "El spot perfecto para aprender y progresar",
+      "wind": {
+        "title": "Viento Constante",
+        "description": "300+ días de viento al año con condiciones ideales para el aprendizaje."
+      },
+      "lagoon": {
+        "title": "Laguna Plana",
+        "description": "Aguas poco profundas y tranquilas, perfectas para principiantes."
+      },
+      "weather": {
+        "title": "Clima Ideal",
+        "description": "Temperaturas agradables todo el año, entre 20°C y 30°C."
+      },
+      "instructors": {
+        "title": "Instructores Certificados",
+        "description": "Nuestro apasionado equipo te acompaña en tu progresión."
+      }
+    },
+    "gallery": {
+      "title": "Galería",
+      "subtitle": "Descubre nuestro mundo en imágenes"
+    },
+    "cta": {
+      "title": "¿Listo para Despegar?",
+      "subtitle": "Reserva tu clase y vive una experiencia inolvidable en Dakhla.",
+      "button": "Reservar ahora"
+    }
+  },
+  "about": {
+    "hero": {
+      "title": "Nuestra Historia",
+      "subtitle": "Una pasión por los deportes acuáticos en el corazón del Sáhara"
+    },
+    "mission": {
+      "title": "Nuestra Misión",
+      "description": "Wing Kite Dakhla Academy nació de la pasión por los deportes de deslizamiento y el amor por este lugar único. Nuestra misión es compartir esta pasión ofreciendo clases de calidad en un entorno excepcional."
+    },
+    "story": {
+      "title": "La Academia",
+      "p1": "Situada a orillas de la laguna de Dakhla, nuestra escuela ofrece condiciones ideales para aprender wingfoil y kitesurf con total seguridad.",
+      "p2": "Tanto si eres principiante como rider experimentado, nuestro equipo de instructores certificados te acompaña para progresar a tu ritmo.",
+      "p3": "Utilizamos material reciente y adaptado a cada nivel para garantizar una experiencia óptima."
+    },
+    "values": {
+      "title": "Nuestros Valores",
+      "safety": {
+        "title": "Seguridad",
+        "description": "Tu seguridad es nuestra prioridad absoluta. Equipamiento de calidad y supervisión profesional."
+      },
+      "passion": {
+        "title": "Pasión",
+        "description": "Compartimos nuestro amor por el deporte con cada alumno, para sesiones memorables."
+      },
+      "progress": {
+        "title": "Progresión",
+        "description": "Métodos pedagógicos probados para hacerte progresar eficazmente."
+      },
+      "respect": {
+        "title": "Respeto",
+        "description": "Respeto por el medio ambiente y los demás usuarios de la laguna."
+      }
+    },
+    "location": {
+      "title": "Dakhla, Paraíso del Viento",
+      "description": "Enclavada entre el Sáhara y el océano Atlántico, Dakhla ofrece condiciones excepcionales para la práctica de deportes acuáticos. Su laguna, protegida de las olas, disfruta de viento regular y aguas cálidas todo el año."
+    }
+  },
+  "pricing": {
+    "hero": {
+      "title": "Nuestros Precios",
+      "subtitle": "Paquetes adaptados a todos los niveles y presupuestos"
+    },
+    "courses": {
+      "discovery": {
+        "title": "Descubrimiento",
+        "duration": "2 horas",
+        "description": "Introducción a lo básico. Ideal para descubrir el deporte.",
+        "features": ["Introducción teórica", "Equipamiento incluido", "1 sesión de 2h", "Fotos recuerdo"]
+      },
+      "beginner": {
+        "title": "Principiante",
+        "duration": "6 horas",
+        "description": "Pack completo para dominar los fundamentos.",
+        "features": ["3 sesiones de 2h", "Equipamiento incluido", "Seguimiento personalizado", "Análisis de vídeo"],
+        "popular": true
+      },
+      "intermediate": {
+        "title": "Perfeccionamiento",
+        "duration": "9 horas",
+        "description": "Para riders que quieren pasar al siguiente nivel.",
+        "features": ["3 sesiones de 3h", "Equipamiento premium", "Coaching avanzado", "Análisis de vídeo"]
+      },
+      "private": {
+        "title": "Clase Privada",
+        "duration": "1 hora",
+        "description": "Atención exclusiva del instructor.",
+        "features": ["1 hora intensiva", "Programa a medida", "Progresión rápida", "Horarios flexibles"]
+      }
+    },
+    "rental": {
+      "title": "Alquiler de Material",
+      "subtitle": "Para riders autónomos",
+      "items": {
+        "wing": "Ala (Wing)",
+        "board": "Tabla + Foil",
+        "kite": "Kite completo",
+        "wetsuit": "Traje de neopreno",
+        "full": "Pack completo"
+      },
+      "hour": "/ hora",
+      "day": "/ día"
+    },
+    "note": {
+      "title": "Bueno saber",
+      "items": [
+        "Todos los precios incluyen equipamiento y seguro",
+        "Packs personalizados disponibles bajo petición",
+        "Descuentos para grupos y familias",
+        "Cancelación gratuita 24h antes"
+      ]
+    },
+    "cta": {
+      "title": "¿Preguntas sobre nuestros precios?",
+      "subtitle": "Contáctanos para un presupuesto personalizado",
+      "button": "Contáctanos"
+    }
+  },
+  "contact": {
+    "hero": {
+      "title": "Contáctanos",
+      "subtitle": "¿Preguntas? ¿Quieres reservar? Estamos aquí para ti."
+    },
+    "form": {
+      "name": "Nombre completo",
+      "email": "Email",
+      "phone": "Teléfono (opcional)",
+      "subject": "Asunto",
+      "subjects": {
+        "booking": "Reserva de clase",
+        "info": "Solicitud de información",
+        "rental": "Alquiler de material",
+        "other": "Otro"
+      },
+      "message": "Tu mensaje",
+      "submit": "Enviar mensaje",
+      "success": "¡Mensaje enviado! Te responderemos lo antes posible.",
+      "error": "Ha ocurrido un error. Por favor, inténtalo de nuevo."
+    },
+    "info": {
+      "title": "Nuestros datos",
+      "address": { "label": "Dirección", "value": "Laguna de Dakhla, Dakhla, Marruecos" },
+      "phone": { "label": "Teléfono", "value": "+212 766 910 203" },
+      "email": { "label": "Email", "value": "contact@wingkitedakhla.com" },
+      "hours": { "label": "Horario", "value": "Todos los días: 9h - 18h" }
+    },
+    "social": { "title": "Síguenos" }
+  },
+  "footer": {
+    "description": "Escuela de wingfoil y kitesurf en Dakhla, Marruecos. Aprende con profesionales apasionados en uno de los mejores spots del mundo.",
+    "quickLinks": "Enlaces rápidos",
+    "contact": "Contacto",
+    "followUs": "Síguenos",
+    "rights": "Todos los derechos reservados."
+  },
+  "common": {
+    "learnMore": "Saber más",
+    "bookNow": "Reservar",
+    "price": "Precio",
+    "from": "Desde",
+    "per": "por",
+    "hour": "hora",
+    "hours": "horas",
+    "day": "día",
+    "morocco": "Marruecos",
+    "discover": "Descubrir",
+    "viewPricing": "Ver precios",
+    "learnMoreBtn": "Saber más",
+    "quickLinks": "Enlaces rápidos",
+    "followUs": "Síguenos",
+    "contact": "Contacto",
+    "address": "Dirección",
+    "phone": "Teléfono",
+    "hours": "Horarios",
+    "everyDay": "Todos los días",
+    "perfect Spot": "El spot perfecto",
+    "dakhlaLagoon": "Laguna de Dakhla",
+    "flatWater": "Agua plana",
+    "constantWind": "Viento constante",
+    "guaranteedSun": "Sol garantizado",
+    "whyChooseUs": "¿Por qué elegirnos?",
+    "excellence": "Excelencia en el corazón de Dakhla",
+    "certifiedInstructors": "Instructores certificados",
+    "constantWindDesc": "300+ días de viento al año con condiciones ideales para aprender.",
+    "perfectLagoon": "Laguna perfecta",
+    "smallGroups": "Grupos pequeños",
+    "years": "años",
+    "students": "Estudiantes formados",
+    "rating": "Calificación",
+    "activitiesTitle": "Actividades",
+    "wingkitesurf": "Wingfoil y Kitesurf",
+    "more": "Y más",
+    "courses": "Cursos adaptados a todos los niveles en la mejor laguna del mundo.",
+    "readyToDeploy": "¿Listo para despegar?",
+    "bookLesson": "Reserva tu clase y vive una experiencia inolvidable en Dakhla.",
+    "ourStory": "Nuestra historia",
+    "passion": "Pasión, experiencia y dedicación durante más de 10 años",
+    "ourMission": "Nuestra misión",
+    "sharePassion": "Compartir nuestra pasión por el wingfoil y el kitesurf",
+    "ourValues": "Nuestros valores",
+    "whatDefines": "Qué nos define",
+    "safety": "Seguridad",
+    "safetyDesc": "Tu seguridad es nuestra prioridad absoluta. Equipamiento certificado y protocolos estrictos.",
+    "passionDesc": "Vivimos y respiramos deportes acuáticos. ¡Nuestra pasión es contagiosa!",
+    "progress": "Progreso",
+    "progressDesc": "Métodos de enseñanza probados para un progreso rápido y duradero.",
+    "respect": "Respeto",
+    "respectDesc": "Respeto por el medio ambiente y otros practicantes en el spot.",
+    "ourTeam": "Nuestro equipo",
+    "certifiedInstructorsTeam": "Instructores apasionados y certificados",
+    "ourSpot": "Nuestro spot",
+    "dakhlaPlanet": "La laguna de Dakhla",
+    "oneOfBest": "Considerada uno de los mejores spots del mundo para wingfoil y kitesurf, la laguna de Dakhla ofrece condiciones perfectas todo el año.",
+    "contactUs": "Contáctanos",
+    "questionsAnswers": "Estamos aquí para responder todas tus preguntas",
+    "sendMessage": "Envíanos un mensaje",
+    "getBackSoon": "Te responderemos lo antes posible.",
+    "contactInfo": "Información de contacto",
+    "followUsLink": "Síguenos",
+    "enjoyedExperience": "¿Te gustó tu experiencia?",
+    "leaveReview": "¡Déjanos una reseña en Google!",
+    "leaveReviewBtn": "Dejar una reseña",
+    "contactWhatsApp": "Contáctanos en WhatsApp",
+    "quickResponseGuaranteed": "Respuesta rápida garantizada",
+    "whereFind": "Dónde encontrarnos",
+    "locatedBeautiful": "Ubicado en la hermosa laguna de Dakhla, Marruecos",
+    "openGoogleMaps": "Abrir en Google Maps",
+    "byPlane": "Por avión",
+    "dakhlaAirport": "Aeropuerto de Dakhla (VIL) - 15 minutos en coche",
+    "byCar": "En coche",
+    "fromDakhlaCityCenter": "Desde el centro de la ciudad de Dakhla - 20 minutos",
+    "transfer": "Transferencia",
+    "transferAvailable": "Servicio de transferencia disponible bajo solicitud",
+    "faq": "Preguntas frecuentes",
+    "offerBeginners": "¿Ofrecen cursos para principiantes?",
+    "yesBeginners": "¡Sí! Tenemos cursos especialmente diseñados para principiantes con equipamiento adaptado.",
+    "provideEquipment": "¿Proporcionan equipamiento?",
+    "allEquipmentIncluded": "Todo el equipamiento está incluido en nuestros cursos: ala, tabla, traje de neopreno y chaleco.",
+    "bestSeason": "¿Cuál es la mejor temporada?",
+    "dakhlaManyConditions": "Dakhla ofrece excelentes condiciones todo el año con 300+ días de viento.",
+    "howBook": "¿Cómo reservar?",
+    "contactByPhone": "Contáctanos por teléfono, WhatsApp, correo electrónico o a través de este formulario.",
+    "readyJoinUs": "¿Listo para unirnos?",
+    "bookAndExperience": "Reserva tu clase y vive una experiencia inolvidable en Dakhla.",
+    "certificated": "Certificado IKO/VDWS",
+    "smallGroupsTag": "Grupos pequeños",
+    "certifiedTag": "Certificado IKO/VDWS",
+    "protectedLagoon": "Laguna protegida, ideal para principiantes",
+    "windPerYear": "300+ días de viento al año",
+    "pleasantClimate": "Clima agradable todo el año",
+    "viewPricingBtn": "Ver precios",
+    "contactUsBtn": "Contáctanos"
+  }
+}
