@@ -3,22 +3,30 @@ import { Inter, Montserrat, Cairo } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
   display: 'swap',
+  preload: true,
+  adjustFontFallback: true,
 })
 
-const montserrat = Montserrat({ 
+const montserrat = Montserrat({
   subsets: ['latin'],
   variable: '--font-montserrat',
   display: 'swap',
+  // Headings are not LCP text — don't block first paint on this face.
+  preload: false,
+  adjustFontFallback: true,
 })
 
 const cairo = Cairo({
   subsets: ['arabic'],
   variable: '--font-cairo',
   display: 'swap',
+  // Only Arabic routes use Cairo; keep it out of the critical path.
+  preload: false,
+  adjustFontFallback: true,
 })
 
 export const metadata: Metadata = {
@@ -79,8 +87,15 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="fr" className={`${inter.variable} ${montserrat.variable} ${cairo.variable}`}>
-      <body className="font-sans antialiased">
+    // Extensions (and theme scripts) sometimes stamp attributes onto <html>/<body>
+    // before React hydrates — suppressHydrationWarning keeps that from surfacing
+    // as a false-positive mismatch.
+    <html
+      lang="fr"
+      className={`${inter.variable} ${montserrat.variable} ${cairo.variable}`}
+      suppressHydrationWarning
+    >
+      <body className="font-sans antialiased" suppressHydrationWarning>
         {children}
         <Analytics />
       </body>

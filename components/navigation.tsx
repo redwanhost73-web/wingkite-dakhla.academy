@@ -220,8 +220,8 @@ export function Navigation() {
               <Image
                 src={logoUrl}
                 alt="Wing Kite Dakhla Academy"
-                width={826}
-                height={302}
+                width={400}
+                height={146}
                 priority
                 sizes="(max-width: 768px) 150px, 190px"
                 className={cn('w-auto object-contain', scrolled ? 'h-9 md:h-10' : 'h-11 md:h-14')}
@@ -380,8 +380,8 @@ export function Navigation() {
               <Image
                 src={logoUrl}
                 alt="Wing Kite Dakhla Academy"
-                width={826}
-                height={302}
+                width={400}
+                height={146}
                 sizes="140px"
                 className="h-10 w-auto object-contain"
                 style={{ filter: LOGO_FILTER.navy }}

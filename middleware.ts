@@ -97,5 +97,6 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/', '/((?!_next|_vercel|favicon|icon|apple-icon|.*\\..*).*)'],
+  // Locale redirect only applies to the bare root — skip every other route.
+  matcher: ['/'],
 }

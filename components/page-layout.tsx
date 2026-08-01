@@ -1,12 +1,12 @@
 import { Navigation } from './navigation'
 import { Footer } from './footer'
 import { WhatsAppBubbleLazy } from './whatsapp-bubble-lazy'
-import { ActivityStoryProvider } from './activity-story'
 import { I18nProvider } from '@/lib/i18n-context'
 import type { Locale } from '@/lib/i18n'
+import type { ReactNode } from 'react'
 
 interface PageLayoutProps {
-  children: React.ReactNode
+  children: ReactNode
   locale: Locale
   messages: Record<string, unknown>
 }
@@ -16,18 +16,16 @@ export function PageLayout({ children, locale, messages }: PageLayoutProps) {
 
   return (
     <I18nProvider locale={locale} messages={messages}>
-      <ActivityStoryProvider>
-        <div
-          className={`flex min-h-screen flex-col ${isArabic ? 'font-cairo' : 'font-sans'}`}
-          dir={isArabic ? 'rtl' : 'ltr'}
-          lang={locale}
-        >
-          <Navigation />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </div>
-        <WhatsAppBubbleLazy />
-      </ActivityStoryProvider>
+      <div
+        className={`flex min-h-screen flex-col ${isArabic ? 'font-cairo' : 'font-sans'}`}
+        dir={isArabic ? 'rtl' : 'ltr'}
+        lang={locale}
+      >
+        <Navigation />
+        <main className="flex-1">{children}</main>
+        <Footer />
+      </div>
+      <WhatsAppBubbleLazy />
     </I18nProvider>
   )
 }

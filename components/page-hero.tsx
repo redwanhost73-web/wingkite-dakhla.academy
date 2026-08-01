@@ -30,7 +30,7 @@ export function PageHero({ image, eyebrow, title, subtitle, children }: Props) {
           priority
           fetchPriority="high"
           sizes="100vw"
-          quality={78}
+          quality={70}
           className="object-cover"
         />
       </div>

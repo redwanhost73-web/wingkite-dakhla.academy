@@ -8,6 +8,7 @@ import { useSiteConfig } from '@/hooks/use-site-config'
 import { PackagesSection } from '@/components/packages-section'
 import { LogoMarquee } from '@/components/logo-marquee'
 import { ActivityCard } from '@/components/activity-card'
+import { ActivityStoryProvider } from '@/components/activity-story'
 import { Reveal } from '@/components/reveal'
 import { ACTIVITIES } from '@/lib/activities'
 import { DEFAULT_IMAGES } from '@/lib/site-config'
@@ -84,6 +85,7 @@ export function HomeContent() {
   }
 
   return (
+    <ActivityStoryProvider>
     <div className="overflow-hidden">
 
       {/* ══ HERO ══ Cinematic full-viewport plate */}
@@ -97,7 +99,7 @@ export function HomeContent() {
             priority
             fetchPriority="high"
             sizes="100vw"
-            quality={80}
+            quality={70}
             className="object-cover"
           />
         </div>
@@ -580,5 +582,6 @@ export function HomeContent() {
         </div>
       </section>
     </div>
+    </ActivityStoryProvider>
   )
 }

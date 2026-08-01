@@ -1,7 +1,7 @@
 'use client'
 
+import dynamic from 'next/dynamic'
 import { MapPin, Phone, Mail, Clock, Facebook, Instagram, Youtube, MessageCircle, Star, ExternalLink, Plane, Car, BusFront } from 'lucide-react'
-import { ContactForm } from '@/components/contact-form'
 import { useTranslations } from '@/lib/i18n-context'
 import { useSiteConfig } from '@/hooks/use-site-config'
 import { DEFAULT_IMAGES } from '@/lib/site-config'
@@ -9,6 +9,15 @@ import { PageHero } from '@/components/page-hero'
 import { Reveal } from '@/components/reveal'
 import { LocationMapLazy } from '@/components/location-map-lazy'
 import { GOOGLE_MAPS_URL, SCHOOL_NAME } from '@/lib/location'
+
+const ContactForm = dynamic(
+  () => import('@/components/contact-form').then((m) => m.ContactForm),
+  {
+    loading: () => (
+      <div className="h-80 animate-pulse rounded-[20px] bg-[#072A5A]/5" aria-hidden />
+    ),
+  },
+)
 
 const GOOGLE_REVIEW_URL = 'https://g.page/r/CYv3UKOLHTcQEBM/review'
 const WHATSAPP_NUMBER = '+212766910203'
@@ -79,10 +88,15 @@ export function ContactContent() {
             <Reveal className="lg:col-span-3" direction="right">
               <div className="card-premium h-full p-8 sm:p-10">
                 <h2 className="font-heading text-card-title text-[#072A5A]">
-                  {getText('Envoyez-nous un message', 'Send us a message', 'Envíanos un mensaje', 'أرسل لنا رسالة')}
+                  {getText('Réservez en quelques étapes', 'Book in a few steps', 'Reserva en unos pasos', 'احجز في خطوات بسيطة')}
                 </h2>
                 <p className="text-small text-[#3D4F6F] mt-3 mb-9">
-                  {getText('Nous vous répondrons dans les plus brefs délais.', 'We will get back to you as soon as possible.', 'Te responderemos lo antes posible.', 'سنرد عليك في أقرب وقت ممكن.')}
+                  {getText(
+                    'Dites-nous ce dont vous avez besoin — on s’occupe du reste.',
+                    'Tell us what you need — we’ll take care of the rest.',
+                    'Dinos lo que necesitas — nosotros nos ocupamos del resto.',
+                    'أخبرنا بما تحتاجه — ونتولى الباقي.'
+                  )}
                 </p>
                 <ContactForm />
               </div>
@@ -221,36 +235,33 @@ export function ContactContent() {
             </div>
           </Reveal>
 
-          {/* Map Container */}
+          {/* Map + location card — card sits below on mobile so the map stays visible */}
           <Reveal delay={120}>
-            <div className="relative mt-14 overflow-hidden rounded-[28px] bg-white shadow-[0_40px_90px_rgba(0,70,164,0.08)]">
-              <div className="relative aspect-video md:aspect-21/9">
+            <div className="mt-14 grid grid-cols-1 gap-5 lg:grid-cols-[1fr_320px] lg:gap-6 lg:items-stretch">
+              <div className="relative min-h-100 overflow-hidden rounded-[28px] bg-white shadow-[0_40px_90px_rgba(0,70,164,0.08)] sm:min-h-115 md:min-h-0 md:aspect-21/9">
                 <LocationMapLazy className="absolute inset-0 h-full w-full" />
               </div>
 
-              {/* Overlay Card */}
-              <div className="absolute bottom-4 left-4 right-4 z-10 md:bottom-7 md:left-7 md:right-auto md:max-w-sm">
-                <div className="rounded-[20px] border border-white/40 bg-white/85 p-5 shadow-[0_25px_60px_rgba(0,70,164,0.10)] backdrop-blur-[20px] backdrop-saturate-150">
-                  <div className="flex items-start gap-3.5">
-                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] bg-[#0046A4]">
-                      <MapPin className="h-5 w-5 text-white" />
-                    </span>
-                    <div className="min-w-0">
-                      <h3 className="font-heading font-bold text-[#072A5A]">{SCHOOL_NAME}</h3>
-                      <p className="text-small text-[#3D4F6F] mt-0.5">
-                        {getText('Lagon de Dakhla, Dakhla, Maroc', 'Dakhla Lagoon, Dakhla, Morocco', 'Laguna de Dakhla, Dakhla, Marruecos', 'بحيرة الداخلة، الداخلة، المغرب')}
-                      </p>
-                      <p className="mt-1 text-xs text-[#7A8AA3]">23°54′53.6″N 15°46′28.4″W</p>
-                      <a
-                        href={GOOGLE_MAPS_URL}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-3 inline-flex items-center gap-1.5 text-small font-semibold text-[#0046A4] hover:underline"
-                      >
-                        {getText('Ouvrir dans Google Maps', 'Open in Google Maps', 'Abrir en Google Maps', 'فتح في خرائط Google')}
-                        <ExternalLink className="h-3 w-3" />
-                      </a>
-                    </div>
+              <div className="flex flex-col justify-center rounded-[28px] border border-[#072A5A]/6 bg-white p-6 shadow-[0_25px_60px_rgba(0,70,164,0.08)] sm:p-7">
+                <div className="flex items-start gap-3.5">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] bg-[#0046A4]">
+                    <MapPin className="h-5 w-5 text-white" />
+                  </span>
+                  <div className="min-w-0">
+                    <h3 className="font-heading font-bold text-[#072A5A]">{SCHOOL_NAME}</h3>
+                    <p className="text-small text-[#3D4F6F] mt-0.5">
+                      {getText('Lagon de Dakhla, Dakhla, Maroc', 'Dakhla Lagoon, Dakhla, Morocco', 'Laguna de Dakhla, Dakhla, Marruecos', 'بحيرة الداخلة، الداخلة، المغرب')}
+                    </p>
+                    <p className="mt-1 text-xs text-[#7A8AA3]">23°54′53.6″N 15°46′28.4″W</p>
+                    <a
+                      href={GOOGLE_MAPS_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-4 inline-flex items-center gap-1.5 text-small font-semibold text-[#0046A4] hover:underline"
+                    >
+                      {getText('Ouvrir dans Google Maps', 'Open in Google Maps', 'Abrir en Google Maps', 'فتح في خرائط Google')}
+                      <ExternalLink className="h-3 w-3" />
+                    </a>
                   </div>
                 </div>
               </div>

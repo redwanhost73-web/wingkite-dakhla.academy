@@ -55,10 +55,15 @@ export function ActivityCard({ activity, locale, className }: Props) {
   }, [multi, hover, images.length])
 
   const label = tr(title, locale)
+  // Only decode the active frame (+ next for a soft crossfade). Story mode
+  // loads the full set when the user actually opens it.
+  const visibleIndexes = multi
+    ? Array.from(new Set([slide, (slide + 1) % images.length]))
+    : [0]
 
   const shellClass = cn(
     'group relative h-full w-full overflow-hidden rounded-[28px] text-left',
-    'shadow-[0_25px_60px_rgba(0,70,164,0.10)] transition-[transform,box-shadow] duration-[450ms] ease-[cubic-bezier(0.16,1,0.3,1)]',
+    'shadow-[0_25px_60px_rgba(0,70,164,0.10)] transition-[transform,box-shadow] duration-450 ease-[cubic-bezier(0.16,1,0.3,1)]',
     'cursor-pointer hover:-translate-y-2 hover:scale-[1.02] hover:shadow-[0_40px_90px_rgba(0,70,164,0.08)]',
     'focus-visible:-translate-y-2 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0046A4]',
     minHeight,
@@ -67,17 +72,17 @@ export function ActivityCard({ activity, locale, className }: Props) {
 
   const body = (
     <>
-      {images.map((src, i) => (
+      {visibleIndexes.map((i) => (
         <Image
-          key={src}
-          src={src}
+          key={images[i]}
+          src={images[i]}
           alt={`${label} ${i + 1}`}
           fill
           sizes="(max-width: 768px) 100vw, 50vw"
-          loading={i === 0 ? 'eager' : 'lazy'}
-          quality={74}
+          loading="lazy"
+          quality={70}
           className={cn(
-            'object-cover transition-[opacity,transform] duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)]',
+            'object-cover transition-[opacity,transform] duration-900 ease-[cubic-bezier(0.16,1,0.3,1)]',
             i === slide ? 'opacity-100' : 'opacity-0',
             i === slide && hover ? 'scale-[1.08]' : 'scale-100',
           )}
@@ -143,12 +148,12 @@ export function ActivityCard({ activity, locale, className }: Props) {
           {tr(desc, locale)}
         </p>
 
-        <span className="mt-5 inline-flex items-center gap-2 text-xs font-semibold text-white/60 transition-colors duration-[450ms] group-hover:text-white">
+        <span className="mt-5 inline-flex items-center gap-2 text-xs font-semibold text-white/60 transition-colors duration-450 group-hover:text-white">
           {multi ? viewPhotosLabel(locale) : viewPricingLabel(locale)}
           {multi ? (
-            <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-[450ms] group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-450 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           ) : (
-            <ArrowRight className="h-3.5 w-3.5 transition-transform duration-[450ms] group-hover:translate-x-0.5" />
+            <ArrowRight className="h-3.5 w-3.5 transition-transform duration-450 group-hover:translate-x-0.5" />
           )}
         </span>
       </div>
@@ -173,7 +178,7 @@ export function ActivityCard({ activity, locale, className }: Props) {
   return (
     <Link
       href={pricingHref}
-      prefetch
+      prefetch={false}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       className={shellClass}

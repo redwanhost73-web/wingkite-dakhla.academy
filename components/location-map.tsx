@@ -22,6 +22,7 @@ export function LocationMap({ className }: Props) {
 
     let cancelled = false
     let resize: (() => void) | null = null
+    let observer: ResizeObserver | null = null
     let frame = 0
 
     ;(async () => {
@@ -56,15 +57,24 @@ export function LocationMap({ className }: Props) {
       L.marker([SCHOOL_LAT, SCHOOL_LNG], { icon, interactive: false }).addTo(map)
       mapRef.current = map
 
+      // The container grows as the reveal animation settles and as breakpoints
+      // change its min-height; without re-measuring, Leaflet leaves the newly
+      // exposed area as blank grey tiles.
       resize = () => map.invalidateSize()
       frame = window.requestAnimationFrame(resize)
       window.addEventListener('resize', resize)
+
+      if (typeof ResizeObserver !== 'undefined') {
+        observer = new ResizeObserver(() => map.invalidateSize())
+        observer.observe(el)
+      }
     })()
 
     return () => {
       cancelled = true
       if (frame) window.cancelAnimationFrame(frame)
       if (resize) window.removeEventListener('resize', resize)
+      observer?.disconnect()
       mapRef.current?.remove()
       mapRef.current = null
     }

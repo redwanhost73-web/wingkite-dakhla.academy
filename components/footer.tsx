@@ -45,8 +45,8 @@ export function Footer() {
             <Image
               src={logoUrl}
               alt="Wing Kite Dakhla Academy"
-              width={826}
-              height={302}
+              width={400}
+              height={146}
               sizes="280px"
               className="h-16 w-auto object-contain sm:h-20"
               loading="lazy"
