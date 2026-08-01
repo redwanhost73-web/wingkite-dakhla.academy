@@ -561,6 +561,68 @@
   animation-play-state: paused;
 }
 
+/* Contact map — school name sits above a brand pin at the exact spot */
+.school-map-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+.school-map-pin {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translate(-50%, calc(-100% + 6px));
+  pointer-events: none;
+  filter: drop-shadow(0 10px 24px rgba(0, 70, 164, 0.22));
+}
+
+.school-map-label {
+  max-width: min(70vw, 16rem);
+  white-space: normal;
+  text-align: center;
+  border-radius: 999px;
+  border: 1px solid rgba(90, 168, 255, 0.28);
+  background: rgba(255, 255, 255, 0.96);
+  color: #072a5a;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.25;
+  padding: 0.55rem 0.9rem;
+  box-shadow: 0 12px 32px rgba(0, 70, 164, 0.12);
+}
+
+@media (min-width: 640px) {
+  .school-map-label {
+    white-space: nowrap;
+    max-width: none;
+  }
+}
+
+.school-map-stem {
+  width: 2px;
+  height: 14px;
+  margin-top: 2px;
+  background: #0046a4;
+  border-radius: 999px;
+}
+
+.school-map-dot {
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  border-radius: 999px;
+  border: 3px solid #fff;
+  background: #0046a4;
+  box-shadow: 0 0 0 3px rgba(0, 70, 164, 0.22);
+}
+
+.leaflet-container {
+  font: inherit;
+  z-index: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

@@ -7,9 +7,9 @@ import { useSiteConfig } from '@/hooks/use-site-config'
 import { DEFAULT_IMAGES } from '@/lib/site-config'
 import { PageHero } from '@/components/page-hero'
 import { Reveal } from '@/components/reveal'
+import { LocationMapLazy } from '@/components/location-map-lazy'
+import { GOOGLE_MAPS_URL, SCHOOL_NAME } from '@/lib/location'
 
-const GOOGLE_MAPS_EMBED = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30125.5!2d-14.5526684!3d22.6807513!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x64f9beb3edd86dfb%3A0x10371d8ba350f78b!2sWing%20Kite%20Dakhla%20Academy!5e0!3m2!1sen!2sma!4v1710000000000!5m2!1sen!2sma'
-const GOOGLE_MAPS_URL = 'https://www.google.com/maps/place/Wing+Kite+Dakhla+Academy/@22.6807513,-14.5526684,17z'
 const GOOGLE_REVIEW_URL = 'https://g.page/r/CYv3UKOLHTcQEBM/review'
 const WHATSAPP_NUMBER = '+212766910203'
 
@@ -225,29 +225,22 @@ export function ContactContent() {
           <Reveal delay={120}>
             <div className="relative mt-14 overflow-hidden rounded-[28px] bg-white shadow-[0_40px_90px_rgba(0,70,164,0.08)]">
               <div className="relative aspect-video md:aspect-21/9">
-                <iframe
-                  src={GOOGLE_MAPS_EMBED}
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title="Wing Kite Dakhla Academy Location"
-                  className="absolute inset-0"
-                />
+                <LocationMapLazy className="absolute inset-0 h-full w-full" />
               </div>
 
               {/* Overlay Card */}
-              <div className="absolute bottom-4 left-4 right-4 md:bottom-7 md:left-7 md:right-auto md:max-w-sm">
+              <div className="absolute bottom-4 left-4 right-4 z-10 md:bottom-7 md:left-7 md:right-auto md:max-w-sm">
                 <div className="rounded-[20px] border border-white/40 bg-white/85 p-5 shadow-[0_25px_60px_rgba(0,70,164,0.10)] backdrop-blur-[20px] backdrop-saturate-150">
                   <div className="flex items-start gap-3.5">
                     <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] bg-[#0046A4]">
                       <MapPin className="h-5 w-5 text-white" />
                     </span>
                     <div className="min-w-0">
-                      <h3 className="font-heading font-bold text-[#072A5A]">Wing Kite Dakhla Academy</h3>
-                      <p className="text-small text-[#3D4F6F] mt-0.5">Lagon de Dakhla, Dakhla, Maroc</p>
+                      <h3 className="font-heading font-bold text-[#072A5A]">{SCHOOL_NAME}</h3>
+                      <p className="text-small text-[#3D4F6F] mt-0.5">
+                        {getText('Lagon de Dakhla, Dakhla, Maroc', 'Dakhla Lagoon, Dakhla, Morocco', 'Laguna de Dakhla, Dakhla, Marruecos', 'بحيرة الداخلة، الداخلة، المغرب')}
+                      </p>
+                      <p className="mt-1 text-xs text-[#7A8AA3]">23°54′53.6″N 15°46′28.4″W</p>
                       <a
                         href={GOOGLE_MAPS_URL}
                         target="_blank"

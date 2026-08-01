@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Facebook, Instagram, Youtube, Mail, Phone, MapPin, Star, ArrowUpRight } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n-context'
+import { GOOGLE_MAPS_URL } from '@/lib/location'
 
 const logoUrl = '/Logo/Logo.png'
 
@@ -139,7 +140,7 @@ export function Footer() {
             </div>
 
             <a
-              href="https://www.google.com/maps/place/Wing+Kite+Dakhla+Academy/@22.6807513,-14.5526684,17z"
+              href={GOOGLE_MAPS_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="group mt-6 inline-flex items-center gap-2 text-small text-white/55 transition-colors duration-[450ms] hover:text-white"
