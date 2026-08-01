@@ -62,7 +62,9 @@ export function ActivityCard({ activity, locale, className }: Props) {
     : [0]
 
   const shellClass = cn(
-    'group relative h-full w-full overflow-hidden rounded-[28px] text-left',
+    // `block` matters for the single-image variant: it renders as an <a>, which
+    // is inline by default and would collapse the card and its fill images.
+    'group relative block h-full w-full overflow-hidden rounded-[28px] text-left',
     'shadow-[0_25px_60px_rgba(0,70,164,0.10)] transition-[transform,box-shadow] duration-450 ease-[cubic-bezier(0.16,1,0.3,1)]',
     'cursor-pointer hover:-translate-y-2 hover:scale-[1.02] hover:shadow-[0_40px_90px_rgba(0,70,164,0.08)]',
     'focus-visible:-translate-y-2 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0046A4]',
