@@ -2,25 +2,23 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { Facebook, Instagram, Youtube, Mail, Phone, MapPin, Star } from 'lucide-react'
+import { Facebook, Instagram, Youtube, Mail, Phone, MapPin, Star, ArrowUpRight } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n-context'
 
-const logoUrl = 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-uwpe0OmA74QLewcU70kbpwjkiMDyfe.png'
+const logoUrl = '/Logo/Logo.png'
 
 export function Footer() {
   const { t, locale } = useTranslations()
-  const fr = locale === 'fr'
-  const ar = locale === 'ar'
-  
+
   const getText = (frText: string, enText: string, esText: string, arText?: string): string => {
     if (locale === 'fr') return frText
     if (locale === 'es') return esText
     if (locale === 'ar') return arText || enText
     return enText
   }
-  
+
   const currentYear = new Date().getFullYear()
-  
+
   const quickLinks = [
     { href: `/${locale}`, label: t('nav.home') },
     { href: `/${locale}/about`, label: t('nav.about') },
@@ -29,22 +27,31 @@ export function Footer() {
     { href: `/${locale}/privacy`, label: getText('Politique de confidentialité', 'Privacy Policy', 'Política de privacidad', 'سياسة الخصوصية') },
   ]
 
+  const socials = [
+    { href: 'https://facebook.com/wingkitedakhla', label: 'Facebook', Icon: Facebook },
+    { href: 'https://www.instagram.com/wing_kite_dakhla_academy', label: 'Instagram', Icon: Instagram },
+    { href: 'https://youtube.com/@wingkitedakhla', label: 'YouTube', Icon: Youtube },
+  ]
+
   return (
-    <footer className="bg-[#1a1a2e] text-white">
-      <div className="max-w-7xl mx-auto px-6 sm:px-12 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+    <footer className="surface-noise relative overflow-hidden bg-[#0B1F3B] text-white" data-nav-theme="dark">
+      <span aria-hidden className="blob -top-40 left-1/3 h-120 w-120 bg-[#0046A4]/25" />
+
+      <div className="container-editorial relative z-10 pt-24 pb-12 lg:pt-32">
+        <div className="grid grid-cols-1 gap-14 md:grid-cols-2 lg:grid-cols-12 lg:gap-12">
           {/* Brand */}
-          <div className="space-y-5">
-            <div className="bg-white rounded-xl p-3 inline-block">
-              <Image 
-                src={logoUrl}
-                alt="Wing Kite Dakhla Academy"
-                width={180}
-                height={60}
-                className="h-14 w-auto object-contain"
-              />
-            </div>
-            <p className="text-white/70 text-sm leading-relaxed">
+          <div className="lg:col-span-5 lg:pr-10">
+            <Image
+              src={logoUrl}
+              alt="Wing Kite Dakhla Academy"
+              width={826}
+              height={302}
+              sizes="280px"
+              className="h-16 w-auto object-contain sm:h-20"
+              loading="lazy"
+              style={{ filter: 'brightness(0) invert(1)' }}
+            />
+            <p className="text-small text-white/60 mt-7 max-w-md">
               {getText(
                 'École de wingfoil et kitesurf à Dakhla, Maroc. Apprenez avec des professionnels passionnés dans l\'un des meilleurs spots au monde.',
                 'Wingfoil and kitesurf school in Dakhla, Morocco. Learn with passionate professionals at one of the best spots in the world.',
@@ -52,101 +59,104 @@ export function Footer() {
                 'مدرسة وينج فويل وكايت سيرف في الداخلة، المغرب. تعلم مع محترفين شغوفين في واحدة من أفضل المواقع في العالم.'
               )}
             </p>
+
             {/* Google Reviews Badge */}
-            <a 
+            <a
               href="https://g.page/r/CYv3UKOLHTcQEBM/review"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 transition-colors rounded-lg px-4 py-2"
+              className="glass-panel mt-8 inline-flex items-center gap-3 rounded-full px-5 py-3 transition-colors duration-[450ms] hover:bg-white/15"
             >
-              <div className="flex gap-0.5">
+              <span className="flex gap-0.5">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-[#E5A423] text-[#E5A423]" />
+                  <Star key={i} className="h-4 w-4 fill-[#C9A66B] text-[#C9A66B]" />
                 ))}
-              </div>
-              <span className="text-sm font-medium">Google Reviews</span>
+              </span>
+              <span className="text-small font-semibold">Google Reviews</span>
             </a>
           </div>
-          
+
           {/* Quick Links */}
-          <div>
-            <h3 className="font-bold text-lg mb-5">{getText('Liens rapides', 'Quick Links', 'Enlaces rápidos', 'روابط سريعة')}</h3>
-            <ul className="space-y-3">
+          <div className="lg:col-span-3">
+            <h3 className="eyebrow text-white/40">
+              {getText('Liens rapides', 'Quick Links', 'Enlaces rápidos', 'روابط سريعة')}
+            </h3>
+            <ul className="mt-7 space-y-4">
               {quickLinks.map((link) => (
                 <li key={link.href}>
-                  <Link 
+                  <Link
                     href={link.href}
-                    className="text-white/70 hover:text-white transition-colors text-sm"
+                    className="group text-small inline-flex items-center gap-2 text-white/65 transition-colors duration-[450ms] hover:text-white"
                   >
                     {link.label}
+                    <ArrowUpRight className="h-3.5 w-3.5 opacity-0 transition-all duration-[450ms] group-hover:translate-x-0.5 group-hover:opacity-100" />
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
-          
+
           {/* Contact */}
-          <div>
-            <h3 className="font-bold text-lg mb-5">{getText('Contact', 'Contact', 'Contacto', 'اتصل بنا')}</h3>
-            <ul className="space-y-4">
-              <li className="flex items-start gap-3 text-white/70">
-                <MapPin className="h-5 w-5 mt-0.5 shrink-0 text-[#E5A423]" />
-                <span className="text-sm">{getText('Lagon de Dakhla, Dakhla, Maroc', 'Dakhla Lagoon, Dakhla, Morocco', 'Laguna de Dakhla, Dakhla, Marruecos', 'بحيرة الداخلة، الداخلة، المغرب')}</span>
+          <div className="lg:col-span-4">
+            <h3 className="eyebrow text-white/40">
+              {getText('Contact', 'Contact', 'Contacto', 'اتصل بنا')}
+            </h3>
+            <ul className="mt-7 space-y-5">
+              <li className="flex items-start gap-3.5 text-small text-white/65">
+                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#C9A66B]" />
+                <span>
+                  {getText('Lagon de Dakhla, Dakhla, Maroc', 'Dakhla Lagoon, Dakhla, Morocco', 'Laguna de Dakhla, Dakhla, Marruecos', 'بحيرة الداخلة، الداخلة، المغرب')}
+                </span>
               </li>
-              <li className="flex items-center gap-3 text-white/70">
-                <Phone className="h-5 w-5 shrink-0 text-[#E5A423]" />
-                <a href="tel:+212766910203" className="text-sm hover:text-white transition-colors">+212 766 910 203</a>
+              <li className="flex items-center gap-3.5 text-small text-white/65">
+                <Phone className="h-4 w-4 shrink-0 text-[#C9A66B]" />
+                <a href="tel:+212766910203" className="transition-colors duration-[450ms] hover:text-white">
+                  +212 766 910 203
+                </a>
               </li>
-              <li className="flex items-center gap-3 text-white/70">
-                <Mail className="h-5 w-5 shrink-0 text-[#E5A423]" />
-                <span className="text-sm">contact@wingkitedakhla.com</span>
+              <li className="flex items-center gap-3.5 text-small text-white/65">
+                <Mail className="h-4 w-4 shrink-0 text-[#C9A66B]" />
+                <span>contact@wingkitedakhla.com</span>
               </li>
             </ul>
-          </div>
-          
-          {/* Social + Google */}
-          <div>
-            <h3 className="font-bold text-lg mb-5">{getText('Suivez-nous', 'Follow Us', 'Síguenos', 'تابعنا')}</h3>
-            <div className="flex gap-3 mb-6">
-              <a 
-                href="#" 
-                className="p-3 rounded-xl bg-white/10 hover:bg-[#1E5AA8] transition-colors"
-                aria-label="Facebook"
-              >
-                <Facebook className="h-5 w-5" />
-              </a>
-              <a 
-                href="#" 
-                className="p-3 rounded-xl bg-white/10 hover:bg-[#1E5AA8] transition-colors"
-                aria-label="Instagram"
-              >
-                <Instagram className="h-5 w-5" />
-              </a>
-              <a 
-                href="#" 
-                className="p-3 rounded-xl bg-white/10 hover:bg-[#1E5AA8] transition-colors"
-                aria-label="YouTube"
-              >
-                <Youtube className="h-5 w-5" />
-              </a>
+
+            <h3 className="eyebrow text-white/40 mt-10">
+              {getText('Suivez-nous', 'Follow Us', 'Síguenos', 'تابعنا')}
+            </h3>
+            <div className="mt-5 flex gap-3">
+              {socials.map(({ href, label, Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="flex h-12 w-12 items-center justify-center rounded-full border border-white/12 bg-white/5 text-white/80 transition-all duration-[450ms] hover:-translate-y-1 hover:border-transparent hover:bg-[#0057D1] hover:text-white"
+                >
+                  <Icon className="h-5 w-5" />
+                </a>
+              ))}
             </div>
+
             <a
               href="https://www.google.com/maps/place/Wing+Kite+Dakhla+Academy/@22.6807513,-14.5526684,17z"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm text-white/70 hover:text-white transition-colors"
+              className="group mt-6 inline-flex items-center gap-2 text-small text-white/55 transition-colors duration-[450ms] hover:text-white"
             >
               <MapPin className="h-4 w-4" />
               {getText('Voir sur Google Maps', 'View on Google Maps', 'Ver en Google Maps', 'عرض على خرائط Google')}
+              <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-[450ms] group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </a>
           </div>
         </div>
-        
-        <div className="border-t border-white/10 mt-12 pt-8">
-          <p className="text-sm text-white/50 text-center">
-            {currentYear} Wing Kite Dakhla Academy - Free Wing Dakhla. {getText('Tous droits réservés.', 'All rights reserved.', 'Todos los derechos reservados.', 'جميع الحقوق محفوظة.')}
-          </p>
-        </div>
+
+        <hr className="hairline-light mt-20" />
+
+        <p className="text-xs text-white/40 mt-8 text-center">
+          {currentYear} Wing Kite Dakhla Academy - Free Wing Dakhla.{' '}
+          {getText('Tous droits réservés.', 'All rights reserved.', 'Todos los derechos reservados.', 'جميع الحقوق محفوظة.')}
+        </p>
       </div>
     </footer>
   )

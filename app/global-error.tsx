@@ -23,7 +23,7 @@ export default function GlobalError({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: 'linear-gradient(to bottom right, #3DA5D9, #1E5AA8)',
+          background: 'linear-gradient(to bottom right, #2D7FF9, #0046A4)',
           fontFamily: 'system-ui, -apple-system, sans-serif',
           padding: '24px',
         }}
@@ -38,7 +38,7 @@ export default function GlobalError({
             textAlign: 'center',
           }}
         >
-          <h1 style={{ fontSize: '28px', fontWeight: 900, color: '#1a1a2e', marginTop: 0 }}>
+          <h1 style={{ fontSize: '28px', fontWeight: 900, color: '#072A5A', marginTop: 0 }}>
             Oups, une erreur est survenue
           </h1>
           <p style={{ color: '#6b7280', lineHeight: 1.6, marginBottom: '32px' }}>
@@ -47,7 +47,7 @@ export default function GlobalError({
           <button
             onClick={reset}
             style={{
-              background: '#1E5AA8',
+              background: '#0046A4',
               color: '#fff',
               fontWeight: 700,
               height: '48px',

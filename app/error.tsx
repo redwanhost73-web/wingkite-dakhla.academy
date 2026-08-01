@@ -14,33 +14,27 @@ export default function Error({
   }, [error])
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-6 bg-linear-to-br from-[#3DA5D9] via-[#2B8FBC] to-[#1E5AA8]">
-      <div className="max-w-lg w-full bg-white rounded-3xl shadow-2xl p-10 text-center">
-        <h1 className="text-3xl font-black text-[#1a1a2e] mb-4">
+    <div className="surface-noise relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0B1F3B] px-6">
+      <span aria-hidden className="blob -top-40 left-1/4 h-120 w-120 bg-[#0046A4]/30" />
+
+      <div className="relative z-10 w-full max-w-lg rounded-[28px] border border-white/12 bg-white/8 p-10 text-center shadow-[0_40px_90px_rgba(0,70,164,0.08)] backdrop-blur-[20px] backdrop-saturate-150 sm:p-12">
+        <h1 className="font-heading text-card-title text-white">
           Oups, une erreur est survenue
         </h1>
-        <p className="text-gray-500 mb-8 leading-relaxed">
+        <p className="text-small text-white/65 mt-4">
           Something went wrong while loading this page. Please try again.
         </p>
 
-        <div className="flex flex-wrap gap-3 justify-center">
-          <button
-            onClick={reset}
-            className="bg-[#1E5AA8] hover:bg-[#164a8a] text-white font-bold h-12 px-8 rounded-full transition-colors"
-          >
+        <div className="mt-10 flex flex-wrap justify-center gap-3">
+          <button onClick={reset} className="btn-pill bg-white text-[#0B1F3B] hover:bg-white">
             Réessayer / Try again
           </button>
-          <a
-            href="/fr"
-            className="bg-gray-100 hover:bg-gray-200 text-[#1a1a2e] font-bold h-12 px-8 rounded-full inline-flex items-center transition-colors"
-          >
+          <a href="/fr" className="btn-pill btn-outline-light shadow-none">
             Accueil / Home
           </a>
         </div>
 
-        {error.digest && (
-          <p className="mt-8 text-xs text-gray-400">Ref: {error.digest}</p>
-        )}
+        {error.digest && <p className="mt-8 text-xs text-white/35">Ref: {error.digest}</p>}
       </div>
     </div>
   )

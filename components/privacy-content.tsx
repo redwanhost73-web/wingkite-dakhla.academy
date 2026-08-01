@@ -2,6 +2,7 @@
 
 import { useTranslations } from '@/lib/i18n-context'
 import { Shield, Eye, Database, Lock, Mail, RefreshCw, Globe, UserCheck } from 'lucide-react'
+import { Reveal } from '@/components/reveal'
 
 export function PrivacyContent() {
   const { locale } = useTranslations()
@@ -124,36 +125,43 @@ export function PrivacyContent() {
   ]
 
   return (
-    <div className="w-full bg-[#f8f9fc]">
+    <div className="w-full bg-[#FAF8F3]" data-nav-theme="light">
       {/* Hero */}
-      <div className="w-full bg-[#1a1a2e] text-white py-20 px-6">
-        <div className="max-w-3xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 bg-[#1E5AA8]/30 border border-[#1E5AA8]/40 rounded-full px-5 py-2 mb-6">
-            <Shield className="h-4 w-4 text-[#E5A423]" />
-            <span className="text-sm font-semibold text-white/90 uppercase tracking-wider">
+      <div className="surface-noise relative overflow-hidden bg-[#0B1F3B] text-white pt-44 pb-32" data-nav-theme="dark">
+        <span aria-hidden className="blob -top-32 left-1/3 h-120 w-120 bg-[#0046A4]/25" />
+
+        <div className="container-narrow relative z-10 text-center">
+          <Reveal>
+            <span className="glass-panel eyebrow inline-flex items-center gap-2.5 rounded-full px-5 py-2.5 text-white/90">
+              <Shield className="h-3.5 w-3.5 text-[#C9A66B]" />
               {getText('Politique de confidentialité', 'Privacy Policy', 'Política de privacidad', 'سياسة الخصوصية')}
             </span>
-          </div>
-          <h1 className="text-4xl md:text-5xl font-black mb-4 text-balance">
-            {getText(
-              'Protection de vos données personnelles',
-              'Protection of Your Personal Data',
-              'Protección de sus datos personales',
-              'حماية بياناتك الشخصية'
-            )}
-          </h1>
-          <p className="text-white/60 text-sm mt-6">
-            {getText('Dernière mise à jour :', 'Last updated:', 'Última actualización:', 'آخر تحديث:')} {lastUpdated}
-          </p>
+          </Reveal>
+          <Reveal delay={110}>
+            <h1 className="font-heading text-display-sm mx-auto max-w-3xl mt-8 text-balance">
+              {getText(
+                'Protection de vos données personnelles',
+                'Protection of Your Personal Data',
+                'Protección de sus datos personales',
+                'حماية بياناتك الشخصية'
+              )}
+            </h1>
+          </Reveal>
+          <Reveal delay={200}>
+            <p className="text-small text-white/50 mt-7">
+              {getText('Dernière mise à jour :', 'Last updated:', 'Última actualización:', 'آخر تحديث:')} {lastUpdated}
+            </p>
+          </Reveal>
         </div>
       </div>
 
       {/* Content */}
-      <div className="w-full py-12 px-6">
+      <div className="container-narrow pb-24">
         {/* Intro card */}
-        <div className="max-w-3xl mx-auto -mt-8 mb-12">
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
-            <p className="text-slate-600 leading-relaxed text-base">
+        <div className="mx-auto max-w-3xl -mt-20 mb-14">
+          <Reveal>
+          <div className="card-premium bg-white/95 p-8 sm:p-10 backdrop-blur-xl">
+            <p className="text-body-lg text-[#3D4F6F]">
               {getText(
                 'Wing Kite Dakhla Academy s\'engage à protéger la vie privée de ses utilisateurs et clients. Cette politique de confidentialité explique comment nous collectons, utilisons et protégeons vos données personnelles lorsque vous utilisez notre site internet wingkite-dakhla.academy ou nos services.',
                 'Wing Kite Dakhla Academy is committed to protecting the privacy of its users and clients. This privacy policy explains how we collect, use and protect your personal data when you use our website wingkite-dakhla.academy or our services.',
@@ -162,61 +170,64 @@ export function PrivacyContent() {
               )}
             </p>
           </div>
+          </Reveal>
         </div>
 
         {/* Sections */}
-        <div className="max-w-3xl mx-auto space-y-6 pb-12">
+        <div className="mx-auto max-w-3xl space-y-7">
           {sections.map((section, index) => {
             const Icon = section.icon
             const paragraphs = section.content.split('\n\n')
             return (
-              <div
-                key={index}
-                className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden"
-              >
-                {/* Section header */}
-                <div className="flex items-center gap-4 px-8 py-6 border-b border-slate-100">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-[#1E5AA8]/10 flex items-center justify-center">
-                    <Icon className="h-5 w-5 text-[#1E5AA8]" />
+              <Reveal key={index} delay={40}>
+                <div className="card-premium">
+                  {/* Section header */}
+                  <div className="flex items-center gap-4 px-8 py-7">
+                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] bg-[#0046A4]/8">
+                      <Icon className="h-5 w-5 text-[#0046A4]" />
+                    </span>
+                    <h2 className="font-heading text-lg font-bold text-[#072A5A]">
+                      <span className="text-small me-2 font-extrabold text-[#C9A66B]">
+                        {String(index + 1).padStart(2, '0')}.
+                      </span>
+                      {section.title}
+                    </h2>
                   </div>
-                  <h2 className="text-lg font-bold text-[#1a1a2e]">
-                    <span className="text-[#E5A423] font-black mr-2 text-sm">{String(index + 1).padStart(2, '0')}.</span>
-                    {section.title}
-                  </h2>
-                </div>
-                {/* Section content */}
-                <div className="px-8 py-6 space-y-4">
-                  {paragraphs.map((para, pIdx) => {
-                    const isList = para.startsWith('•')
-                    if (isList) {
-                      const items = para.split('\n').filter(l => l.startsWith('•'))
+                  <hr className="hairline" />
+                  {/* Section content */}
+                  <div className="space-y-4 px-8 py-7">
+                    {paragraphs.map((para, pIdx) => {
+                      const isList = para.startsWith('•')
+                      if (isList) {
+                        const items = para.split('\n').filter((l) => l.startsWith('•'))
+                        return (
+                          <ul key={pIdx} className="space-y-2.5">
+                            {items.map((item, iIdx) => (
+                              <li key={iIdx} className="flex items-start gap-3">
+                                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#C9A66B]" />
+                                <span className="text-small text-[#3D4F6F]">
+                                  {item.replace('• ', '')}
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
+                        )
+                      }
                       return (
-                        <ul key={pIdx} className="space-y-2">
-                          {items.map((item, iIdx) => (
-                            <li key={iIdx} className="flex items-start gap-3">
-                              <span className="mt-1.5 w-2 h-2 rounded-full bg-[#E5A423] flex-shrink-0" />
-                              <span className="text-slate-600 text-sm leading-relaxed">
-                                {item.replace('• ', '')}
-                              </span>
-                            </li>
-                          ))}
-                        </ul>
+                        <p key={pIdx} className="text-small text-[#3D4F6F]">
+                          {para}
+                        </p>
                       )
-                    }
-                    return (
-                      <p key={pIdx} className="text-slate-600 text-sm leading-relaxed">
-                        {para}
-                      </p>
-                    )
-                  })}
+                    })}
+                  </div>
                 </div>
-              </div>
+              </Reveal>
             )
           })}
 
           {/* Bottom note */}
-          <div className="bg-[#1E5AA8]/5 border border-[#1E5AA8]/15 rounded-2xl px-8 py-6">
-            <p className="text-slate-500 text-sm leading-relaxed text-center">
+          <div className="rounded-[24px] border border-[#0046A4]/12 bg-[#0046A4]/4 px-8 py-7">
+            <p className="text-small text-center text-[#7A8AA3]">
               {getText(
                 'Wing Kite Dakhla Academy se réserve le droit de modifier cette politique de confidentialité à tout moment. Toute modification sera publiée sur cette page avec la date de mise à jour.',
                 'Wing Kite Dakhla Academy reserves the right to modify this privacy policy at any time. Any changes will be published on this page with the update date.',

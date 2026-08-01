@@ -8,39 +8,88 @@
 }
 
 :root {
+  /* Client brand — Atlantic blue + lagoon sky + sand beige. */
+  --brand: #0046a4; /* primary */
+  --brand-hover: #0057d1; /* hover */
+  --brand-active: #00357d; /* pressed */
+  --brand-dark: #00357d;
+  --brand-deep: #072a5a; /* deep sections */
+  --brand-navy: #0b1f3b; /* footer / darkest plate */
+  --brand-light: #2d7ff9;
+  --brand-mid: #0057d1;
+  --sky: #5aa8ff;
+  --sky-soft: #8cc8ff;
+  --sky-mist: #dceeff;
+
+  /* Warm sand / gold accents (icons, highlights) — never pure black. */
+  --sand: #c9a66b;
+  --sand-dark: #b8925a;
+  --sand-soft: #e5d7c3;
+  --lagoon: #5aa8ff;
+  --ink: #072a5a;
+
+  /* Editorial surfaces — beige luxury + white + deep blue. */
+  --surface-0: #ffffff;
+  --surface-1: #faf8f3;
+  --surface-2: #f6f1e8;
+  --surface-3: #efe7da;
+  --surface-dark: #072a5a;
+  --surface-dark-soft: #0b1f3b;
+
+  --aqua: #5aa8ff;
+  --lime: #8cc8ff;
+
+  /* Muted text ramp on warm surfaces. */
+  --text-strong: #072a5a;
+  --text-body: #3d4f6f;
+  --text-muted: #7a8aa3;
+
+  /* Blue-tinted elevation — lighter than black shadows. */
+  --shadow-soft: 0 12px 32px rgba(0, 70, 164, 0.08);
+  --shadow-lift: 0 20px 60px rgba(0, 70, 164, 0.1);
+  --shadow-deep: 0 30px 90px rgba(0, 70, 164, 0.08);
+
+  --radius-card: 24px;
+  --radius-image: 28px;
+  --radius-input: 16px;
+  --radius-pill: 999px;
+
+  /* One decelerating curve everywhere so motion reads as a single system. */
+  --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+
   --background: oklch(0.99 0 0);
   --foreground: oklch(0.2 0.02 240);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.2 0.02 240);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.2 0.02 240);
-  --primary: oklch(0.45 0.15 240);
+  --primary: var(--brand);
   --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.97 0.01 240);
   --secondary-foreground: oklch(0.2 0.02 240);
   --muted: oklch(0.96 0.01 240);
   --muted-foreground: oklch(0.5 0.02 240);
-  --accent: oklch(0.72 0.18 65);
-  --accent-foreground: oklch(0.2 0.02 240);
+  --accent: var(--sand);
+  --accent-foreground: var(--ink);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.577 0.245 27.325);
   --border: oklch(0.92 0.01 240);
   --input: oklch(0.92 0.01 240);
-  --ring: oklch(0.45 0.15 240);
-  --chart-1: oklch(0.45 0.15 240);
-  --chart-2: oklch(0.72 0.18 65);
-  --chart-3: oklch(0.6 0.12 200);
-  --chart-4: oklch(0.55 0.14 240);
-  --chart-5: oklch(0.65 0.16 65);
+  --ring: var(--brand);
+  --chart-1: var(--brand);
+  --chart-2: var(--sand);
+  --chart-3: var(--lagoon);
+  --chart-4: var(--brand-light);
+  --chart-5: var(--sand-dark);
   --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.2 0.02 240);
-  --sidebar-primary: oklch(0.45 0.15 240);
+  --sidebar-primary: var(--brand);
   --sidebar-primary-foreground: oklch(1 0 0);
   --sidebar-accent: oklch(0.97 0.01 240);
   --sidebar-accent-foreground: oklch(0.2 0.02 240);
   --sidebar-border: oklch(0.92 0.01 240);
-  --sidebar-ring: oklch(0.45 0.15 240);
+  --sidebar-ring: var(--brand);
 }
 
 .dark {
@@ -82,6 +131,37 @@
   --font-sans: var(--font-inter), 'Inter', system-ui, sans-serif;
   --font-heading: var(--font-montserrat), 'Montserrat', system-ui, sans-serif;
   --font-mono: 'Geist Mono', monospace;
+  --color-brand: var(--brand);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-deep: var(--brand-deep);
+  --color-brand-light: var(--brand-light);
+  --color-brand-mid: var(--brand-mid);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-active: var(--brand-active);
+  --color-brand-navy: var(--brand-navy);
+  --color-sky: var(--sky);
+  --color-sky-soft: var(--sky-soft);
+  --color-sky-mist: var(--sky-mist);
+  --color-sand: var(--sand);
+  --color-sand-dark: var(--sand-dark);
+  --color-sand-soft: var(--sand-soft);
+  --color-lagoon: var(--lagoon);
+  --color-ink: var(--ink);
+  --color-aqua: var(--aqua);
+  --color-lime: var(--lime);
+  --color-surface-0: var(--surface-0);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-surface-dark: var(--surface-dark);
+  --color-surface-dark-soft: var(--surface-dark-soft);
+  --color-text-strong: var(--text-strong);
+  --color-text-body: var(--text-body);
+  --color-text-muted: var(--text-muted);
+  --shadow-soft: var(--shadow-soft);
+  --shadow-lift: var(--shadow-lift);
+  --shadow-deep: var(--shadow-deep);
+  --ease-premium: var(--ease-premium);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -124,7 +204,381 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     @apply bg-background text-foreground;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: var(--brand);
+    color: #fff;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Editorial type scale. Fluid so the hierarchy holds from 360px to 1440px+
+   without a stack of breakpoint overrides.
+   --------------------------------------------------------------------------- */
+
+@utility text-display {
+  font-size: clamp(2.75rem, 6.2vw, 5rem); /* 44 → 80 */
+  line-height: 1.03;
+  letter-spacing: -0.03em;
+  font-weight: 800;
+}
+
+@utility text-display-sm {
+  font-size: clamp(2.25rem, 4.6vw, 3.5rem); /* 36 → 56 */
+  line-height: 1.06;
+  letter-spacing: -0.025em;
+  font-weight: 800;
+}
+
+@utility text-section {
+  font-size: clamp(2rem, 3.6vw, 3.25rem); /* 32 → 52 */
+  line-height: 1.1;
+  letter-spacing: -0.022em;
+  font-weight: 800;
+}
+
+@utility text-card-title {
+  font-size: clamp(1.375rem, 1.7vw, 1.75rem); /* 22 → 28 */
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  font-weight: 700;
+}
+
+@utility text-body-lg {
+  font-size: clamp(1.0625rem, 0.6vw + 0.9rem, 1.1875rem); /* 17 → 19 */
+  line-height: 1.75;
+}
+
+@utility text-small {
+  font-size: clamp(0.9375rem, 0.3vw + 0.87rem, 1rem); /* 15 → 16 */
+  line-height: 1.65;
+}
+
+@utility eyebrow {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* ---------------------------------------------------------------------------
+   Layout rhythm
+   --------------------------------------------------------------------------- */
+
+@utility container-editorial {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 4rem);
+}
+
+@utility container-narrow {
+  width: 100%;
+  max-width: 1120px;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 4rem);
+}
+
+/* 80px on phones up to the full 180px the design calls for on desktop. */
+@utility section-y {
+  padding-block: clamp(5rem, 9vw, 11.25rem);
+}
+
+@utility section-y-sm {
+  padding-block: clamp(3.5rem, 6vw, 7.5rem);
+}
+
+/* ---------------------------------------------------------------------------
+   Surfaces: cards, glass, buttons
+   --------------------------------------------------------------------------- */
+
+@utility card-premium {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(90, 168, 255, 0.2);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  transition:
+    transform 450ms var(--ease-premium),
+    box-shadow 450ms var(--ease-premium),
+    border-color 450ms var(--ease-premium);
+}
+
+@utility card-premium-dark {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(90, 168, 255, 0.22);
+  box-shadow: var(--shadow-lift);
+  transition:
+    transform 450ms var(--ease-premium),
+    box-shadow 450ms var(--ease-premium),
+    border-color 450ms var(--ease-premium);
+}
+
+/* Lift is opt-in per card so static panels don't wobble under the cursor. */
+@utility card-lift {
+  transition:
+    transform 450ms var(--ease-premium),
+    box-shadow 450ms var(--ease-premium);
+
+  &:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--shadow-lift);
+  }
+
+  &:focus-visible {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--shadow-lift);
+  }
+}
+
+/* Paired with .card-lift on an ancestor: the photo drifts in as the card rises. */
+@utility img-zoom {
+  transition: transform 600ms var(--ease-premium);
+
+  .group:hover &,
+  .group:focus-visible & {
+    transform: scale(1.08);
+  }
+}
+
+@utility glass-panel {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  border: 1px solid rgba(90, 168, 255, 0.22);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Light-surface glass — white with a soft sky reflection. */
+@utility glass-panel-light {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  border: 1px solid rgba(90, 168, 255, 0.2);
+  box-shadow: var(--shadow-soft);
+}
+
+@utility btn-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  height: 56px;
+  padding-inline: 34px;
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: var(--shadow-soft);
+  transition:
+    transform 400ms var(--ease-premium),
+    box-shadow 400ms var(--ease-premium),
+    background-color 400ms var(--ease-premium),
+    color 400ms var(--ease-premium);
+
+  &:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: var(--shadow-lift);
+  }
+
+  &:active {
+    transform: translateY(-1px) scale(1);
+  }
+}
+
+@utility btn-pill-sm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 48px;
+  padding-inline: 26px;
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+  white-space: nowrap;
+  transition:
+    transform 400ms var(--ease-premium),
+    box-shadow 400ms var(--ease-premium),
+    background-color 400ms var(--ease-premium),
+    color 400ms var(--ease-premium);
+
+  &:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: var(--shadow-lift);
+  }
+}
+
+@utility btn-outline-light {
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: #fff;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.55);
+  }
+}
+
+@utility btn-outline-dark {
+  border: 1px solid rgba(0, 70, 164, 0.22);
+  background: transparent;
+  color: var(--ink);
+
+  &:hover {
+    background: rgba(220, 238, 255, 0.55);
+    border-color: rgba(0, 70, 164, 0.35);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Background detailing — used sparingly, one accent per section at most.
+   --------------------------------------------------------------------------- */
+
+/* Very low-amplitude film grain; keeps big flat areas from banding. */
+@utility surface-noise {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+@utility blob {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(90px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+@utility hairline {
+  height: 1px;
+  border: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 70, 164, 0.14),
+    transparent
+  );
+}
+
+@utility hairline-light {
+  height: 1px;
+  border: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(90, 168, 255, 0.28),
+    transparent
+  );
+}
+
+/* ---------------------------------------------------------------------------
+   Motion
+   --------------------------------------------------------------------------- */
+
+/* Slow push-in on hero photography. Alternating avoids a visible reset jump. */
+@keyframes ken-burns {
+  from {
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.12) translate3d(0, -1.2%, 0);
+  }
+}
+
+.animate-ken-burns {
+  animation: ken-burns 26s var(--ease-premium) infinite alternate;
+  will-change: transform;
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+.animate-float-slow {
+  animation: float-slow 9s ease-in-out infinite;
+}
+
+@keyframes scroll-hint {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+.animate-scroll-hint {
+  animation: scroll-hint 2.4s var(--ease-premium) infinite;
+}
+
+@keyframes logo-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-logo-marquee {
+  animation: logo-marquee 32s linear infinite;
+}
+
+.animate-logo-marquee:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .animate-logo-marquee,
+  .animate-ken-burns,
+  .animate-float-slow,
+  .animate-scroll-hint {
+    animation: none;
+  }
+
+  /* Reveals must still resolve to visible, so only the travel is removed. */
+  .card-lift:hover,
+  .card-lift:focus-visible,
+  .btn-pill:hover,
+  .btn-pill-sm:hover,
+  .img-zoom {
+    transform: none;
   }
 }

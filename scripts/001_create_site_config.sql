@@ -55,11 +55,18 @@ ON CONFLICT (id) DO NOTHING;
 
 -- Insert default pricing
 INSERT INTO public.site_pricing (id, hours, semi_eur, semi_mad, priv_eur, priv_mad, is_extra, sort_order) VALUES
-  ('row_2h', '2h', 70, 770, 100, 1100, false, 1),
-  ('row_4h', '4h', 140, 1540, 190, 2090, false, 2),
-  ('row_6h', '6h', 200, 2200, 280, 3080, false, 3),
-  ('row_8h', '8h', 265, 2915, 370, 4070, false, 4),
-  ('row_10h', '10h', 330, 3630, 455, 5005, false, 5),
-  ('row_12h', '12h', 400, 4400, 540, 5540, false, 6),
-  ('row_extra', '+2h', 60, 660, 90, 990, true, 7)
-ON CONFLICT (id) DO NOTHING;
+  ('row_2h', '2h', 80, 880, 110, 1210, false, 1),
+  ('row_4h', '4h', 150, 1650, 210, 2310, false, 2),
+  ('row_6h', '6h', 215, 2365, 315, 3465, false, 3),
+  ('row_8h', '8h', 280, 3080, 390, 4290, false, 4),
+  ('row_10h', '10h', 340, 3740, 475, 5225, false, 5),
+  ('row_12h', '12h', 400, 4400, 565, 6215, false, 6),
+  ('row_extra', '+2h', 70, 770, 90, 990, true, 7)
+ON CONFLICT (id) DO UPDATE SET
+  hours = EXCLUDED.hours,
+  semi_eur = EXCLUDED.semi_eur,
+  semi_mad = EXCLUDED.semi_mad,
+  priv_eur = EXCLUDED.priv_eur,
+  priv_mad = EXCLUDED.priv_mad,
+  is_extra = EXCLUDED.is_extra,
+  sort_order = EXCLUDED.sort_order;

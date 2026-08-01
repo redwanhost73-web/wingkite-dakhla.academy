@@ -44,37 +44,38 @@ export interface SiteConfig {
 export const DEFAULT_IMAGES: SiteImages = {
   // Home page
   homeHero: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/8044E789-98B4-47B7-BEBF-3C42CFFE279F-gP3fvRzzgbPm1DEkndcCFHd2y91Mcg.jpg',
-  homeWing1: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG_5339-w81lYn7nf4BLQp7C0ZQcETIIxJiaG6.jpg',
-  homeWing2: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG_0888-edSQXT3l029c5dNLpUA4yGr6lNvs8U.jpg',
-  homeKite1: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG_0915-z0gvWeNmW8vsHgyGZhnoGgGa65dLYV.jpg',
-  homeAction: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/07e6d850-397a-4a50-b73f-03889f4d6808.JPG-cQfrOgTyoNYORSDs65CrrKNVAHZgbf.jpeg',
-  homeSunset: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG_1936-eN0eozzW3oVm4Wafhmm5fM0ANlcdIt.jpg',
-  homeCoach: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ca577150-7f3e-4303-8332-33ff3a8f5339.JPG-hEVCP8iIohmq5ONaJ8048CKcJEFEve.jpeg',
-  homeLagoon: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/8044E789-98B4-47B7-BEBF-3C42CFFE279F-gP3fvRzzgbPm1DEkndcCFHd2y91Mcg.jpg',
+  homeWing1: '/Activities/wingfoil-1.jpeg',
+  homeWing2: '/Activities/wingfoil-3.jpeg',
+  homeKite1: '/Activities/kitesurf-1.jpeg',
+  homeAction: '/Activities/wingfoil-4.jpeg',
+  homeSunset: '/Activities/wingfoil-6.jpeg',
+  homeCoach: '/Activities/wingfoil-2.jpeg',
+  homeLagoon: '/Activities/wingfoil-8.jpeg',
   // About page
-  aboutHero: '/images/hero-foil.jpg',
+  aboutHero: '/pages-cover/about.jpeg',
   aboutStory: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ca577150-7f3e-4303-8332-33ff3a8f5339.JPG-hEVCP8iIohmq5ONaJ8048CKcJEFEve.jpeg',
-  aboutTeam: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG_0915-z0gvWeNmW8vsHgyGZhnoGgGa65dLYV.jpg',
+  aboutTeam: '/sections/team.jpeg',
   aboutLocation: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/8044E789-98B4-47B7-BEBF-3C42CFFE279F-gP3fvRzzgbPm1DEkndcCFHd2y91Mcg.jpg',
   aboutAction1: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/07e6d850-397a-4a50-b73f-03889f4d6808.JPG-cQfrOgTyoNYORSDs65CrrKNVAHZgbf.jpeg',
   aboutAction2: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG_5339-w81lYn7nf4BLQp7C0ZQcETIIxJiaG6.jpg',
   aboutSunset: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG_1936-eN0eozzW3oVm4Wafhmm5fM0ANlcdIt.jpg',
   // Contact page
-  contactHero: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG_1936-eN0eozzW3oVm4Wafhmm5fM0ANlcdIt.jpg',
+  contactHero: '/pages-cover/contact.jpeg',
   // Pricing page
-  pricingHero: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG_0888-edSQXT3l029c5dNLpUA4yGr6lNvs8U.jpg',
+  pricingHero: '/pages-cover/pricing.jpeg',
   pricingAction: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/07e6d850-397a-4a50-b73f-03889f4d6808.JPG-cQfrOgTyoNYORSDs65CrrKNVAHZgbf.jpeg',
 }
 
-// Default pricing (current production values)
+// Default pricing — matches the printed 2026 price list.
+// Semi-private = 2–3 persons, private = 1 person. MAD = EUR x 11.
 export const DEFAULT_PRICING: PricingRow[] = [
-  { hours: '2h',  semiEur: 70,  semiMad: 770,  privEur: 100, privMad: 1100 },
-  { hours: '4h',  semiEur: 140, semiMad: 1540, privEur: 190, privMad: 2090 },
-  { hours: '6h',  semiEur: 200, semiMad: 2200, privEur: 280, privMad: 3080 },
-  { hours: '8h',  semiEur: 265, semiMad: 2915, privEur: 370, privMad: 4070 },
-  { hours: '10h', semiEur: 330, semiMad: 3630, privEur: 455, privMad: 5005 },
-  { hours: '12h', semiEur: 400, semiMad: 4400, privEur: 540, privMad: 5540 },
-  { hours: '+2h', semiEur: 60,  semiMad: 660,  privEur: 90,  privMad: 990,  extra: true },
+  { hours: '2h',  semiEur: 80,  semiMad: 880,  privEur: 110, privMad: 1210 },
+  { hours: '4h',  semiEur: 150, semiMad: 1650, privEur: 210, privMad: 2310 },
+  { hours: '6h',  semiEur: 215, semiMad: 2365, privEur: 315, privMad: 3465 },
+  { hours: '8h',  semiEur: 280, semiMad: 3080, privEur: 390, privMad: 4290 },
+  { hours: '10h', semiEur: 340, semiMad: 3740, privEur: 475, privMad: 5225 },
+  { hours: '12h', semiEur: 400, semiMad: 4400, privEur: 565, privMad: 6215 },
+  { hours: '+2h', semiEur: 70,  semiMad: 770,  privEur: 90,  privMad: 990,  extra: true },
 ]
 
 const STORAGE_KEY = 'wingkite-site-config'

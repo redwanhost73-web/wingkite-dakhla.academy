@@ -40,11 +40,11 @@ export function WhatsAppBubble() {
 
   return (
     <div
-      className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3"
+      className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3.5"
       style={{
         opacity: mounted ? 1 : 0,
         transform: mounted ? 'translateY(0)' : 'translateY(24px)',
-        transition: 'opacity 0.5s ease, transform 0.5s ease',
+        transition: 'opacity 600ms var(--ease-premium), transform 600ms var(--ease-premium)',
       }}
     >
       {/* Popup card — anchored above the button */}
@@ -55,13 +55,13 @@ export function WhatsAppBubble() {
           opacity: open ? 1 : 0,
           transform: open ? 'translateY(0) scale(1)' : 'translateY(12px) scale(0.95)',
           pointerEvents: open ? 'auto' : 'none',
-          transition: 'opacity 0.25s ease, transform 0.25s ease',
+          transition: 'opacity 400ms var(--ease-premium), transform 400ms var(--ease-premium)',
           transformOrigin: 'bottom right',
         }}
-        className="bg-white rounded-2xl shadow-2xl w-72 overflow-hidden border border-gray-100"
+        className="w-76 overflow-hidden rounded-[24px] border border-[#072A5A]/6 bg-white/95 shadow-[0_25px_60px_rgba(0,70,164,0.10)] backdrop-blur-xl"
       >
         {/* Green header */}
-        <div className="bg-[#25D366] px-5 py-4 flex items-center justify-between">
+        <div className="flex items-center justify-between bg-[#25D366] px-5 py-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-white shrink-0">
               <span className="w-6 h-6">{WA_ICON}</span>
@@ -86,8 +86,8 @@ export function WhatsAppBubble() {
         {/* Body */}
         <div className="p-5">
           {/* Chat bubble */}
-          <div className="bg-[#f0fdf4] rounded-xl rounded-tl-none px-4 py-3 mb-5 border border-[#dcfce7]">
-            <p className="text-gray-700 text-sm leading-relaxed">
+          <div className="mb-5 rounded-[16px] rounded-tl-none border border-[#dcfce7] bg-[#f0fdf4] px-4 py-3.5">
+            <p className="text-small text-[#3D4F6F]">
               {t(
                 'Bonjour ! Notre équipe est disponible sur WhatsApp pour répondre à vos questions.',
                 'Hi! Our team is available on WhatsApp to answer your questions.',
@@ -95,7 +95,7 @@ export function WhatsAppBubble() {
                 'مرحباً! فريقنا متاح على واتساب للإجابة على أسئلتك.'
               )}
             </p>
-            <p className="text-gray-400 text-xs mt-1 text-right">
+            <p className="mt-1.5 text-end text-xs text-[#7A8AA3]">
               {t('à l\'instant', 'just now', 'ahora mismo', 'الآن')}
             </p>
           </div>
@@ -105,7 +105,7 @@ export function WhatsAppBubble() {
             href={waUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 w-full bg-[#25D366] hover:bg-[#1ebe5d] active:bg-[#17a852] text-white font-semibold text-sm py-3 px-4 rounded-xl transition-all duration-200 hover:shadow-lg hover:shadow-green-200"
+            className="btn-pill-sm w-full bg-[#25D366] text-small text-white shadow-[0_10px_30px_rgba(37,211,102,0.28)] hover:bg-[#1ebe5d]"
           >
             <span className="w-5 h-5 shrink-0">{WA_ICON}</span>
             {t('Démarrer une conversation', 'Start a conversation', 'Iniciar conversación', 'ابدأ محادثة')}
@@ -117,10 +117,10 @@ export function WhatsAppBubble() {
       <button
         onClick={() => setOpen((v) => !v)}
         aria-label="WhatsApp"
-        className="relative w-14 h-14 bg-[#25D366] hover:bg-[#1ebe5d] active:bg-[#17a852] rounded-full text-white flex items-center justify-center shadow-lg hover:shadow-xl hover:shadow-green-200 transition-all duration-200 hover:scale-110 active:scale-95"
+        className="relative flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_10px_30px_rgba(37,211,102,0.32)] transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:scale-105 hover:bg-[#1ebe5d] hover:shadow-[0_25px_60px_rgba(37,211,102,0.32)] active:scale-100"
       >
         {/* Outer pulse ring */}
-        <span className="absolute inset-0 rounded-full bg-[#25D366] opacity-30 animate-ping" />
+        <span className="absolute inset-0 animate-ping rounded-full bg-[#25D366] opacity-25" />
 
         {/* Icon swap */}
         <span

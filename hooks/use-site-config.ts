@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { createClient } from '@/lib/supabase/client'
 import { DEFAULT_IMAGES, DEFAULT_PRICING, PricingRow, SiteImages } from '@/lib/site-config'
 
 interface SiteImage {
@@ -47,14 +46,24 @@ export function useSiteConfig() {
   const [pricing, setPricing] = useState<PricingRow[]>(DEFAULT_PRICING)
   const [texts, setTexts] = useState<SiteTexts>({})
   const [isLoaded, setIsLoaded] = useState(false)
-  
+
   useEffect(() => {
+    // Skip network + heavy client SDK when Supabase isn't configured.
+    if (
+      !process.env.NEXT_PUBLIC_SUPABASE_URL ||
+      !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    ) {
+      setIsLoaded(true)
+      return
+    }
+
+    let cancelled = false
+
     async function fetchConfig() {
       try {
+        const { createClient } = await import('@/lib/supabase/client')
         const supabase = createClient()
-
-        // Supabase not configured: keep the defaults below.
-        if (!supabase) {
+        if (!supabase || cancelled) {
           setIsLoaded(true)
           return
         }
@@ -62,9 +71,11 @@ export function useSiteConfig() {
         const [imagesRes, pricingRes, textsRes] = await Promise.all([
           supabase.from('site_images').select('*'),
           supabase.from('site_pricing').select('*').order('id'),
-          supabase.from('site_texts').select('*')
+          supabase.from('site_texts').select('*'),
         ])
-        
+
+        if (cancelled) return
+
         if (imagesRes.data && imagesRes.data.length > 0) {
           const imageMap: Partial<SiteImages> = {}
           imagesRes.data.forEach((img: SiteImage) => {
@@ -72,7 +83,7 @@ export function useSiteConfig() {
           })
           setImages({ ...DEFAULT_IMAGES, ...imageMap })
         }
-        
+
         if (pricingRes.data && pricingRes.data.length > 0) {
           const pricingRows: PricingRow[] = pricingRes.data.map((row: SitePricing) => ({
             hours: row.hours,
@@ -80,11 +91,11 @@ export function useSiteConfig() {
             semiMad: Number(row.semi_mad),
             privEur: Number(row.priv_eur),
             privMad: Number(row.priv_mad),
-            extra: row.is_extra
+            extra: row.is_extra,
           }))
           setPricing(pricingRows)
         }
-        
+
         if (textsRes.data && textsRes.data.length > 0) {
           const textMap: SiteTexts = {}
           textsRes.data.forEach((text: SiteText) => {
@@ -92,7 +103,7 @@ export function useSiteConfig() {
               fr: text.value_fr,
               en: text.value_en,
               es: text.value_es,
-              ar: text.value_ar
+              ar: text.value_ar,
             }
           })
           setTexts(textMap)
@@ -100,11 +111,14 @@ export function useSiteConfig() {
       } catch (err) {
         console.error('Error fetching site config:', err)
       }
-      setIsLoaded(true)
+      if (!cancelled) setIsLoaded(true)
     }
-    
+
     fetchConfig()
+    return () => {
+      cancelled = true
+    }
   }, [])
-  
+
   return { images, pricing, texts, isLoaded }
 }
