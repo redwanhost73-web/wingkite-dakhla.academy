@@ -10,6 +10,8 @@ const nextConfig = {
   images: {
     // Serve resized WebP/AVIF instead of shipping full remote originals.
     formats: ['image/avif', 'image/webp'],
+    // Next 16 only allows qualities listed here (default is just [75]).
+    qualities: [60, 70, 72, 75, 78, 85],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256],
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days

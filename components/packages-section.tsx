@@ -13,7 +13,7 @@ const FEATURE_ICONS: Record<PackFeatureIcon, typeof Moon> = {
   bungalow: Home,
 }
 
-const CATEGORY_ORDER = ['kitesurf', 'wingfoil'] as const
+const CATEGORY_ORDER = ['wingfoil','kitesurf'] as const
 
 export function PackagesSection() {
   const { locale } = useTranslations()

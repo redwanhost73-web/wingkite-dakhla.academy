@@ -115,52 +115,6 @@ const PERK_GEAR_X2: LocalizedText = {
 
 export const PACKAGES: Pack[] = [
   {
-    id: 'kitesurf-solo',
-    category: 'kitesurf',
-    image: '/Packs/kitesurf-solo.jpeg',
-    badge: SOLO_BADGE,
-    title: 'Kitesurf Solo',
-    desc: {
-      fr: 'Votre progression kitesurf 100% privée. Bungalow, coach dédié et équipement premium. Zéro stress, glisse maximale.',
-      en: 'Your kitesurf progression, 100% private. Bungalow, dedicated coach and premium equipment. Zero stress, maximum riding.',
-      es: 'Tu progresión en kitesurf 100% privada. Bungalow, coach dedicado y equipo premium. Cero estrés, máximo deslizamiento.',
-      ar: 'تقدمك في الكايت سيرف بشكل خاص 100%. بنغالو ومدرب مخصص ومعدات متميزة. بلا توتر، أقصى استمتاع.',
-    },
-    features: [
-      { icon: 'nights', text: NIGHTS },
-      { icon: 'board', text: FULL_BOARD },
-      { icon: 'bungalow', text: PRIVATE_BUNGALOW },
-    ],
-    tiers: [
-      { name: CHILL, price: '929€', lines: [ONE_SESSION, TEN_HOURS] },
-      { name: INTENSE, price: '1,317€', lines: [TWO_SESSIONS, TWENTY_HOURS] },
-    ],
-    perks: [PERK_LODGING, PERK_PRIVATE, PERK_GEAR_INCLUDED],
-  },
-  {
-    id: 'kitesurf-duo',
-    category: 'kitesurf',
-    image: '/Packs/kitesurf-duo.jpeg',
-    badge: DUO_BADGE,
-    title: 'Kitesurf Duo',
-    desc: {
-      fr: "Partagez l'aventure. Coaching semi-privé, bungalow partagé et tarifs combinés imbattables. Progresser est mieux à deux.",
-      en: 'Share the adventure. Semi-private coaching, shared bungalow and unbeatable combined rates. Progress is better together.',
-      es: 'Comparte la aventura. Coaching semi-privado, bungalow compartido y tarifas combinadas inmejorables. Progresar es mejor en pareja.',
-      ar: 'شارك المغامرة. تدريب شبه خاص وبنغالو مشترك وأسعار مجمعة لا تُقاوم. التقدم أفضل معاً.',
-    },
-    features: [
-      { icon: 'nights', text: NIGHTS },
-      { icon: 'board', text: FULL_BOARD },
-      { icon: 'bungalow', text: PRIVATE_BUNGALOW },
-    ],
-    tiers: [
-      { name: CHILL, price: '1,314€', perPerson: '657€', lines: [ONE_SESSION, TEN_HOURS] },
-      { name: INTENSE, price: '1,804€', perPerson: '902€', lines: [TWO_SESSIONS, TWENTY_HOURS] },
-    ],
-    perks: [PERK_LODGING, PERK_SEMI, PERK_GEAR_X2],
-  },
-  {
     id: 'wingfoil-solo',
     category: 'wingfoil',
     image: '/Packs/wingfoil-solo.webp',
@@ -206,6 +160,52 @@ export const PACKAGES: Pack[] = [
     ],
     perks: [PERK_LODGING, PERK_SEMI, PERK_GEAR_X2],
   },
+  {
+    id: 'kitesurf-solo',
+    category: 'kitesurf',
+    image: '/Packs/kitesurf-solo.jpeg',
+    badge: SOLO_BADGE,
+    title: 'Kitesurf Solo',
+    desc: {
+      fr: 'Votre progression kitesurf 100% privée. Bungalow, coach dédié et équipement premium. Zéro stress, glisse maximale.',
+      en: 'Your kitesurf progression, 100% private. Bungalow, dedicated coach and premium equipment. Zero stress, maximum riding.',
+      es: 'Tu progresión en kitesurf 100% privada. Bungalow, coach dedicado y equipo premium. Cero estrés, máximo deslizamiento.',
+      ar: 'تقدمك في الكايت سيرف بشكل خاص 100%. بنغالو ومدرب مخصص ومعدات متميزة. بلا توتر، أقصى استمتاع.',
+    },
+    features: [
+      { icon: 'nights', text: NIGHTS },
+      { icon: 'board', text: FULL_BOARD },
+      { icon: 'bungalow', text: PRIVATE_BUNGALOW },
+    ],
+    tiers: [
+      { name: CHILL, price: '929€', lines: [ONE_SESSION, TEN_HOURS] },
+      { name: INTENSE, price: '1,317€', lines: [TWO_SESSIONS, TWENTY_HOURS] },
+    ],
+    perks: [PERK_LODGING, PERK_PRIVATE, PERK_GEAR_INCLUDED],
+  },
+  {
+    id: 'kitesurf-duo',
+    category: 'kitesurf',
+    image: '/Packs/kitesurf-duo.jpeg',
+    badge: DUO_BADGE,
+    title: 'Kitesurf Duo',
+    desc: {
+      fr: "Partagez l'aventure. Coaching semi-privé, bungalow partagé et tarifs combinés imbattables. Progresser est mieux à deux.",
+      en: 'Share the adventure. Semi-private coaching, shared bungalow and unbeatable combined rates. Progress is better together.',
+      es: 'Comparte la aventura. Coaching semi-privado, bungalow compartido y tarifas combinadas inmejorables. Progresar es mejor en pareja.',
+      ar: 'شارك المغامرة. تدريب شبه خاص وبنغالو مشترك وأسعار مجمعة لا تُقاوم. التقدم أفضل معاً.',
+    },
+    features: [
+      { icon: 'nights', text: NIGHTS },
+      { icon: 'board', text: FULL_BOARD },
+      { icon: 'bungalow', text: PRIVATE_BUNGALOW },
+    ],
+    tiers: [
+      { name: CHILL, price: '1,314€', perPerson: '657€', lines: [ONE_SESSION, TEN_HOURS] },
+      { name: INTENSE, price: '1,804€', perPerson: '902€', lines: [TWO_SESSIONS, TWENTY_HOURS] },
+    ],
+    perks: [PERK_LODGING, PERK_SEMI, PERK_GEAR_X2],
+  }
 ]
 
 export const PACKAGES_COPY = {

@@ -264,7 +264,11 @@ export function PricingContent() {
                     </div>
 
                     <ul className="mt-4 overflow-hidden rounded-[18px] border border-[#072A5A]/8">
-                      {rows.map((row) => {
+                      {rows
+                        .filter((row) =>
+                          formula === 'private' ? row.privEur > 0 : row.semiEur > 0,
+                        )
+                        .map((row) => {
                         const eur = formula === 'private' ? row.privEur : row.semiEur
                         const mad = formula === 'private' ? row.privMad : row.semiMad
                         return (
@@ -349,12 +353,18 @@ export function PricingContent() {
                               </span>
                             </td>
                             <td className="px-5 py-3.5 text-end">
-                              <span className="font-heading text-lg font-extrabold text-[#072A5A]">
-                                {row.semiEur}€
-                              </span>
-                              <span className="mt-0.5 block text-[0.7rem] font-semibold text-[#B8925A]">
-                                {row.semiMad} MAD
-                              </span>
+                              {row.semiEur > 0 ? (
+                                <>
+                                  <span className="font-heading text-lg font-extrabold text-[#072A5A]">
+                                    {row.semiEur}€
+                                  </span>
+                                  <span className="mt-0.5 block text-[0.7rem] font-semibold text-[#B8925A]">
+                                    {row.semiMad} MAD
+                                  </span>
+                                </>
+                              ) : (
+                                <span className="text-small text-[#7A8AA3]">—</span>
+                              )}
                             </td>
                           </tr>
                         ))}

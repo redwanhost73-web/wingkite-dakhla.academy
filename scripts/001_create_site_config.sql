@@ -55,13 +55,14 @@ ON CONFLICT (id) DO NOTHING;
 
 -- Insert default pricing
 INSERT INTO public.site_pricing (id, hours, semi_eur, semi_mad, priv_eur, priv_mad, is_extra, sort_order) VALUES
-  ('row_2h', '2h', 80, 880, 110, 1210, false, 1),
-  ('row_4h', '4h', 150, 1650, 210, 2310, false, 2),
-  ('row_6h', '6h', 215, 2365, 315, 3465, false, 3),
-  ('row_8h', '8h', 280, 3080, 390, 4290, false, 4),
-  ('row_10h', '10h', 340, 3740, 475, 5225, false, 5),
-  ('row_12h', '12h', 400, 4400, 565, 6215, false, 6),
-  ('row_extra', '+2h', 70, 770, 90, 990, true, 7)
+  ('row_2h', '2h', 90, 990, 120, 1320, false, 1),
+  ('row_4h', '4h', 170, 1870, 235, 2585, false, 2),
+  ('row_6h', '6h', 240, 2640, 350, 3850, false, 3),
+  ('row_8h', '8h', 320, 3520, 450, 4950, false, 4),
+  ('row_10h', '10h', 395, 4345, 560, 6160, false, 5),
+  ('row_12h', '12h', 460, 5060, 670, 7370, false, 6),
+  ('row_extra', '+2h', 70, 770, 90, 990, true, 7),
+  ('row_20h', '20h', 0, 0, 1000, 11000, true, 8)
 ON CONFLICT (id) DO UPDATE SET
   hours = EXCLUDED.hours,
   semi_eur = EXCLUDED.semi_eur,
