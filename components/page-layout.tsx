@@ -1,6 +1,7 @@
 import { Navigation } from './navigation'
 import { Footer } from './footer'
 import { WhatsAppBubbleLazy } from './whatsapp-bubble-lazy'
+import { HashScroll } from './hash-scroll'
 import { I18nProvider } from '@/lib/i18n-context'
 import type { Locale } from '@/lib/i18n'
 import type { ReactNode } from 'react'
@@ -21,6 +22,7 @@ export function PageLayout({ children, locale, messages }: PageLayoutProps) {
         dir={isArabic ? 'rtl' : 'ltr'}
         lang={locale}
       >
+        <HashScroll />
         <Navigation />
         <main className="flex-1">{children}</main>
         <Footer />

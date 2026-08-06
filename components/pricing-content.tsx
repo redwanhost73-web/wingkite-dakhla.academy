@@ -3,13 +3,14 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Check, ArrowRight, Wind, Sailboat, Backpack, Waves } from 'lucide-react'
+import { Check, ArrowRight, Wind, Sailboat, Backpack, Waves, Clapperboard } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n-context'
 import { useSiteConfig } from '@/hooks/use-site-config'
 import { PackagesSection } from '@/components/packages-section'
 import { PageHero } from '@/components/page-hero'
 import { Reveal } from '@/components/reveal'
 import { cn } from '@/lib/utils'
+import { MEDIA_PACK, mediaTr } from '@/lib/media-pack'
 
 import { DEFAULT_IMAGES } from '@/lib/site-config'
 
@@ -98,7 +99,7 @@ export function PricingContent() {
       />
 
       {/* ══ PRICING ══ Tabbed editorial panel */}
-      <section className="surface-noise relative overflow-hidden bg-[#F6F1E8] section-y" data-nav-theme="light">
+      <section id="courses" className="surface-noise relative overflow-hidden bg-[#F6F1E8] section-y scroll-mt-28" data-nav-theme="light">
         <span aria-hidden className="blob -top-32 -left-24 h-112 w-md bg-[#0046A4]/8" />
 
         <div className="container-narrow relative z-10">
@@ -389,13 +390,94 @@ export function PricingContent() {
                       )}
                     </p>
                   </div>
+
+                  {/* Media pack option on each activity / sport */}
+                  <a
+                    href="#media-pack"
+                    className="mt-6 flex items-center gap-3 rounded-[18px] border border-dashed border-[#0046A4]/25 bg-[#0046A4]/5 px-4 py-3.5 transition-colors hover:border-[#0046A4]/45 hover:bg-[#0046A4]/8"
+                  >
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#072A5A] text-white">
+                      <Clapperboard className="h-4 w-4" aria-hidden />
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-small font-bold text-[#072A5A]">
+                        {mediaTr(MEDIA_PACK.short, locale)}
+                      </p>
+                      <p className="text-xs text-[#7A8AA3] mt-0.5 line-clamp-1">
+                        {mediaTr(MEDIA_PACK.desc, locale)}
+                      </p>
+                    </div>
+                    <span className="shrink-0 rounded-full bg-[#072A5A] px-3 py-1 text-xs font-bold text-white">
+                      {MEDIA_PACK.priceLabel}
+                    </span>
+                  </a>
                 </div>
               </div>
             </div>
           </Reveal>
 
+          {/* Custom Media Pack card */}
+          <Reveal delay={80}>
+            <article
+              id="media-pack"
+              className="card-premium relative mt-8 overflow-hidden scroll-mt-28"
+            >
+              <div
+                aria-hidden
+                className="absolute inset-0"
+                style={{
+                  background:
+                    'linear-gradient(120deg, rgba(7,42,90,.06) 0%, rgba(0,70,164,.10) 45%, rgba(201,166,107,.12) 100%)',
+                }}
+              />
+              <div className="relative grid grid-cols-1 gap-8 p-7 sm:p-9 lg:grid-cols-[1.2fr_0.8fr] lg:items-center lg:gap-12">
+                <div>
+                  <p className="eyebrow text-[#0046A4]">
+                    {getText('Option session', 'Session option', 'Opción de sesión', 'خيار الجلسة')}
+                  </p>
+                  <h3 className="font-heading text-card-title text-[#072A5A] mt-3">
+                    {mediaTr(MEDIA_PACK.title, locale)}
+                  </h3>
+                  <p className="text-small text-[#3D4F6F] mt-3 max-w-xl">
+                    {mediaTr(MEDIA_PACK.desc, locale)}{' '}
+                    {mediaTr(MEDIA_PACK.availableOn, locale)}
+                  </p>
+                  <ul className="mt-6 space-y-3">
+                    {MEDIA_PACK.features.map((f) => (
+                      <li key={f.en} className="flex items-start gap-3 text-small text-[#072A5A]">
+                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#0046A4]" aria-hidden />
+                        {mediaTr(f, locale)}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="flex flex-col items-stretch gap-4 rounded-[22px] border border-[#072A5A]/8 bg-white/80 p-6 text-center sm:items-center lg:p-8">
+                  <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#072A5A] text-white shadow-[0_12px_30px_rgba(7,42,90,0.25)]">
+                    <Clapperboard className="h-6 w-6" aria-hidden />
+                  </span>
+                  <div>
+                    <p className="font-heading text-4xl font-extrabold tracking-tight text-[#072A5A]">
+                      {MEDIA_PACK.priceLabel}
+                    </p>
+                    <p className="text-xs font-semibold text-[#7A8AA3] mt-1">
+                      {getText('par session', 'per session', 'por sesión', 'لكل جلسة')}
+                    </p>
+                  </div>
+                  <Link
+                    href={`/${locale}/contact`}
+                    className="btn-pill-sm w-full justify-center bg-[#0B1F3B] text-small text-white hover:bg-[#0057D1] sm:w-auto"
+                  >
+                    {mediaTr(MEDIA_PACK.cta, locale)}
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </div>
+              </div>
+            </article>
+          </Reveal>
+
           {/* Additional Services */}
-          <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3">
+          <div id="extras" className="mt-8 grid scroll-mt-28 grid-cols-1 gap-6 md:grid-cols-3">
             {[
               {
                 Icon: Backpack,
@@ -449,7 +531,7 @@ export function PricingContent() {
 
           {/* Note */}
           <Reveal delay={120}>
-            <div className="card-premium mt-6 p-8">
+            <div id="inclusions" className="card-premium mt-6 scroll-mt-28 p-8">
               <div className="mb-5 flex items-center gap-3.5">
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#0046A4]/8">
                   <Check className="h-4 w-4 text-[#0046A4]" />
@@ -459,7 +541,7 @@ export function PricingContent() {
                 </span>
               </div>
               <ul className="space-y-2.5 text-small text-[#3D4F6F] ps-12">
-                <li>{getText('Kite ou wing, planche, combinaison, gilet de sécurité.', 'Kite or wing, board, wetsuit, safety vest.', 'Kite o wing, tabla, traje de neopreno, chaleco de seguridad.', 'كايت أو وينج، لوح، بدلة غوص، سترة نجاة.')}</li>
+                <li>{getText('Kite ou wing, planche, combinaison, gilet de sécurité, casque et walkie-talkie.', 'Kite or wing, board, wetsuit, safety vest, helmet and walkie-talkie.', 'Kite o wing, tabla, traje de neopreno, chaleco de seguridad, casco y walkie-talkie.', 'كايت أو وينج، لوح، بدلة غوص، سترة نجاة، خوذة وجهاز لاسلكي.')}</li>
                 <li>{getText('Tarifs variables selon les saisons.', 'Prices vary by season.', 'Precios variables según temporada.', 'الأسعار متغيرة حسب المواسم.')}</li>
                 <li>{getText('Contactez-nous pour les packages groupes et séjours.', 'Contact us for group packages and stays.', 'Contáctenos para paquetes grupales y estancias.', 'تواصل معنا للباقات الجماعية والإقامات.')}</li>
               </ul>

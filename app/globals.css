@@ -7,6 +7,12 @@
   --font-cairo: 'Cairo', 'Cairo Fallback';
 }
 
+html {
+  /* Offset fixed floating navbar when jumping to #section links. */
+  scroll-padding-top: 7rem;
+  scroll-behavior: smooth;
+}
+
 :root {
   /* Client brand — Atlantic blue + lagoon sky + sand beige. */
   --brand: #0046a4; /* primary */

@@ -3,7 +3,7 @@
 import { useTranslations } from '@/lib/i18n-context'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight, Wind, Waves, Star, Shield, Users, MapPin } from 'lucide-react'
+import { ArrowRight, Waves, Star, Car, HardHat, BadgeCheck, Ship, Award, MapPin, Clapperboard } from 'lucide-react'
 import { useSiteConfig } from '@/hooks/use-site-config'
 import { PackagesSection } from '@/components/packages-section'
 import { LogoMarquee } from '@/components/logo-marquee'
@@ -12,6 +12,7 @@ import { ActivityStoryProvider } from '@/components/activity-story'
 import { Reveal } from '@/components/reveal'
 import { ACTIVITIES } from '@/lib/activities'
 import { DEFAULT_IMAGES } from '@/lib/site-config'
+import { MEDIA_PACK, mediaTr } from '@/lib/media-pack'
 
 // Real Google Reviews data
 const googleReviews = [
@@ -200,7 +201,7 @@ export function HomeContent() {
       <PackagesSection />
 
       {/* ══ ACTIVITIES ══ Editorial bento */}
-      <section className="surface-noise relative bg-[#F6F1E8] section-y" data-nav-theme="light">
+      <section id="activities" className="surface-noise relative bg-[#F6F1E8] section-y scroll-mt-28" data-nav-theme="light">
         <span aria-hidden className="blob -top-24 -left-32 h-104 w-104 bg-[#0046A4]/8" />
         <span aria-hidden className="blob top-1/3 -right-40 h-120 w-120 bg-[#5AA8FF]/8" />
 
@@ -241,7 +242,7 @@ export function HomeContent() {
             {/* Course Coaching Card */}
             <Reveal className="md:col-span-6" delay={300}>
               <Link
-                href={`/${locale}/pricing`}
+                href={`/${locale}/pricing#media-pack`}
                 prefetch
                 className="group card-lift relative block h-85 overflow-hidden rounded-[28px] shadow-[0_25px_60px_rgba(0,70,164,0.10)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0046A4]"
               >
@@ -279,10 +280,16 @@ export function HomeContent() {
                         'تقدم المدرسة أيضاً تدريباً متقدماً للممارسين الذين يرغبون في التحسن. يتم توفير متابعة شخصية مباشرة مع مدرب وينج فويل وكايت سيرف على الماء للتقدم بشكل أسرع.'
                       )}
                   </p>
-                  <span className="mt-5 inline-flex items-center gap-2 text-xs font-semibold text-white/60 transition-colors duration-[450ms] group-hover:text-white">
-                    {getText('Voir les tarifs', 'View pricing', 'Ver precios', 'عرض الأسعار')}
-                    <ArrowRight className="h-3.5 w-3.5 transition-transform duration-[450ms] group-hover:translate-x-0.5" />
-                  </span>
+                  <div className="mt-5 flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+                    <span className="inline-flex max-w-full items-center gap-2 rounded-full border border-white/25 bg-white/12 px-3.5 py-1.5 text-xs font-bold text-white backdrop-blur-lg">
+                      <Clapperboard className="h-3.5 w-3.5 shrink-0" aria-hidden />
+                      <span className="truncate">{mediaTr(MEDIA_PACK.short, locale)}</span>
+                    </span>
+                    <span className="inline-flex items-center gap-2 text-xs font-semibold text-white/60 transition-colors duration-450 group-hover:text-white">
+                      {getText('Voir le Media pack', 'View Media pack', 'Ver Media pack', 'عرض Media pack')}
+                      <ArrowRight className="h-3.5 w-3.5 transition-transform duration-450 group-hover:translate-x-0.5" />
+                    </span>
+                  </div>
                 </div>
               </Link>
             </Reveal>
@@ -350,112 +357,160 @@ export function HomeContent() {
         </div>
       </section>
 
-      {/* ══ TEXT / IMAGE SPLIT ══ Why choose us */}
-      <section className="relative bg-white section-y" data-nav-theme="light">
-        <div className="container-editorial">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-24 items-center">
-            {/* Left: Images */}
-            <Reveal direction="right">
-              <div className="relative">
-                <div className="overflow-hidden rounded-[28px] shadow-[0_40px_90px_rgba(0,70,164,0.08)]">
-                  <Image
-                    src={IMGS.group}
-                    alt={getText('Pourquoi nous choisir', 'Why choose us', 'Por qué elegirnos', 'لماذا تختارنا')}
-                    width={600}
-                    height={400}
-                    sizes="(max-width: 1024px) 100vw, 600px"
-                    loading="lazy"
-                    quality={75}
-                    className="h-auto w-full object-cover"
-                  />
-                </div>
-                <div className="absolute -bottom-10 -right-8 hidden h-52 w-52 overflow-hidden rounded-3xl border-[6px] border-white shadow-[0_25px_60px_rgba(0,70,164,0.10)] md:block animate-float-slow">
-                  <Image
-                    src={IMGS.action}
-                    alt="Kite action"
-                    width={240}
-                    height={240}
-                    sizes="240px"
-                    loading="lazy"
-                    quality={72}
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-              </div>
-            </Reveal>
+      {/* ══ WHY CHOOSE US ══ Gradient panel + animated reason grid */}
+      <section
+        id="why-choose-us"
+        className="surface-noise relative overflow-hidden section-y scroll-mt-28"
+        data-nav-theme="dark"
+      >
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={IMGS.group}
+            alt=""
+            aria-hidden
+            fill
+            sizes="100vw"
+            loading="lazy"
+            quality={72}
+            className="object-cover"
+          />
+          <div
+            aria-hidden
+            className="absolute inset-0"
+            style={{
+              background:
+                'linear-gradient(135deg, rgba(7,42,90,.94) 0%, rgba(0,70,164,.88) 48%, rgba(11,31,59,.92) 100%)',
+            }}
+          />
+          <div
+            aria-hidden
+            className="absolute inset-0 opacity-40"
+            style={{
+              background:
+                'radial-gradient(ellipse 80% 60% at 20% 10%, rgba(90,168,255,.35), transparent 55%), radial-gradient(ellipse 70% 50% at 90% 90%, rgba(201,166,107,.22), transparent 50%)',
+            }}
+          />
+        </div>
 
-            {/* Right: Content */}
-            <div>
-              <Reveal>
-                <p className="eyebrow text-[#0046A4]">
-                  {getText('Pourquoi nous choisir', 'Why Choose Us', '¿Por qué elegirnos?', 'لماذا تختارنا')}
-                </p>
-                <h2 className="font-heading text-section text-[#072A5A] mt-6 text-balance">
-                  {getText('L\'excellence au coeur de Dakhla', 'Excellence in the Heart of Dakhla', 'Excelencia en el Corazón de Dakhla', 'التميز في قلب الداخلة')}
-                </h2>
-              </Reveal>
-
-              <div className="mt-12 space-y-2">
-                {[
-                  {
-                    icon: Shield,
-                    title: getText('Instructeurs Certifiés', 'Certified Instructors', 'Instructores Certificados', 'مدربون معتمدون'),
-                    desc: getText('Notre équipe passionnée d\'instructeurs certifiés vous accompagne dans votre progression en toute sécurité : nous utilisons des radios pour rester en contact permanent pendant les cours.', 'Our passionate team of certified instructors guides your progress safely: we use radios to stay in constant contact during lessons.', 'Nuestro equipo apasionado de instructores certificados te guía con seguridad: usamos radios para mantenernos en contacto permanente durante las clases.', 'فريقنا الشغوف من المدربين المعتمدين يرشدك بأمان: نستخدم أجهزة راديو للبقاء على اتصال دائم أثناء الدروس.'),
-                    color: '#0046A4',
-                  },
-                  {
-                    icon: Wind,
-                    title: getText('Vent Constant', 'Constant Wind', 'Viento Constante', 'الرياح المستمرة'),
-                    desc: getText('Vent régulier presque toute l\'année avec des conditions idéales pour l\'apprentissage.', 'Steady wind almost year-round with ideal learning conditions.', 'Viento constante casi todo el año con condiciones ideales para aprender.', 'رياح منتظمة طوال معظم أيام السنة مع ظروف مثالية للتعلم.'),
-                    color: '#C9A66B',
-                  },
-                  {
-                    icon: Waves,
-                    title: getText('Lagon Parfait', 'Perfect Lagoon', 'Laguna Perfecta', 'البحيرة المثالية'),
-                    desc: getText('Eaux peu profondes et calmes, parfaites pour les débutants comme les experts.', 'Shallow, calm waters perfect for beginners and experts alike.', 'Aguas poco profundas y tranquilas, perfectas para principiantes y expertos.', 'مياه ضحلة وهادئة مثالية للمبتدئين والخبراء.'),
-                    color: '#0046A4',
-                  },
-                  {
-                    icon: Users,
-                    title: getText('Petits Groupes', 'Small Groups', 'Grupos Pequeños', 'مجموعات صغيرة'),
-                    desc: getText('Attention personnalisée pour une progression optimale et un apprentissage efficace.', 'Personal attention for optimal progress and effective learning.', 'Atención personalizada para un progreso óptimo y aprendizaje efectivo.', 'انتباه شخصي لتقدم أمثل وتعليم فعال.'),
-                    color: '#C9A66B',
-                  },
-                ].map(({ icon: Icon, title, desc, color }, i) => (
-                  <Reveal key={title} delay={i * 110}>
-                    <div className="group flex items-start gap-5 rounded-[20px] px-4 py-5 transition-colors duration-450 hover:bg-[#FAF8F3]">
-                      <div
-                        className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[18px] shadow-[0_10px_30px_rgba(0,70,164,0.08)] transition-transform duration-450 group-hover:-translate-y-1 group-hover:scale-105"
-                        style={{ backgroundColor: color }}
-                      >
-                        <Icon className="h-6 w-6 text-white" />
-                      </div>
-                      <div className="pt-1">
-                        <p className="font-heading text-lg font-bold text-[#072A5A]">{title}</p>
-                        <p className="text-small text-[#3D4F6F] mt-1.5">{desc}</p>
-                      </div>
-                    </div>
-                    {i < 3 && <hr className="hairline mx-4" />}
-                  </Reveal>
-                ))}
-              </div>
-
-              <Reveal delay={420}>
-                <Link
-                  href={`/${locale}/pricing`}
-                  className="group btn-pill mt-12 bg-[#0046A4] text-white hover:bg-[#0057D1] shadow-[0_10px_30px_rgba(0,70,164,0.25)]"
-                >
-                  {getText('Réserver un cours', 'Book a Lesson', 'Reservar una clase', 'احجز درساً')}
-                  <ArrowRight className="h-5 w-5 transition-transform duration-400 group-hover:translate-x-1" />
-                </Link>
-              </Reveal>
+        <div className="container-editorial relative z-10">
+          <Reveal>
+            <div className="mx-auto max-w-2xl text-center">
+              <p className="eyebrow text-[#5AA8FF]">
+                {getText('Pourquoi nous choisir', 'Why Choose Us', '¿Por qué elegirnos?', 'لماذا تختارنا')}
+              </p>
+              <h2 className="font-heading text-section text-white mt-6 text-balance">
+                {getText('L\'excellence au cœur de Dakhla', 'Excellence in the Heart of Dakhla', 'Excelencia en el Corazón de Dakhla', 'التميز في قلب الداخلة')}
+              </h2>
+              <p className="text-body-lg text-white/70 mt-5">
+                {getText(
+                  'Tout est pensé pour votre progression, en sécurité et dans le plaisir.',
+                  'Everything is designed for your progress, safely and with fun.',
+                  'Todo está pensado para tu progreso, con seguridad y diversión.',
+                  'كل شيء مصمم لتقدمك بأمان ومتعة.'
+                )}
+              </p>
             </div>
+          </Reveal>
+
+          <div className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
+            {[
+              {
+                icon: Car,
+                title: getText('Transfert aller et retour', 'Round-trip transfer', 'Traslado de ida y vuelta', 'نقل ذهاب وإياب'),
+                desc: getText(
+                  'Prise en charge confortable vers le spot et retour.',
+                  'Comfortable pickup to the spot and back.',
+                  'Recogida cómoda hacia el spot y vuelta.',
+                  'توصيل مريح إلى الموقع والعودة.'
+                ),
+              },
+              {
+                icon: HardHat,
+                title: getText('Casques radio', 'Radio helmets', 'Cascos con radio', 'خوذات راديو'),
+                desc: getText(
+                  'Coaching en temps réel avec casque et walkie-talkie.',
+                  'Real-time coaching with helmet and walkie-talkie.',
+                  'Coaching en tiempo real con casco y walkie-talkie.',
+                  'تدريب فوري بخوذة وجهاز لاسلكي.'
+                ),
+              },
+              {
+                icon: BadgeCheck,
+                title: getText('Moniteurs certifiés IKO', 'IKO-certified instructors', 'Monitores certificados IKO', 'مدربون معتمدون IKO'),
+                desc: getText(
+                  'Une équipe qualifiée pour progresser en toute confiance.',
+                  'A qualified team so you progress with confidence.',
+                  'Un equipo cualificado para progresar con confianza.',
+                  'فريق مؤهل لتتقدم بثقة.'
+                ),
+              },
+              {
+                icon: Ship,
+                title: getText('Bateau de sécurité', 'Safety boat', 'Barco de seguridad', 'قارب الأمان'),
+                desc: getText(
+                  'Assistance rapide sur l\'eau pendant vos sessions.',
+                  'Fast on-water assistance during your sessions.',
+                  'Asistencia rápida en el agua durante tus sesiones.',
+                  'مساعدة سريعة على الماء أثناء جلساتك.'
+                ),
+              },
+              {
+                icon: Award,
+                title: getText('Matériel haut de gamme', 'Premium equipment', 'Material de alta gama', 'معدات فاخرة'),
+                desc: getText(
+                  'Wings, kites et planches récents et bien entretenus.',
+                  'Recent, well-maintained wings, kites and boards.',
+                  'Wings, kites y tablas recientes y bien mantenidos.',
+                  'أجنحة وكايت وألواح حديثة ومعتنى بها.'
+                ),
+              },
+              {
+                icon: Waves,
+                title: getText('Spot facile et eau plate', 'Easy spot & flat water', 'Spot fácil y agua plana', 'موقع سهل وماء مسطح'),
+                desc: getText(
+                  'Lagon idéal pour débuter et monter en niveau.',
+                  'Ideal lagoon for beginners and progressing riders.',
+                  'Laguna ideal para empezar y subir de nivel.',
+                  'بحيرة مثالية للمبتدئين وتطوير المستوى.'
+                ),
+              },
+            ].map(({ icon: Icon, title, desc }, i) => (
+              <Reveal key={title} delay={i * 90} direction={i % 2 === 0 ? 'up' : 'left'}>
+                <article className="group relative h-full overflow-hidden rounded-[24px] border border-white/12 bg-white/8 p-6 backdrop-blur-md transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1.5 hover:border-white/25 hover:bg-white/14 hover:shadow-[0_25px_60px_rgba(0,0,0,0.28)] sm:p-7">
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full bg-[#5AA8FF]/0 transition-all duration-500 group-hover:bg-[#5AA8FF]/15"
+                  />
+                  <span className="relative flex h-12 w-12 items-center justify-center rounded-[16px] bg-[#C9A66B] text-[#0B1F3B] shadow-[0_10px_30px_rgba(201,166,107,0.35)] transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
+                    <Icon className="h-5 w-5" aria-hidden />
+                  </span>
+                  <h3 className="relative font-heading text-lg font-bold text-white mt-5">
+                    {title}
+                  </h3>
+                  <p className="relative text-small text-white/65 mt-2 leading-relaxed">
+                    {desc}
+                  </p>
+                </article>
+              </Reveal>
+            ))}
           </div>
+
+          <Reveal delay={520}>
+            <div className="mt-12 flex justify-center">
+              <Link
+                href={`/${locale}/safety`}
+                className="group btn-pill bg-[#C9A66B] text-[#0B1F3B] hover:bg-[#C9A66B] shadow-[0_10px_30px_rgba(201,166,107,0.35)]"
+              >
+                {getText('Découvrir sécurité & matériel', 'Explore safety & gear', 'Descubrir seguridad y material', 'اكتشف السلامة والمعدات')}
+                <ArrowRight className="h-5 w-5 transition-transform duration-400 group-hover:translate-x-1" />
+              </Link>
+            </div>
+          </Reveal>
         </div>
       </section>
 
       {/* ══ DARK SECTION ══ Testimonials */}
-      <section className="surface-noise relative overflow-hidden bg-[#0B1F3B] section-y" data-nav-theme="dark">
+      <section id="reviews" className="surface-noise relative overflow-hidden bg-[#0B1F3B] section-y scroll-mt-28" data-nav-theme="dark">
         <span aria-hidden className="blob -top-32 left-1/4 h-128 w-128 bg-[#0046A4]/25" />
         <span aria-hidden className="blob -bottom-40 right-0 h-112 w-112 bg-[#5AA8FF]/12" />
 

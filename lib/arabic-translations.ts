@@ -4,6 +4,7 @@ export const arabicTranslations = {
   'nav.home': 'الرئيسية',
   'nav.about': 'من نحن',
   'nav.pricing': 'الأسعار',
+  'nav.safety': 'السلامة',
   'nav.contact': 'اتصل بنا',
   'nav.book': 'احجز الآن',
   
@@ -23,10 +24,12 @@ export const arabicTranslations = {
   // Why Choose Us
   'Why Choose Us': 'لماذا تختارنا؟',
   'Excellence in the Heart of Dakhla': 'التميز في قلب داخلة',
-  'Certified Instructors': 'مدربون معتمدون',
-  'Constant Wind': 'رياح مستمرة',
-  'Ideal Conditions': 'ظروف مثالية',
-  'Community': 'مجتمع',
+  'Round-trip transfer': 'نقل ذهاب وإياب',
+  'Radio helmets': 'خوذات راديو',
+  'IKO-certified instructors': 'مدربون معتمدون IKO',
+  'Safety boat': 'قارب الأمان',
+  'Premium equipment': 'معدات فاخرة',
+  'Easy spot & flat water': 'موقع سهل وماء مسطح',
   
   // Pricing
   'Wingfoil & Kitesurf Pricing': 'أسعار الويngfoil والكايت سيرف',
@@ -37,6 +40,8 @@ export const arabicTranslations = {
   'Your own gear': 'معدك الخاص',
   'Freestyle Coaching': 'تدريب Freestyle',
   'Down wind': 'رحلات داون ويند',
+  'Photography Pack': 'باقة الوسائط',
+  'Media pack': 'باقة الوسائط',
   'Included in all courses': 'مشمول في جميع الدروس',
   
   // Contact

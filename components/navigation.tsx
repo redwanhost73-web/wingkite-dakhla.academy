@@ -154,6 +154,7 @@ export function Navigation() {
     { href: `/${locale}`, label: t('nav.home') },
     { href: `/${locale}/about`, label: t('nav.about') },
     { href: `/${locale}/pricing`, label: t('nav.pricing') },
+    { href: `/${locale}/safety`, label: t('nav.safety') },
     { href: `/${locale}/contact`, label: t('nav.contact') },
   ]
 

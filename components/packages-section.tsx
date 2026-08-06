@@ -21,7 +21,7 @@ export function PackagesSection() {
   const tr = (text: LocalizedText) => text[lang]
 
   return (
-    <section className="relative overflow-hidden section-y" data-nav-theme="light" style={{ background: "linear-gradient(180deg, #DCEEFF 0%, #FAF8F3 45%, #F6F1E8 100%)" }}>
+    <section id="packages" className="relative overflow-hidden section-y scroll-mt-28" data-nav-theme="light" style={{ background: "linear-gradient(180deg, #DCEEFF 0%, #FAF8F3 45%, #F6F1E8 100%)" }}>
       <span aria-hidden className="blob -top-32 right-0 h-md w-md bg-[#C9A66B]/10" />
 
       <div className="container-narrow relative z-10">
