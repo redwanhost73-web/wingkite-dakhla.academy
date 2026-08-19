@@ -2,12 +2,19 @@
 // Default values that can be overridden via /control panel
 
 export interface PricingRow {
+  /** Stable CMS id (e.g. row_2h). Optional for legacy defaults. */
+  id?: string
   hours: string
   semiEur: number
   semiMad: number
   privEur: number
   privMad: number
   extra?: boolean
+}
+
+export function pricingRowId(row: Pick<PricingRow, 'id' | 'hours'>): string {
+  if (row.id) return row.id
+  return `row_${String(row.hours).replace('+', 'extra_')}`
 }
 
 export interface SiteImages {
@@ -141,6 +148,7 @@ export const IMAGE_LABELS: Record<keyof SiteImages, string> = {
   homeAction: 'Accueil - Coaching Card',
   homeSunset: 'Accueil - Coucher de soleil',
   homeCoach: 'Accueil - Coach',
+  homeLagoon: 'Accueil - Lagon',
   aboutHero: 'A propos - Hero',
   aboutStory: 'A propos - Histoire',
   aboutTeam: 'A propos - Equipe',

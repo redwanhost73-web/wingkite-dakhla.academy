@@ -4,8 +4,10 @@ import { useState, useCallback, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
-import { Menu, X, ChevronDown, ArrowRight } from 'lucide-react'
+import { Menu, X, ChevronDown, ArrowRight, LogOut, UserRound } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n-context'
+import { createClient } from '@/lib/supabase/client'
+import { postLoginPath, roleLabel, type UserRole } from '@/lib/auth/roles'
 import { cn } from '@/lib/utils'
 
 const logoUrl = '/Logo/Logo.png'
@@ -101,8 +103,15 @@ function useNavTheme() {
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
+  const [profileOpen, setProfileOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [storyOpen, setStoryOpen] = useState(false)
+  const [authUser, setAuthUser] = useState<{
+    email: string | null
+    name: string
+    role: UserRole
+    href: string
+  } | null>(null)
   const onDark = useNavTheme()
   const pathname = usePathname()
   const router = useRouter()
@@ -122,6 +131,43 @@ export function Navigation() {
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  useEffect(() => {
+    const supabase = createClient()
+    if (!supabase) return
+
+    const syncAuth = async () => {
+      const { data } = await supabase.auth.getUser()
+      if (!data.user) {
+        setAuthUser(null)
+        return
+      }
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role, full_name, email')
+        .eq('id', data.user.id)
+        .maybeSingle()
+      const role = (profile?.role as UserRole) || 'tourist'
+      const name =
+        (profile?.full_name as string)?.trim() ||
+        data.user.email?.split('@')[0] ||
+        'Account'
+      setAuthUser({
+        email: (profile?.email as string) || data.user.email || null,
+        name,
+        role,
+        href: postLoginPath(role),
+      })
+    }
+
+    syncAuth()
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(() => {
+      syncAuth()
+    })
+    return () => subscription.unsubscribe()
+  }, [pathname])
 
   // Story mode marks the body — hide the floating bar so it doesn't sit on top.
   useEffect(() => {
@@ -146,9 +192,27 @@ export function Navigation() {
   useEffect(() => {
     setIsOpen(false)
     setLangOpen(false)
+    setProfileOpen(false)
   }, [pathname])
 
   const closeMenu = useCallback(() => setIsOpen(false), [])
+
+  const signOut = useCallback(async () => {
+    const supabase = createClient()
+    await supabase?.auth.signOut()
+    setAuthUser(null)
+    setProfileOpen(false)
+    closeMenu()
+    router.push(`/${locale}`)
+    router.refresh()
+  }, [closeMenu, locale, router])
+
+  const initials = (authUser?.name || 'A')
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((p) => p[0]?.toUpperCase() || '')
+    .join('') || 'A'
 
   const navLinks = [
     { href: `/${locale}`, label: t('nav.home') },
@@ -268,7 +332,10 @@ export function Navigation() {
             <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
               <div className="relative">
                 <button
-                  onClick={() => setLangOpen(!langOpen)}
+                  onClick={() => {
+                    setProfileOpen(false)
+                    setLangOpen(!langOpen)
+                  }}
                   aria-label="Change language"
                   aria-expanded={langOpen}
                   className={cn(
@@ -315,21 +382,136 @@ export function Navigation() {
                 )}
               </div>
 
-              {/* Book CTA — white on dark plates, brand blue on light plates */}
-              <Link
-                href={`/${locale}/contact`}
-                prefetch
+              {/* CTA cluster — auth menu + Book */}
+              <div
                 className={cn(
-                  'group hidden sm:inline-flex btn-pill-sm text-small',
-                  scrolled ? 'h-11 px-6' : 'h-12 px-7',
+                  'relative z-30 hidden items-stretch rounded-full border p-0.5 sm:inline-flex',
+                  scrolled ? 'h-11' : 'h-12',
                   barDark
-                    ? 'bg-white text-[#072A5A] hover:bg-white'
-                    : 'bg-[#0046A4] text-white hover:bg-[#0057D1] shadow-[0_12px_32px_rgba(0,70,164,0.22)]',
+                    ? 'border-white/25 bg-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.18)] backdrop-blur-md'
+                    : 'border-[#072A5A]/10 bg-white/80 shadow-[0_10px_30px_rgba(0,70,164,0.10)] backdrop-blur-md',
                 )}
               >
-                {t('nav.book')}
-                <ArrowRight className="h-4 w-4 transition-transform duration-400 group-hover:translate-x-1" />
-              </Link>
+                {authUser ? (
+                  <div className="relative flex items-stretch">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setLangOpen(false)
+                        setProfileOpen((v) => !v)
+                      }}
+                      className={cn(
+                        'inline-flex items-center gap-2 rounded-full px-2.5 text-xs font-bold tracking-wide transition-all duration-400 sm:px-3',
+                        barDark
+                          ? 'text-white/90 hover:bg-white/15 hover:text-white'
+                          : 'text-[#072A5A]/80 hover:bg-[#0046A4]/8 hover:text-[#0046A4]',
+                      )}
+                      aria-expanded={profileOpen}
+                      aria-haspopup="menu"
+                    >
+                      <span
+                        className={cn(
+                          'flex h-7 w-7 items-center justify-center rounded-full text-[0.65rem] font-bold',
+                          barDark ? 'bg-white/20 text-white' : 'bg-[#0B1F3B] text-white',
+                        )}
+                      >
+                        {initials}
+                      </span>
+                      <span className="hidden max-w-[7rem] truncate md:inline">{authUser.name}</span>
+                      <ChevronDown
+                        className={cn('h-3.5 w-3.5 transition-transform', profileOpen && 'rotate-180')}
+                      />
+                    </button>
+                    {profileOpen && (
+                      <>
+                        <button
+                          type="button"
+                          className="fixed inset-0 z-40 cursor-default"
+                          aria-label="Close profile menu"
+                          onClick={() => setProfileOpen(false)}
+                        />
+                        <div
+                          role="menu"
+                          className="absolute right-0 top-[calc(100%+10px)] z-50 w-56 overflow-hidden rounded-2xl border border-[#072A5A]/10 bg-white py-1.5 text-[#072A5A] shadow-[0_20px_50px_rgba(0,0,0,0.2)]"
+                        >
+                          <div className="border-b border-[#072A5A]/8 px-3.5 py-2.5">
+                            <p className="truncate text-sm font-bold">{authUser.name}</p>
+                            <p className="truncate text-[0.7rem] text-[#7A8AA3]">{authUser.email}</p>
+                            <p className="mt-1 text-[0.65rem] font-bold uppercase tracking-wider text-[#0046A4]">
+                              {roleLabel(authUser.role)}
+                            </p>
+                          </div>
+                          <Link
+                            href={authUser.href}
+                            role="menuitem"
+                            onClick={() => setProfileOpen(false)}
+                            className="flex items-center gap-2.5 px-3.5 py-2.5 text-sm font-semibold hover:bg-[#FAF8F3]"
+                          >
+                            <UserRound className="h-4 w-4 text-[#0046A4]" />
+                            {authUser.role === 'admin'
+                              ? 'Admin dashboard'
+                              : authUser.role === 'business'
+                                ? 'Business dashboard'
+                                : 'My profile'}
+                          </Link>
+                          {(authUser.role === 'student' || authUser.role === 'tourist') && (
+                            <Link
+                              href="/profile/bookings"
+                              role="menuitem"
+                              onClick={() => setProfileOpen(false)}
+                              className="flex items-center gap-2.5 px-3.5 py-2.5 text-sm font-semibold hover:bg-[#FAF8F3]"
+                            >
+                              <ArrowRight className="h-4 w-4 text-[#0046A4]" />
+                              My bookings
+                            </Link>
+                          )}
+                          <button
+                            type="button"
+                            role="menuitem"
+                            onClick={signOut}
+                            className="flex w-full items-center gap-2.5 px-3.5 py-2.5 text-left text-sm font-semibold text-red-600 hover:bg-red-50"
+                          >
+                            <LogOut className="h-4 w-4" />
+                            Sign out
+                          </button>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                ) : (
+                  <Link
+                    href="/auth/login"
+                    className={cn(
+                      'inline-flex items-center justify-center rounded-full px-4 text-xs font-bold tracking-wide transition-all duration-400 sm:px-5',
+                      barDark
+                        ? 'text-white/90 hover:bg-white/15 hover:text-white'
+                        : 'text-[#072A5A]/80 hover:bg-[#0046A4]/8 hover:text-[#0046A4]',
+                    )}
+                  >
+                    Sign in
+                  </Link>
+                )}
+                <span
+                  aria-hidden
+                  className={cn(
+                    'my-1.5 w-px shrink-0 self-stretch',
+                    barDark ? 'bg-white/25' : 'bg-[#072A5A]/12',
+                  )}
+                />
+                <Link
+                  href={`/${locale}/contact`}
+                  prefetch
+                  className={cn(
+                    'group inline-flex items-center gap-2 rounded-full px-4 text-xs font-bold tracking-wide transition-all duration-400 sm:px-5',
+                    barDark
+                      ? 'bg-white text-[#072A5A] hover:bg-white'
+                      : 'bg-[#0046A4] text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)] hover:bg-[#0057D1]',
+                  )}
+                >
+                  {t('nav.book')}
+                  <ArrowRight className="h-3.5 w-3.5 transition-transform duration-400 group-hover:translate-x-0.5" />
+                </Link>
+              </div>
 
               <button
                 className={cn(
@@ -441,15 +623,76 @@ export function Navigation() {
             ))}
           </div>
 
-          <Link
-            href={`/${locale}/contact`}
-            prefetch
-            onClick={closeMenu}
-            className="btn-pill mt-5 w-full bg-[#0046A4] text-white hover:bg-[#0057D1]"
-          >
-            {t('nav.book')}
-            <ArrowRight className="h-4 w-4" />
-          </Link>
+          {authUser ? (
+            <div className="mt-5 space-y-2 rounded-2xl border border-[#072A5A]/10 bg-[#F6F1E8] p-3">
+              <div className="flex items-center gap-3 px-1 py-1">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#0B1F3B] text-sm font-bold text-white">
+                  {initials}
+                </span>
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-bold text-[#072A5A]">{authUser.name}</p>
+                  <p className="truncate text-xs text-[#7A8AA3]">{authUser.email}</p>
+                </div>
+              </div>
+              <Link
+                href={authUser.href}
+                onClick={closeMenu}
+                className="flex items-center gap-2 rounded-xl bg-white px-3 py-2.5 text-sm font-bold text-[#072A5A]"
+              >
+                <UserRound className="h-4 w-4 text-[#0046A4]" />
+                {authUser.role === 'admin'
+                  ? 'Admin dashboard'
+                  : authUser.role === 'business'
+                    ? 'Business dashboard'
+                    : 'My profile'}
+              </Link>
+              {(authUser.role === 'student' || authUser.role === 'tourist') && (
+                <Link
+                  href="/profile/bookings"
+                  onClick={closeMenu}
+                  className="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-bold text-[#072A5A] hover:bg-white"
+                >
+                  My bookings
+                </Link>
+              )}
+              <button
+                type="button"
+                onClick={signOut}
+                className="flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-bold text-red-600 hover:bg-red-50"
+              >
+                <LogOut className="h-4 w-4" />
+                Sign out
+              </button>
+              <Link
+                href={`/${locale}/contact`}
+                prefetch
+                onClick={closeMenu}
+                className="group flex items-center justify-center gap-2 rounded-full bg-[#0046A4] px-4 py-3 text-sm font-bold text-white hover:bg-[#0057D1]"
+              >
+                {t('nav.book')}
+                <ArrowRight className="h-4 w-4 transition-transform duration-400 group-hover:translate-x-0.5" />
+              </Link>
+            </div>
+          ) : (
+            <div className="mt-5 flex overflow-hidden rounded-full border border-[#072A5A]/10 bg-[#F6F1E8] p-1">
+              <Link
+                href="/auth/login"
+                onClick={closeMenu}
+                className="flex-1 rounded-full px-4 py-3 text-center text-sm font-bold text-[#072A5A] transition-colors hover:bg-white"
+              >
+                Sign in
+              </Link>
+              <Link
+                href={`/${locale}/contact`}
+                prefetch
+                onClick={closeMenu}
+                className="group flex flex-1 items-center justify-center gap-2 rounded-full bg-[#0046A4] px-4 py-3 text-sm font-bold text-white hover:bg-[#0057D1]"
+              >
+                {t('nav.book')}
+                <ArrowRight className="h-4 w-4 transition-transform duration-400 group-hover:translate-x-0.5" />
+              </Link>
+            </div>
+          )}
         </nav>
       </div>
     </>

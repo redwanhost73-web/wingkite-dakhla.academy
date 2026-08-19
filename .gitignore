@@ -29,3 +29,4 @@ tailwindcss-*.log
 
 .DS_Store
 *.pem
+.env*

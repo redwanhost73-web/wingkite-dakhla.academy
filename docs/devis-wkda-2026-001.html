@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Devis — Site web dynamique | Wing Kite Dakhla Academy</title>
+  <style>
+    :root {
+      --ink: #0B1F3B;
+      --muted: #3D4F6F;
+      --line: #D5DCE8;
+      --soft: #F4F7FB;
+      --accent: #0046A4;
+      --gold: #C9A66B;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      color: var(--ink);
+      background: #E8EEF5;
+      line-height: 1.45;
+      font-size: 14px;
+    }
+    .sheet {
+      max-width: 880px;
+      margin: 32px auto;
+      background: #fff;
+      padding: 48px 52px;
+      box-shadow: 0 18px 50px rgba(11, 31, 59, 0.12);
+    }
+    h1 {
+      font-size: 26px;
+      margin: 0 0 6px;
+      letter-spacing: -0.02em;
+    }
+    h2 {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin: 28px 0 12px;
+      border-bottom: 2px solid var(--ink);
+      padding-bottom: 6px;
+    }
+    .meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 22px;
+    }
+    .card {
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+    .card strong { display: block; margin-bottom: 6px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+    .badge {
+      display: inline-block;
+      background: var(--ink);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      letter-spacing: 0.06em;
+    }
+    .gift {
+      background: #FFF8EB;
+      border: 1px solid #E8D4A8;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin: 18px 0;
+    }
+    .gift strong { color: #8A6A2F; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+    }
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px 8px;
+      vertical-align: top;
+      text-align: left;
+    }
+    th {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      background: var(--soft);
+    }
+    td.num, th.num { text-align: right; white-space: nowrap; }
+    td.center, th.center { text-align: center; }
+    .muted { color: var(--muted); font-size: 12px; }
+    .totals {
+      margin-top: 18px;
+      margin-left: auto;
+      width: 320px;
+    }
+    .totals div {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+    }
+    .totals .grand {
+      border-top: 2px solid var(--ink);
+      margin-top: 8px;
+      padding-top: 10px;
+      font-size: 18px;
+      font-weight: 800;
+    }
+    .offert { color: #1F7A3F; font-weight: 700; }
+    ul { margin: 6px 0 0; padding-left: 18px; }
+    li { margin: 3px 0; }
+    .sign {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-top: 40px;
+    }
+    .sign .box {
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+      min-height: 90px;
+    }
+    footer.note {
+      margin-top: 36px;
+      font-size: 11px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+    }
+    @media print {
+      body { background: #fff; }
+      .sheet { margin: 0; box-shadow: none; max-width: none; padding: 24px; }
+      .no-print { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sheet">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px">
+      <div>
+        <span class="badge">DEVIS N° WKDA-2026-001</span>
+        <h1>Site web dynamique — version complète</h1>
+        <p class="muted">Date : 8 août 2026 · Validité : 30 jours · Devise : MAD (DH)</p>
+      </div>
+      <div style="text-align:right">
+        <strong style="font-size:15px">Prestation développement web</strong>
+        <p class="muted" style="margin:4px 0 0">
+          [Nom du prestataire]<br />
+          ICE / RC : [à compléter]<br />
+          Maroc
+        </p>
+      </div>
+    </div>
+
+    <div class="meta">
+      <div class="card">
+        <strong>Client</strong>
+        Wing Kite Dakhla Academy<br />
+        École de wingfoil &amp; kitesurf — Dakhla, Maroc<br />
+        Site : wingkite-dakhla.academy
+      </div>
+      <div class="card">
+        <strong>Objet</strong>
+        Mise en place d’un <b>site vitrine 100 % dynamique</b> :
+        CMS / Edit Mode, médias, packs, activités, admin, multilingue (FR / EN / ES / AR).
+      </div>
+    </div>
+
+    <div class="gift">
+      <strong>Offert — geste commercial</strong>
+      <p style="margin:6px 0 0" class="muted">
+        Au regard de la collaboration et de l’expérience de travail ensemble, les postes
+        <b>UX / UI (direction artistique &amp; polissage interface)</b> et
+        <b>fonctionnalités IA</b> (traduction assistée DeepSeek, recommandations de texte)
+        sont <b>offerts</b> et n’apparaissent que pour mémoire. Ils ne sont pas facturés.
+      </p>
+    </div>
+
+    <h2>1. Périmètre facturé — plateforme dynamique</h2>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:42%">Désignation</th>
+          <th>Détail</th>
+          <th class="center" style="width:8%">Qté</th>
+          <th class="num" style="width:14%">P.U. HT</th>
+          <th class="num" style="width:14%">Total HT</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>Architecture CMS &amp; Edit Mode</b></td>
+          <td class="muted">
+            Couche dynamique : brouillons → publish, textes/images/listes,
+            isolation visiteurs vs admin, refresh live.
+          </td>
+          <td class="center">1</td>
+          <td class="num">18&nbsp;000</td>
+          <td class="num">18&nbsp;000</td>
+        </tr>
+        <tr>
+          <td><b>Backend Supabase &amp; sécurité</b></td>
+          <td class="muted">
+            Schéma CMS, rôles (tourist / student / business / admin),
+            RLS, seed, APIs admin protégées, notifications.
+          </td>
+          <td class="center">1</td>
+          <td class="num">12&nbsp;000</td>
+          <td class="num">12&nbsp;000</td>
+        </tr>
+        <tr>
+          <td><b>Panel admin structuré</b></td>
+          <td class="muted">
+            Dashboard dual-mode (édition sur site / contrôle),
+            users, content hub, images, activités, packs, pricing, settings.
+          </td>
+          <td class="center">1</td>
+          <td class="num">10&nbsp;000</td>
+          <td class="num">10&nbsp;000</td>
+        </tr>
+        <tr>
+          <td><b>Pages marketing dynamiques</b></td>
+          <td class="muted">
+            Home, About, Pricing, Safety, Contact — textes, CTAs, images section
+            éditables (4 langues).
+          </td>
+          <td class="center">5</td>
+          <td class="num">2&nbsp;400</td>
+          <td class="num">12&nbsp;000</td>
+        </tr>
+        <tr>
+          <td><b>Médias dynamiques (listes)</b></td>
+          <td class="muted">
+            Galeries activités + covers packs séjour ; upload Blob / URL ;
+            sync publish Edit Mode ↔ tables CMS.
+          </td>
+          <td class="center">1</td>
+          <td class="num">8&nbsp;500</td>
+          <td class="num">8&nbsp;500</td>
+        </tr>
+        <tr>
+          <td><b>Tarifs &amp; offres CMS</b></td>
+          <td class="muted">
+            Table pricing éditable, media pack, why-choose, stay packages.
+          </td>
+          <td class="center">1</td>
+          <td class="num">6&nbsp;500</td>
+          <td class="num">6&nbsp;500</td>
+        </tr>
+        <tr>
+          <td><b>Complétion « 100 % dynamique »</b></td>
+          <td class="muted">
+            Nav, footer, WhatsApp, privacy, labels formulaire contact,
+            branchement <code>site_settings</code>, logo CMS, SEO dynamique.
+          </td>
+          <td class="center">1</td>
+          <td class="num">9&nbsp;500</td>
+          <td class="num">9&nbsp;500</td>
+        </tr>
+        <tr>
+          <td><b>Intégration &amp; mise en production</b></td>
+          <td class="muted">
+            Env Vercel + Supabase + Blob, seed initial, smoke tests,
+            formation courte admin (1 session).
+          </td>
+          <td class="center">1</td>
+          <td class="num">4&nbsp;500</td>
+          <td class="num">4&nbsp;500</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>2. Postes offerts (non facturés)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:42%">Désignation</th>
+          <th>Détail</th>
+          <th class="num" style="width:18%">Valeur indicative HT</th>
+          <th class="num" style="width:14%">Facturé</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>UX / UI — expérience &amp; polish</b></td>
+          <td class="muted">
+            Direction visuelle, composition pages, micro-interactions,
+            cohérence admin + site public (expérience de travail).
+          </td>
+          <td class="num">14&nbsp;000</td>
+          <td class="num offert">Offert</td>
+        </tr>
+        <tr>
+          <td><b>Fonctionnalités IA</b></td>
+          <td class="muted">
+            Traduction FR→EN/ES/AR assistée, « magic recommend » contexte page,
+            intégration DeepSeek (clé côté serveur).
+          </td>
+          <td class="num">11&nbsp;000</td>
+          <td class="num offert">Offert</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="muted">Valeur indicative des cadeaux : <b>25&nbsp;000 MAD HT</b> — non incluse dans le total à régler.</p>
+
+    <h2>3. Totaux</h2>
+    <div class="totals">
+      <div><span>Sous-total HT</span><span>81&nbsp;000 MAD</span></div>
+      <div><span>TVA (20&nbsp;%)</span><span>16&nbsp;200 MAD</span></div>
+      <div class="grand"><span>Total TTC</span><span>97&nbsp;200 MAD</span></div>
+      <div class="muted" style="justify-content:flex-end;margin-top:4px">Soit ~ 97 200 DH TTC</div>
+    </div>
+
+    <h2>4. Conditions de règlement (Maroc)</h2>
+    <ul>
+      <li><b>Acompte 40 %</b> à la commande / signature : <b>38&nbsp;880 MAD TTC</b></li>
+      <li><b>40 %</b> à la livraison de la version dynamique opérationnelle : <b>38&nbsp;880 MAD TTC</b></li>
+      <li><b>Solde 20 %</b> après recette &amp; formation : <b>19&nbsp;440 MAD TTC</b></li>
+      <li>Paiement par virement bancaire · facture conforme à chaque échéance</li>
+      <li>Devis valable <b>30 jours</b> à compter de la date ci-dessus</li>
+      <li>Délai estimatif restant de complétion (postes §1 ligne « Complétion ») : <b>5–10 jours ouvrés</b> après validation</li>
+    </ul>
+
+    <h2>5. Livrables inclus</h2>
+    <ul>
+      <li>Code source Next.js + scripts SQL Supabase</li>
+      <li>Panel admin + Edit Mode sur le site live</li>
+      <li>Multilingue FR / EN / ES / AR pour contenus CMS</li>
+      <li>Gestion médias (slots + galeries + covers) via Blob / URL</li>
+      <li>1 session formation admin (édition contenue + panel)</li>
+      <li>Documentation courte d’exploitation (seed, Blob, rôles)</li>
+    </ul>
+
+    <h2>6. Hors périmètre (sauf avenant)</h2>
+    <ul>
+      <li>Campagnes pub, SEO off-page, rédaction marketing longue hors CMS</li>
+      <li>Application mobile native, réservation paiement en ligne (gateway)</li>
+      <li>Hébergement annuel Vercel / Supabase / noms de domaine (coûts tiers)</li>
+      <li>Maintenance mensuelle après recette (devis séparé possible)</li>
+      <li>Refonte graphique totale hors système déjà en place</li>
+    </ul>
+
+    <h2>7. Notes</h2>
+    <ul>
+      <li>Les montants sont en <b>dirhams marocains (MAD)</b>.</li>
+      <li>TVA <b>20 %</b> appliquée (régime standard ; à adapter si exonération / forfait).</li>
+      <li>Compléter ICE / RC / IF / adresse du prestataire avant envoi officiel.</li>
+      <li>Les postes « Offert » restent propriété intellectuelle livrée au client avec le site, sans surcoût.</li>
+    </ul>
+
+    <div class="sign">
+      <div class="box">
+        <strong>Le prestataire</strong>
+        <p class="muted">Bon pour accord · Date &amp; signature</p>
+      </div>
+      <div class="box">
+        <strong>Le client — Wing Kite Dakhla Academy</strong>
+        <p class="muted">Bon pour accord · Date &amp; signature / cachet</p>
+      </div>
+    </div>
+
+    <footer class="note">
+      Document : Devis WKDA-2026-001 · Site web dynamique complet · Généré pour usage commercial Maroc ·
+      Imprimer en PDF via le navigateur (Cmd/Ctrl+P).
+      <span class="no-print"> · Fichier source : <code>docs/devis-wkda-2026-001.html</code></span>
+    </footer>
+  </div>
+</body>
+</html>

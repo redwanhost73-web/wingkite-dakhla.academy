@@ -2,6 +2,7 @@ import { Navigation } from './navigation'
 import { Footer } from './footer'
 import { WhatsAppBubbleLazy } from './whatsapp-bubble-lazy'
 import { HashScroll } from './hash-scroll'
+import { EditModeRoot } from '@/components/edit-mode/edit-mode-root'
 import { I18nProvider } from '@/lib/i18n-context'
 import type { Locale } from '@/lib/i18n'
 import type { ReactNode } from 'react'
@@ -17,17 +18,19 @@ export function PageLayout({ children, locale, messages }: PageLayoutProps) {
 
   return (
     <I18nProvider locale={locale} messages={messages}>
-      <div
-        className={`flex min-h-screen flex-col ${isArabic ? 'font-cairo' : 'font-sans'}`}
-        dir={isArabic ? 'rtl' : 'ltr'}
-        lang={locale}
-      >
-        <HashScroll />
-        <Navigation />
-        <main className="flex-1">{children}</main>
-        <Footer />
-      </div>
-      <WhatsAppBubbleLazy />
+      <EditModeRoot>
+        <div
+          className={`flex min-h-screen flex-col ${isArabic ? 'font-cairo' : 'font-sans'}`}
+          dir={isArabic ? 'rtl' : 'ltr'}
+          lang={locale}
+        >
+          <HashScroll />
+          <Navigation />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </div>
+        <WhatsAppBubbleLazy />
+      </EditModeRoot>
     </I18nProvider>
   )
 }

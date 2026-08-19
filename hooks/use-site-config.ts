@@ -1,124 +1,46 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { DEFAULT_IMAGES, DEFAULT_PRICING, PricingRow, SiteImages } from '@/lib/site-config'
+import { useEffect, useState, useCallback } from 'react'
+import { emptyCmsBundle, fetchCmsBundle, type CmsBundle, type SiteTexts } from '@/lib/cms/client-fetch'
+import type { PricingRow, SiteImages } from '@/lib/site-config'
+import type { Activity } from '@/lib/activities'
+import type { Pack } from '@/lib/packages'
 
-interface SiteImage {
-  id: number
-  key: string
-  url: string
-  page: string
-  description: string
-}
-
-interface SitePricing {
-  id: number
-  hours: string
-  semi_eur: number
-  semi_mad: number
-  priv_eur: number
-  priv_mad: number
-  is_extra: boolean
-}
-
-interface SiteText {
-  id: number
-  key: string
-  value_fr: string
-  value_en: string
-  value_es: string
-  value_ar: string
-  section: string
-  label: string
-}
-
-export interface SiteTexts {
-  [key: string]: {
-    fr: string
-    en: string
-    es: string
-    ar: string
-  }
-}
+export type { SiteTexts }
 
 export function useSiteConfig() {
-  const [images, setImages] = useState<SiteImages>(DEFAULT_IMAGES)
-  const [pricing, setPricing] = useState<PricingRow[]>(DEFAULT_PRICING)
-  const [texts, setTexts] = useState<SiteTexts>({})
-  const [isLoaded, setIsLoaded] = useState(false)
+  const [bundle, setBundle] = useState<CmsBundle>(() => emptyCmsBundle(false))
+
+  const refresh = useCallback(() => {
+    fetchCmsBundle().then(setBundle)
+  }, [])
 
   useEffect(() => {
-    // Skip network + heavy client SDK when Supabase isn't configured.
-    if (
-      !process.env.NEXT_PUBLIC_SUPABASE_URL ||
-      !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-    ) {
-      setIsLoaded(true)
-      return
-    }
-
     let cancelled = false
-
-    async function fetchConfig() {
-      try {
-        const { createClient } = await import('@/lib/supabase/client')
-        const supabase = createClient()
-        if (!supabase || cancelled) {
-          setIsLoaded(true)
-          return
-        }
-
-        const [imagesRes, pricingRes, textsRes] = await Promise.all([
-          supabase.from('site_images').select('*'),
-          supabase.from('site_pricing').select('*').order('id'),
-          supabase.from('site_texts').select('*'),
-        ])
-
-        if (cancelled) return
-
-        if (imagesRes.data && imagesRes.data.length > 0) {
-          const imageMap: Partial<SiteImages> = {}
-          imagesRes.data.forEach((img: SiteImage) => {
-            imageMap[img.key as keyof SiteImages] = img.url
-          })
-          setImages({ ...DEFAULT_IMAGES, ...imageMap })
-        }
-
-        if (pricingRes.data && pricingRes.data.length > 0) {
-          const pricingRows: PricingRow[] = pricingRes.data.map((row: SitePricing) => ({
-            hours: row.hours,
-            semiEur: Number(row.semi_eur),
-            semiMad: Number(row.semi_mad),
-            privEur: Number(row.priv_eur),
-            privMad: Number(row.priv_mad),
-            extra: row.is_extra,
-          }))
-          setPricing(pricingRows)
-        }
-
-        if (textsRes.data && textsRes.data.length > 0) {
-          const textMap: SiteTexts = {}
-          textsRes.data.forEach((text: SiteText) => {
-            textMap[text.key] = {
-              fr: text.value_fr,
-              en: text.value_en,
-              es: text.value_es,
-              ar: text.value_ar,
-            }
-          })
-          setTexts(textMap)
-        }
-      } catch (err) {
-        console.error('Error fetching site config:', err)
-      }
-      if (!cancelled) setIsLoaded(true)
-    }
-
-    fetchConfig()
+    fetchCmsBundle().then((data) => {
+      if (!cancelled) setBundle(data)
+    })
     return () => {
       cancelled = true
     }
   }, [])
 
-  return { images, pricing, texts, isLoaded }
+  useEffect(() => {
+    const onRefresh = () => refresh()
+    window.addEventListener('cms:refresh', onRefresh)
+    return () => window.removeEventListener('cms:refresh', onRefresh)
+  }, [refresh])
+
+  return {
+    images: bundle.images as SiteImages,
+    pricing: bundle.pricing as PricingRow[],
+    texts: bundle.texts,
+    mediaPack: bundle.mediaPack,
+    whyChoose: bundle.whyChoose,
+    activities: bundle.activities as Activity[],
+    packages: bundle.packages as Pack[],
+    isLoaded: bundle.loaded,
+    cmsConfigured: bundle.configured,
+    refresh,
+  }
 }

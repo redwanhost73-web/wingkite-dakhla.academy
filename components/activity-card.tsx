@@ -7,7 +7,15 @@ import { Images, ArrowUpRight, ArrowRight, Clapperboard } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { Activity, LocalizedText } from '@/lib/activities'
 import { useActivityStory } from '@/components/activity-story'
-import { MEDIA_PACK, mediaTr } from '@/lib/media-pack'
+import { useSiteConfig } from '@/hooks/use-site-config'
+import {
+  EditableImage,
+  EditableText,
+  useEditableImageSrc,
+  useEditableTextValue,
+} from '@/components/edit-mode/editable'
+import { activityImageFieldKey } from '@/lib/cms/content-lists'
+import type { Localized } from '@/lib/cms/types'
 
 const AUTO_MS = 4200
 
@@ -18,44 +26,44 @@ type Props = {
   delay?: number
 }
 
-function tr(text: LocalizedText, locale: string) {
-  if (locale === 'fr') return text.fr
-  if (locale === 'es') return text.es
-  if (locale === 'ar') return text.ar
-  return text.en
+function asLocalized(text: LocalizedText): Localized {
+  return { fr: text.fr, en: text.en, es: text.es, ar: text.ar }
 }
 
-function viewPhotosLabel(locale: string) {
-  if (locale === 'fr') return 'Voir toutes les photos'
-  if (locale === 'es') return 'Ver todas las fotos'
-  if (locale === 'ar') return 'عرض كل الصور'
-  return 'View all photos'
+const VIEW_PHOTOS: Localized = {
+  fr: 'Voir toutes les photos',
+  en: 'View all photos',
+  es: 'Ver todas las fotos',
+  ar: 'عرض كل الصور',
 }
 
-function viewPackLabel(locale: string) {
-  if (locale === 'fr') return 'Voir le Media pack'
-  if (locale === 'es') return 'Ver Media pack'
-  if (locale === 'ar') return 'عرض Media pack'
-  return 'View Media pack'
+const VIEW_PACK: Localized = {
+  fr: 'Voir le Media pack',
+  en: 'View Media pack',
+  es: 'Ver Media pack',
+  ar: 'عرض Media pack',
 }
 
 export function ActivityCard({ activity, locale, className }: Props) {
-  const { images, badge, badgeTone, title, desc, minHeight, large } = activity
+  const { images, badge, badgeTone, title, desc, minHeight, large, id } = activity
   const story = useActivityStory()
+  const { mediaPack, texts } = useSiteConfig()
   const multi = images.length > 1 && story !== null
   const mediaHref = `/${locale}/pricing#media-pack`
   const [slide, setSlide] = useState(0)
   const [hover, setHover] = useState(false)
 
+  const titleKey = `home.activities.${id}.title`
+  const label = useEditableTextValue(titleKey, asLocalized(title), texts[titleKey])
+
   useEffect(() => {
     if (!multi || hover) return
-    const id = setInterval(() => {
+    const idTimer = setInterval(() => {
       setSlide((s) => (s + 1) % images.length)
     }, AUTO_MS)
-    return () => clearInterval(id)
+    return () => clearInterval(idTimer)
   }, [multi, hover, images.length])
 
-  const label = tr(title, locale)
   const visibleIndexes = multi
     ? Array.from(new Set([slide, (slide + 1) % images.length]))
     : [0]
@@ -76,22 +84,17 @@ export function ActivityCard({ activity, locale, className }: Props) {
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       className={shellClass}
-      aria-label={`${label} — ${viewPackLabel(locale)}`}
+      aria-label={label}
     >
       {visibleIndexes.map((i) => (
-        <Image
-          key={images[i]}
+        <ActivitySlide
+          key={`${id}-${i}-${images[i]}`}
+          activityId={id}
+          index={i}
           src={images[i]}
           alt={`${label} ${i + 1}`}
-          fill
-          sizes="(max-width: 768px) 100vw, 50vw"
-          loading="lazy"
-          quality={70}
-          className={cn(
-            'object-cover transition-[opacity,transform] duration-900 ease-[cubic-bezier(0.16,1,0.3,1)]',
-            i === slide ? 'opacity-100' : 'opacity-0',
-            i === slide && hover ? 'scale-[1.08]' : 'scale-100',
-          )}
+          active={i === slide}
+          zoom={i === slide && hover}
         />
       ))}
 
@@ -127,37 +130,53 @@ export function ActivityCard({ activity, locale, className }: Props) {
       )}
 
       <div className={cn('absolute bottom-0 z-10 w-full', large ? 'p-9 sm:p-12' : 'p-8 sm:p-9')}>
-        <span
+        <EditableText
+          fieldKey={`home.activities.${id}.badge`}
+          label={`${id} badge`}
+          as="span"
           className={cn(
             'eyebrow inline-block rounded-full px-3.5 py-1.5 text-[0.7rem]',
             badgeTone === 'sand' ? 'bg-[#B8925A] text-white' : 'bg-[#0046A4] text-white',
           )}
-        >
-          {tr(badge, locale)}
-        </span>
+          defaults={asLocalized(badge)}
+          cms={texts[`home.activities.${id}.badge`]}
+        />
 
-        <h3
+        <EditableText
+          fieldKey={titleKey}
+          label={`${id} title`}
+          as="h3"
           className={cn(
             'font-heading text-white mt-4',
             large ? 'text-display-sm' : 'text-card-title',
           )}
-        >
-          {label}
-        </h3>
+          defaults={asLocalized(title)}
+          cms={texts[titleKey]}
+        />
 
-        <p
+        <EditableText
+          fieldKey={`home.activities.${id}.desc`}
+          label={`${id} description`}
+          as="p"
           className={cn(
             'text-white/75 mt-3',
             large ? 'text-body-lg max-w-lg' : 'text-small line-clamp-3',
           )}
-        >
-          {tr(desc, locale)}
-        </p>
+          defaults={asLocalized(desc)}
+          cms={texts[`home.activities.${id}.desc`]}
+        />
 
         <div className="mt-5 flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap sm:items-center">
           <span className="inline-flex max-w-full items-center gap-2 rounded-full border border-white/25 bg-white/12 px-3.5 py-1.5 text-xs font-bold text-white backdrop-blur-lg">
             <Clapperboard className="h-3.5 w-3.5 shrink-0" aria-hidden />
-            <span className="truncate">{mediaTr(MEDIA_PACK.short, locale)}</span>
+            <EditableText
+              fieldKey="pricing.mediaPack.short"
+              label="Media pack short"
+              as="span"
+              className="truncate"
+              defaults={mediaPack.short}
+              cms={texts['pricing.mediaPack.short']}
+            />
           </span>
 
           {multi ? (
@@ -170,12 +189,22 @@ export function ActivityCard({ activity, locale, className }: Props) {
               }}
               className="inline-flex items-center gap-2 text-xs font-semibold text-white/70 transition-colors duration-450 hover:text-white"
             >
-              {viewPhotosLabel(locale)}
+              <EditableText
+                fieldKey="home.activities.viewPhotos"
+                label="View all photos"
+                defaults={VIEW_PHOTOS}
+                cms={texts['home.activities.viewPhotos']}
+              />
               <ArrowUpRight className="h-3.5 w-3.5" />
             </button>
           ) : (
             <span className="inline-flex items-center gap-2 text-xs font-semibold text-white/60 transition-colors duration-450 group-hover:text-white">
-              {viewPackLabel(locale)}
+              <EditableText
+                fieldKey="home.activities.viewPack"
+                label="View Media pack"
+                defaults={VIEW_PACK}
+                cms={texts['home.activities.viewPack']}
+              />
               <ArrowRight className="h-3.5 w-3.5 transition-transform duration-450 group-hover:translate-x-0.5" />
             </span>
           )}
@@ -184,3 +213,47 @@ export function ActivityCard({ activity, locale, className }: Props) {
     </Link>
   )
 }
+
+function ActivitySlide({
+  activityId,
+  index,
+  src,
+  alt,
+  active,
+  zoom,
+}: {
+  activityId: string
+  index: number
+  src: string
+  alt: string
+  active: boolean
+  zoom: boolean
+}) {
+  const fieldKey = activityImageFieldKey(activityId, index)
+  const liveSrc = useEditableImageSrc(fieldKey, src)
+  const remote = /^https?:\/\//.test(liveSrc)
+  return (
+    <EditableImage
+      fieldKey={fieldKey}
+      src={liveSrc}
+      label={`${activityId} photo ${index + 1}`}
+      className="absolute inset-0"
+    >
+      <Image
+        src={liveSrc}
+        alt={alt}
+        fill
+        sizes="(max-width: 768px) 100vw, 50vw"
+        loading="lazy"
+        quality={70}
+        unoptimized={remote}
+        className={cn(
+          'object-cover transition-[opacity,transform] duration-900 ease-[cubic-bezier(0.16,1,0.3,1)]',
+          active ? 'opacity-100' : 'opacity-0',
+          active && zoom ? 'scale-[1.08]' : 'scale-100',
+        )}
+      />
+    </EditableImage>
+  )
+}
+

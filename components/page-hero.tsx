@@ -3,13 +3,17 @@
 import Image from 'next/image'
 import type { ReactNode } from 'react'
 import { Reveal } from '@/components/reveal'
+import { EditableImage, useEditableImageSrc } from '@/components/edit-mode/editable'
+import { IMAGE_LABELS, type SiteImages } from '@/lib/site-config'
 
 type Props = {
   image: string
+  /** When set, enables Edit Mode image editing for this hero. */
+  imageKey?: keyof SiteImages
   /** Small label above the title. */
-  eyebrow?: string
+  eyebrow?: ReactNode
   title: ReactNode
-  subtitle?: string
+  subtitle?: ReactNode
   children?: ReactNode
 }
 
@@ -18,21 +22,39 @@ type Props = {
  * page's own content starts above the fold, but the same overlay recipe and
  * slow push-in keep the two reading as one system.
  */
-export function PageHero({ image, eyebrow, title, subtitle, children }: Props) {
+export function PageHero({ image, imageKey, eyebrow, title, subtitle, children }: Props) {
+  const liveSrc = useEditableImageSrc(imageKey || '', image)
+  const src = imageKey ? liveSrc : image
+
+  const media = (
+    <Image
+      src={src}
+      alt=""
+      aria-hidden
+      fill
+      priority
+      fetchPriority="high"
+      sizes="100vw"
+      quality={70}
+      className="object-cover"
+    />
+  )
+
   return (
     <section className="relative flex min-h-[72svh] items-end overflow-hidden bg-[#0B1F3B]" data-nav-theme="dark">
       <div className="absolute inset-0 animate-ken-burns">
-        <Image
-          src={image}
-          alt=""
-          aria-hidden
-          fill
-          priority
-          fetchPriority="high"
-          sizes="100vw"
-          quality={70}
-          className="object-cover"
-        />
+        {imageKey ? (
+          <EditableImage
+            fieldKey={imageKey}
+            src={src}
+            label={IMAGE_LABELS[imageKey]}
+            className="absolute inset-0"
+          >
+            {media}
+          </EditableImage>
+        ) : (
+          media
+        )}
       </div>
 
       <div
@@ -64,7 +86,7 @@ export function PageHero({ image, eyebrow, title, subtitle, children }: Props) {
         <div className="max-w-3xl">
           {eyebrow && (
             <Reveal delay={100} duration={800}>
-              <p className="eyebrow text-[#C9A66B]">{eyebrow}</p>
+              <div className="eyebrow text-[#C9A66B]">{eyebrow}</div>
             </Reveal>
           )}
           <Reveal delay={200} duration={900}>
@@ -72,7 +94,7 @@ export function PageHero({ image, eyebrow, title, subtitle, children }: Props) {
           </Reveal>
           {subtitle && (
             <Reveal delay={320} duration={900}>
-              <p className="text-body-lg text-white/80 max-w-xl mt-7">{subtitle}</p>
+              <div className="text-body-lg text-white/80 max-w-xl mt-7">{subtitle}</div>
             </Reveal>
           )}
           {children && (

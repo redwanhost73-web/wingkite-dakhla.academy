@@ -3,16 +3,103 @@
 import { useTranslations } from '@/lib/i18n-context'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight, Waves, Star, Car, HardHat, BadgeCheck, Ship, Award, MapPin, Clapperboard } from 'lucide-react'
+import { ArrowRight, Waves, Star, Car, HardHat, BadgeCheck, Ship, Award, MapPin, Clapperboard, type LucideIcon } from 'lucide-react'
 import { useSiteConfig } from '@/hooks/use-site-config'
 import { PackagesSection } from '@/components/packages-section'
 import { LogoMarquee } from '@/components/logo-marquee'
 import { ActivityCard } from '@/components/activity-card'
 import { ActivityStoryProvider } from '@/components/activity-story'
 import { Reveal } from '@/components/reveal'
-import { ACTIVITIES } from '@/lib/activities'
+import { EditableImage, EditableLink, EditableText, useEditableImageSrc } from '@/components/edit-mode/editable'
 import { DEFAULT_IMAGES } from '@/lib/site-config'
-import { MEDIA_PACK, mediaTr } from '@/lib/media-pack'
+import type { Localized } from '@/lib/cms/types'
+
+const WHY_ICONS: Record<string, LucideIcon> = {
+  Car,
+  HardHat,
+  BadgeCheck,
+  Ship,
+  Award,
+  Waves,
+  Star,
+  Clapperboard,
+}
+
+const loc = (fr: string, en: string, es: string, ar: string): Localized => ({ fr, en, es, ar })
+
+const WHY_FALLBACK: Array<{
+  id: string
+  icon: LucideIcon
+  title: Localized
+  desc: Localized
+}> = [
+  {
+    id: 'transfer',
+    icon: Car,
+    title: loc('Transfert aller et retour', 'Round-trip transfer', 'Traslado de ida y vuelta', 'نقل ذهاب وإياب'),
+    desc: loc(
+      'Prise en charge confortable vers le spot et retour.',
+      'Comfortable pickup to the spot and back.',
+      'Recogida cómoda hacia el spot y vuelta.',
+      'توصيل مريح إلى الموقع والعودة.',
+    ),
+  },
+  {
+    id: 'helmets',
+    icon: HardHat,
+    title: loc('Casques radio', 'Radio helmets', 'Cascos con radio', 'خوذات راديو'),
+    desc: loc(
+      'Coaching en temps réel avec casque et walkie-talkie.',
+      'Real-time coaching with helmet and walkie-talkie.',
+      'Coaching en tiempo real con casco y walkie-talkie.',
+      'تدريب فوري بخوذة وجهاز لاسلكي.',
+    ),
+  },
+  {
+    id: 'iko',
+    icon: BadgeCheck,
+    title: loc('Moniteurs certifiés IKO', 'IKO-certified instructors', 'Monitores certificados IKO', 'مدربون معتمدون IKO'),
+    desc: loc(
+      'Une équipe qualifiée pour progresser en toute confiance.',
+      'A qualified team so you progress with confidence.',
+      'Un equipo cualificado para progresar con confianza.',
+      'فريق مؤهل لتتقدم بثقة.',
+    ),
+  },
+  {
+    id: 'boat',
+    icon: Ship,
+    title: loc('Bateau de sécurité', 'Safety boat', 'Barco de seguridad', 'قارب الأمان'),
+    desc: loc(
+      "Assistance rapide sur l'eau pendant vos sessions.",
+      'Fast on-water assistance during your sessions.',
+      'Asistencia rápida en el agua durante tus sesiones.',
+      'مساعدة سريعة على الماء أثناء جلساتك.',
+    ),
+  },
+  {
+    id: 'gear',
+    icon: Award,
+    title: loc('Matériel haut de gamme', 'Premium equipment', 'Material de alta gama', 'معدات فاخرة'),
+    desc: loc(
+      'Wings, kites et planches récents et bien entretenus.',
+      'Recent, well-maintained wings, kites and boards.',
+      'Wings, kites y tablas recientes y bien mantenidos.',
+      'أجنحة وكايت وألواح حديثة ومعتنى بها.',
+    ),
+  },
+  {
+    id: 'spot',
+    icon: Waves,
+    title: loc('Spot facile et eau plate', 'Easy spot & flat water', 'Spot fácil y agua plana', 'موقع سهل وماء مسطح'),
+    desc: loc(
+      'Lagon idéal pour débuter et monter en niveau.',
+      'Ideal lagoon for beginners and progressing riders.',
+      'Laguna ideal para empezar y subir de nivel.',
+      'بحيرة مثالية للمبتدئين وتطوير المستوى.',
+    ),
+  },
+]
 
 // Real Google Reviews data
 const googleReviews = [
@@ -64,7 +151,7 @@ const googleReviews = [
 
 export function HomeContent() {
   const { locale } = useTranslations()
-  const { images, texts } = useSiteConfig()
+  const { images, texts, whyChoose, mediaPack, activities } = useSiteConfig()
 
   // Map config images to component usage
   const IMGS = {
@@ -76,6 +163,11 @@ export function HomeContent() {
     group: '/sections/why-choose-us.jpeg',
     lagoon: images.homeLagoon || DEFAULT_IMAGES.homeLagoon,
   }
+  const heroSrc = useEditableImageSrc('homeHero', IMGS.hero)
+  const actionSrc = useEditableImageSrc('homeAction', IMGS.action)
+  const lagoonSrc = useEditableImageSrc('homeLagoon', IMGS.lagoon)
+  const sunsetSrc = useEditableImageSrc('homeSunset', IMGS.sunset)
+  const whyBgSrc = useEditableImageSrc('aboutStory', images.aboutStory || DEFAULT_IMAGES.aboutStory)
 
   // Helper to get localized text
   const getText = (frText: string, enText: string, esText?: string, arText?: string): string => {
@@ -93,16 +185,18 @@ export function HomeContent() {
       <section className="relative min-h-svh flex flex-col justify-end overflow-hidden bg-[#0B1F3B]" data-nav-theme="dark">
         {/* Wrapper carries the drift so object-cover stays intact */}
         <div className="absolute inset-0 animate-ken-burns">
-          <Image
-            src={IMGS.hero}
-            alt={getText('Lagon de Dakhla', 'Dakhla lagoon', 'Laguna de Dakhla', 'بحيرة الداخلة')}
-            fill
-            priority
-            fetchPriority="high"
-            sizes="100vw"
-            quality={70}
-            className="object-cover"
-          />
+          <EditableImage fieldKey="homeHero" src={heroSrc} label="Home hero" className="absolute inset-0">
+            <Image
+              src={heroSrc}
+              alt={getText('Lagon de Dakhla', 'Dakhla lagoon', 'Laguna de Dakhla', 'بحيرة الداخلة')}
+              fill
+              priority
+              fetchPriority="high"
+              sizes="100vw"
+              quality={70}
+              className="object-cover"
+            />
+          </EditableImage>
         </div>
 
         {/* Overlay 1 — blue atmospheric ramp */}
@@ -137,47 +231,99 @@ export function HomeContent() {
             <Reveal delay={100} duration={800}>
               <p className="glass-panel eyebrow inline-flex items-center gap-2.5 rounded-full px-5 py-2.5 text-white/90">
                 <MapPin className="h-3.5 w-3.5 text-[#C9A66B]" />
-                {getText('Dakhla, Maroc', 'Dakhla, Morocco', 'Dakhla, Marruecos', 'الداخلة، المغرب')}
+                <EditableText
+                  fieldKey="home.hero.eyebrow"
+                  label="Hero location"
+                  defaults={{
+                    fr: 'Dakhla, Maroc',
+                    en: 'Dakhla, Morocco',
+                    es: 'Dakhla, Marruecos',
+                    ar: 'الداخلة، المغرب',
+                  }}
+                  cms={texts['home.hero.eyebrow']}
+                />
               </p>
             </Reveal>
 
             <Reveal delay={220} duration={900}>
               <h1 className="font-heading text-display text-white mt-8 text-balance">
-                {getText('Apprenez le Wingfoil.', 'Learn to Wingfoil.', 'Aprende Wingfoil.', 'تعلّم الوينج فويل.')}
+                <EditableText
+                  fieldKey="home.hero.title"
+                  label="Hero title"
+                  as="span"
+                  defaults={{
+                    fr: 'Apprenez le Wingfoil.',
+                    en: 'Learn to Wingfoil.',
+                    es: 'Aprende Wingfoil.',
+                    ar: 'تعلّم الوينج فويل.',
+                  }}
+                  cms={texts['home.hero.title']}
+                />
                 <br />
-                <span className="text-white/55">
-                  {getText('Vivez le lagon.', 'Live the lagoon.', 'Vive la laguna.', 'عِش تجربة البحيرة.')}
-                </span>
+                <EditableText
+                  fieldKey="home.hero.titleSecondary"
+                  label="Hero title (line 2)"
+                  as="span"
+                  className="text-white/55"
+                  defaults={{
+                    fr: 'Vivez le lagon.',
+                    en: 'Live the lagoon.',
+                    es: 'Vive la laguna.',
+                    ar: 'عِش تجربة البحيرة.',
+                  }}
+                  cms={texts['home.hero.titleSecondary']}
+                />
               </h1>
             </Reveal>
 
             <Reveal delay={340} duration={900}>
-              <p className="text-body-lg text-white/80 max-w-xl mt-8">
-                {getText(
-                  'Cours de wingfoil et de kitesurf pour tous les niveaux, encadrés par des instructeurs certifiés IKO, dans l\'un des meilleurs spots au monde.',
-                  'Wingfoil and kitesurf lessons for all levels, taught by IKO-certified instructors, at one of the best spots in the world.',
-                  'Clases de wingfoil y kitesurf para todos los niveles, con instructores certificados IKO, en uno de los mejores spots del mundo.',
-                  'دروس الوينج فويل والكايت سيرف لجميع المستويات، مع مدربين معتمدين من IKO، في أحد أفضل المواقع في العالم.'
-                )}
-              </p>
+              <EditableText
+                fieldKey="home.hero.subtitle"
+                label="Hero subtitle"
+                as="p"
+                className="text-body-lg text-white/80 max-w-xl mt-8"
+                defaults={{
+                  fr: "Cours de wingfoil et de kitesurf pour tous les niveaux, encadrés par des instructeurs certifiés IKO, dans l'un des meilleurs spots au monde.",
+                  en: 'Wingfoil and kitesurf lessons for all levels, taught by IKO-certified instructors, at one of the best spots in the world.',
+                  es: 'Clases de wingfoil y kitesurf para todos los niveles, con instructores certificados IKO, en uno de los mejores spots del mundo.',
+                  ar: 'دروس الوينج فويل والكايت سيرف لجميع المستويات، مع مدربين معتمدين من IKO، في أحد أفضل المواقع في العالم.',
+                }}
+                cms={texts['home.hero.subtitle']}
+              />
             </Reveal>
 
             <Reveal delay={460} duration={900}>
               <div className="flex flex-wrap items-center gap-4 mt-11">
-                <Link
+                <EditableLink
+                  fieldKey="home.hero.ctaPrimary"
+                  label="Hero CTA — Explore"
                   href={`/${locale}/pricing`}
                   className="group btn-pill bg-white text-[#0B1F3B] hover:bg-white"
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#0046A4]" />
-                  {getText('Explorer nos cours', 'Explore our lessons', 'Explora nuestros cursos', 'استكشف دروسنا')}
-                  <ArrowRight className="h-4 w-4 transition-transform duration-400 group-hover:translate-x-1" />
-                </Link>
-                <Link
+                  defaults={{
+                    fr: 'Explorer nos cours',
+                    en: 'Explore our lessons',
+                    es: 'Explora nuestros cursos',
+                    ar: 'استكشف دروسنا',
+                  }}
+                  cms={texts['home.hero.ctaPrimary']}
+                  before={<span className="w-1.5 h-1.5 rounded-full bg-[#0046A4]" />}
+                  after={
+                    <ArrowRight className="h-4 w-4 transition-transform duration-400 group-hover:translate-x-1" />
+                  }
+                />
+                <EditableLink
+                  fieldKey="home.hero.ctaSecondary"
+                  label="Hero CTA — Contact"
                   href={`/${locale}/contact`}
                   className="btn-pill btn-outline-light shadow-none"
-                >
-                  {getText('Nous contacter', 'Get in touch', 'Contáctanos', 'اتصل بنا')}
-                </Link>
+                  defaults={{
+                    fr: 'Nous contacter',
+                    en: 'Get in touch',
+                    es: 'Contáctanos',
+                    ar: 'اتصل بنا',
+                  }}
+                  cms={texts['home.hero.ctaSecondary']}
+                />
               </div>
             </Reveal>
           </div>
@@ -208,32 +354,59 @@ export function HomeContent() {
         <div className="container-editorial relative z-10">
           <div className="max-w-3xl">
             <Reveal>
-              <p className="eyebrow text-[#0046A4]">
-                {getText('Nos activités', 'Our Activities', 'Nuestras Actividades', 'أنشطتنا')}
-              </p>
+              <EditableText
+                fieldKey="home.activities.eyebrow"
+                label="Activities eyebrow"
+                as="p"
+                className="eyebrow text-[#0046A4]"
+                defaults={loc('Nos activités', 'Our Activities', 'Nuestras Actividades', 'أنشطتنا')}
+                cms={texts['home.activities.eyebrow']}
+              />
             </Reveal>
             <Reveal delay={90}>
               <h2 className="font-heading text-section text-[#0046A4] mt-6 text-balance">
-                Wingfoil, Kitesurf
+                <EditableText
+                  fieldKey="home.activities.title"
+                  label="Activities title"
+                  defaults={loc(
+                    'Wingfoil, Kitesurf',
+                    'Wingfoil, Kitesurf',
+                    'Wingfoil, Kitesurf',
+                    'Wingfoil, Kitesurf',
+                  )}
+                  cms={texts['home.activities.title']}
+                />
                 <br />
-                <span className="text-[#0057D1]">{getText('& Plus encore', '& More', '& Más', '& المزيد')}</span>
+                <EditableText
+                  fieldKey="home.activities.titleMore"
+                  label="Activities title more"
+                  as="span"
+                  className="text-[#0057D1]"
+                  defaults={loc('& Plus encore', '& More', '& Más', '& المزيد')}
+                  cms={texts['home.activities.titleMore']}
+                />
               </h2>
             </Reveal>
             <Reveal delay={170}>
-              <p className="text-body-lg text-[#3D4F6F] mt-7">
-                {getText(
+              <EditableText
+                fieldKey="home.activities.subtitle"
+                label="Activities subtitle"
+                as="p"
+                className="text-body-lg text-[#3D4F6F] mt-7"
+                defaults={loc(
                   'Des cours adaptés à tous les niveaux. Des conseils pour choisir votre hébergement. Des conseils pour vous préparer physiquement. Des photos, des activités... Un séjour de rêve !',
                   'Courses adapted to all levels. Tips for choosing your accommodation. Advice to prepare yourself physically. Photos, activities... A dream stay!',
                   'Cursos adaptados a todos los niveles. Consejos para elegir tu alojamiento. Consejos para prepararte físicamente. Fotos, actividades... ¡Una estancia de ensueño!',
-                  'دروس مكيفة لجميع المستويات. نصائح لاختيار إقامتك. نصائح للاستعداد البدني. صور، أنشطة... إقامة الأحلام!'
+                  'دروس مكيفة لجميع المستويات. نصائح لاختيار إقامتك. نصائح للاستعداد البدني. صور، أنشطة... إقامة الأحلام!',
                 )}
-              </p>
+                cms={texts['home.activities.subtitle']}
+              />
             </Reveal>
           </div>
 
           {/* Bento Grid */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-8 mt-16 lg:mt-20">
-            {ACTIVITIES.map((activity, i) => (
+            {activities.map((activity, i) => (
               <Reveal key={activity.id} className={activity.className} delay={i * 110}>
                 <ActivityCard activity={activity} locale={locale} />
               </Reveal>
@@ -246,15 +419,17 @@ export function HomeContent() {
                 prefetch
                 className="group card-lift relative block h-85 overflow-hidden rounded-[28px] shadow-[0_25px_60px_rgba(0,70,164,0.10)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0046A4]"
               >
-                <Image
-                  src={IMGS.action}
-                  alt="Advanced Coaching"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  loading="lazy"
-                  quality={72}
-                  className="img-zoom object-cover"
-                />
+                <EditableImage fieldKey="homeAction" src={actionSrc} label="Home — Coaching card" className="absolute inset-0">
+                  <Image
+                    src={actionSrc}
+                    alt="Advanced Coaching"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    loading="lazy"
+                    quality={72}
+                    className="img-zoom object-cover"
+                  />
+                </EditableImage>
                 <div
                   aria-hidden
                   className="absolute inset-0"
@@ -264,29 +439,64 @@ export function HomeContent() {
                   }}
                 />
                 <div className="absolute bottom-0 w-full p-8 sm:p-10">
-                  <span className="eyebrow rounded-full bg-[#B8925A] px-3.5 py-1.5 text-[0.7rem] text-white">
-                    {getText('Coaching', 'Coaching', 'Entrenamiento', 'تدريب')}
-                  </span>
-                  <h3 className="font-heading text-card-title text-white mt-4">
-                    {getText('Coaching Avancé', 'Advanced Coaching', 'Coaching Avanzado', 'تدريب متقدم')}
-                  </h3>
-                  <p className="text-small text-white/75 mt-2.5 line-clamp-4">
-                    {texts['home.activities.coaching.desc']
-                      ? texts['home.activities.coaching.desc'][locale as 'fr' | 'en' | 'es' | 'ar'] || texts['home.activities.coaching.desc'].fr
-                      : getText(
-                        'L\'école propose également des coachings avancés pour les pratiquants souhaitant se perfectionner. Un suivi personnalisé est assuré directement avec un instructeur en Wingfoil et en kitesurf sur l\'eau pour progresser plus vite.',
-                        'The school also offers advanced coaching for practitioners looking to improve. Personalized follow-up is provided directly with a Wingfoil and kitesurf instructor on the water to progress faster.',
-                        'La escuela también ofrece coaching avanzado para practicantes que desean mejorar. Se proporciona un seguimiento personalizado directamente con un instructor de Wingfoil y kitesurf en el agua para progresar más rápido.',
-                        'تقدم المدرسة أيضاً تدريباً متقدماً للممارسين الذين يرغبون في التحسن. يتم توفير متابعة شخصية مباشرة مع مدرب وينج فويل وكايت سيرف على الماء للتقدم بشكل أسرع.'
-                      )}
-                  </p>
+                  <EditableText
+                    fieldKey="home.activities.coaching.badge"
+                    label="Coaching badge"
+                    as="span"
+                    className="eyebrow rounded-full bg-[#B8925A] px-3.5 py-1.5 text-[0.7rem] text-white"
+                    defaults={loc('Coaching', 'Coaching', 'Entrenamiento', 'تدريب')}
+                    cms={texts['home.activities.coaching.badge']}
+                  />
+                  <EditableText
+                    fieldKey="home.activities.coaching.title"
+                    label="Coaching title"
+                    as="h3"
+                    className="font-heading text-card-title text-white mt-4"
+                    defaults={loc(
+                      'Coaching Avancé',
+                      'Advanced Coaching',
+                      'Coaching Avanzado',
+                      'تدريب متقدم',
+                    )}
+                    cms={texts['home.activities.coaching.title']}
+                  />
+                  <EditableText
+                    fieldKey="home.activities.coaching.desc"
+                    label="Coaching description"
+                    as="p"
+                    className="text-small text-white/75 mt-2.5 line-clamp-4"
+                    defaults={loc(
+                      "L'école propose également des coachings avancés pour les pratiquants souhaitant se perfectionner. Un suivi personnalisé est assuré directement avec un instructeur en Wingfoil et en kitesurf sur l'eau pour progresser plus vite.",
+                      'The school also offers advanced coaching for practitioners looking to improve. Personalized follow-up is provided directly with a Wingfoil and kitesurf instructor on the water to progress faster.',
+                      'La escuela también ofrece coaching avanzado para practicantes que desean mejorar. Se proporciona un seguimiento personalizado directamente con un instructor de Wingfoil y kitesurf en el agua para progresar más rápido.',
+                      'تقدم المدرسة أيضاً تدريباً متقدماً للممارسين الذين يرغبون في التحسن. يتم توفير متابعة شخصية مباشرة مع مدرب وينج فويل وكايت سيرف على الماء للتقدم بشكل أسرع.',
+                    )}
+                    cms={texts['home.activities.coaching.desc']}
+                  />
                   <div className="mt-5 flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap sm:items-center">
                     <span className="inline-flex max-w-full items-center gap-2 rounded-full border border-white/25 bg-white/12 px-3.5 py-1.5 text-xs font-bold text-white backdrop-blur-lg">
                       <Clapperboard className="h-3.5 w-3.5 shrink-0" aria-hidden />
-                      <span className="truncate">{mediaTr(MEDIA_PACK.short, locale)}</span>
+                      <EditableText
+                        fieldKey="pricing.mediaPack.short"
+                        label="Media pack short"
+                        as="span"
+                        className="truncate"
+                        defaults={mediaPack.short}
+                        cms={texts['pricing.mediaPack.short']}
+                      />
                     </span>
                     <span className="inline-flex items-center gap-2 text-xs font-semibold text-white/60 transition-colors duration-450 group-hover:text-white">
-                      {getText('Voir le Media pack', 'View Media pack', 'Ver Media pack', 'عرض Media pack')}
+                      <EditableText
+                        fieldKey="home.activities.viewPack"
+                        label="View Media pack"
+                        defaults={loc(
+                          'Voir le Media pack',
+                          'View Media pack',
+                          'Ver Media pack',
+                          'عرض Media pack',
+                        )}
+                        cms={texts['home.activities.viewPack']}
+                      />
                       <ArrowRight className="h-3.5 w-3.5 transition-transform duration-450 group-hover:translate-x-0.5" />
                     </span>
                   </div>
@@ -297,15 +507,17 @@ export function HomeContent() {
             {/* ══ LARGE IMAGE ══ Lagoon, full width */}
             <Reveal className="md:col-span-12" delay={380}>
               <div className="group relative h-115 sm:h-130 overflow-hidden rounded-[28px] shadow-[0_40px_90px_rgba(0,70,164,0.08)]">
-                <Image
-                  src={IMGS.lagoon}
-                  alt="Dakhla Lagoon"
-                  fill
-                  sizes="100vw"
-                  loading="lazy"
-                  quality={78}
-                  className="img-zoom object-cover"
-                />
+                <EditableImage fieldKey="homeLagoon" src={lagoonSrc} label="Home — Lagoon" className="absolute inset-0">
+                  <Image
+                    src={lagoonSrc}
+                    alt="Dakhla Lagoon"
+                    fill
+                    sizes="100vw"
+                    loading="lazy"
+                    quality={78}
+                    className="img-zoom object-cover"
+                  />
+                </EditableImage>
                 <div
                   aria-hidden
                   className="absolute inset-0"
@@ -317,39 +529,69 @@ export function HomeContent() {
 
                 {/* Left Bottom Content */}
                 <div className="absolute bottom-0 left-0 p-9 md:p-14 max-w-xl">
-                  <p className="eyebrow text-white/65">
-                    {getText('Le spot parfait', 'The Perfect Spot', 'El Mejor Spot', 'الموقع المثالي')}
-                  </p>
-                  <h3 className="font-heading text-display-sm text-white mt-4">
-                    {getText('Le Lagon de Dakhla', 'Dakhla Lagoon', 'Laguna de Dakhla', 'بحيرة الداخلة')}
-                  </h3>
-                  <p className="text-body-lg text-white/80 mt-4">
-                    {getText('Eaux plates, vent constant, soleil presque toute l\'année.', 'Flat water, constant wind, sunshine almost year-round.', 'Agua plana, viento constante, sol casi todo el año.', 'مياه هادئة ورياح مستمرة وشمس معظم أيام السنة.')}
-                  </p>
+                  <EditableText
+                    fieldKey="home.lagoon.eyebrow"
+                    label="Lagoon eyebrow"
+                    as="p"
+                    className="eyebrow text-white/65"
+                    defaults={loc('Le spot parfait', 'The Perfect Spot', 'El Mejor Spot', 'الموقع المثالي')}
+                    cms={texts['home.lagoon.eyebrow']}
+                  />
+                  <EditableText
+                    fieldKey="home.lagoon.title"
+                    label="Lagoon title"
+                    as="h3"
+                    className="font-heading text-display-sm text-white mt-4"
+                    defaults={loc('Le Lagon de Dakhla', 'Dakhla Lagoon', 'Laguna de Dakhla', 'بحيرة الداخلة')}
+                    cms={texts['home.lagoon.title']}
+                  />
+                  <EditableText
+                    fieldKey="home.lagoon.subtitle"
+                    label="Lagoon subtitle"
+                    as="p"
+                    className="text-body-lg text-white/80 mt-4"
+                    defaults={loc(
+                      "Eaux plates, vent constant, soleil presque toute l'année.",
+                      'Flat water, constant wind, sunshine almost year-round.',
+                      'Agua plana, viento constante, sol casi todo el año.',
+                      'مياه هادئة ورياح مستمرة وشمس معظم أيام السنة.',
+                    )}
+                    cms={texts['home.lagoon.subtitle']}
+                  />
                 </div>
 
                 {/* Top Right Description Card */}
                 <div className="absolute top-0 right-0 m-6 md:m-9 max-w-sm rounded-3xl border border-white/18 bg-white/10 p-7 backdrop-blur-[20px] backdrop-saturate-150 shadow-[0_25px_60px_rgba(0,70,164,0.10)] hidden sm:block">
-                  <p className="text-small leading-relaxed text-white/90">
-                    {getText(
-                      'Le lagon offre des conditions idéales pour progresser : un plan d\'eau calme et une orientation de vent particulièrement favorable. Les statistiques de vent sont excellentes durant plusieurs mois de l\'année.',
+                  <EditableText
+                    fieldKey="home.lagoon.detail"
+                    label="Lagoon detail"
+                    as="p"
+                    className="text-small leading-relaxed text-white/90"
+                    defaults={loc(
+                      "Le lagon offre des conditions idéales pour progresser : un plan d'eau calme et une orientation de vent particulièrement favorable. Les statistiques de vent sont excellentes durant plusieurs mois de l'année.",
                       'The lagoon offers ideal conditions for progression: calm flat water and a particularly favorable wind direction. Wind statistics are excellent for several months.',
                       'La laguna ofrece condiciones ideales para progresar: aguas planas y tranquilas con orientación del viento especialmente favorable. Las estadísticas de viento son excelentes durante varios meses.',
-                      'توفر البحيرة ظروفاً مثالية للتقدم: مياه هادئة وسلسة واتجاه رياح مواتي بشكل خاص. إحصائيات الرياح ممتازة لعدة أشهر من السنة.'
+                      'توفر البحيرة ظروفاً مثالية للتقدم: مياه هادئة وسلسة واتجاه رياح مواتي بشكل خاص. إحصائيات الرياح ممتازة لعدة أشهر من السنة.',
                     )}
-                  </p>
+                    cms={texts['home.lagoon.detail']}
+                  />
                 </div>
 
                 {/* Same copy, stacked below the heading on phones */}
                 <div className="sm:hidden absolute inset-x-0 top-0 p-8">
-                  <p className="text-small leading-relaxed text-white/85 rounded-[20px] border border-white/18 bg-white/10 p-5 backdrop-blur-[20px]">
-                    {getText(
-                      'Le lagon offre des conditions idéales pour progresser : un plan d\'eau calme et une orientation de vent particulièrement favorable.',
+                  <EditableText
+                    fieldKey="home.lagoon.detailShort"
+                    label="Lagoon detail (mobile)"
+                    as="p"
+                    className="text-small leading-relaxed text-white/85 rounded-[20px] border border-white/18 bg-white/10 p-5 backdrop-blur-[20px]"
+                    defaults={loc(
+                      "Le lagon offre des conditions idéales pour progresser : un plan d'eau calme et une orientation de vent particulièrement favorable.",
                       'The lagoon offers ideal conditions for progression: calm flat water and a particularly favorable wind direction.',
                       'La laguna ofrece condiciones ideales para progresar: aguas planas y tranquilas con orientación del viento especialmente favorable.',
-                      'توفر البحيرة ظروفاً مثالية للتقدم: مياه هادئة وسلسة واتجاه رياح مواتي بشكل خاص.'
+                      'توفر البحيرة ظروفاً مثالية للتقدم: مياه هادئة وسلسة واتجاه رياح مواتي بشكل خاص.',
                     )}
-                  </p>
+                    cms={texts['home.lagoon.detailShort']}
+                  />
                 </div>
               </div>
             </Reveal>
@@ -364,16 +606,18 @@ export function HomeContent() {
         data-nav-theme="dark"
       >
         <div className="absolute inset-0 z-0">
-          <Image
-            src={IMGS.group}
-            alt=""
-            aria-hidden
-            fill
-            sizes="100vw"
-            loading="lazy"
-            quality={72}
-            className="object-cover"
-          />
+          <EditableImage fieldKey="aboutStory" src={whyBgSrc} label="Why choose — background" className="absolute inset-0">
+            <Image
+              src={whyBgSrc}
+              alt=""
+              aria-hidden
+              fill
+              sizes="100vw"
+              loading="lazy"
+              quality={72}
+              className="object-cover"
+            />
+          </EditableImage>
           <div
             aria-hidden
             className="absolute inset-0"
@@ -395,87 +639,64 @@ export function HomeContent() {
         <div className="container-editorial relative z-10">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <p className="eyebrow text-[#5AA8FF]">
-                {getText('Pourquoi nous choisir', 'Why Choose Us', '¿Por qué elegirnos?', 'لماذا تختارنا')}
-              </p>
-              <h2 className="font-heading text-section text-white mt-6 text-balance">
-                {getText('L\'excellence au cœur de Dakhla', 'Excellence in the Heart of Dakhla', 'Excelencia en el Corazón de Dakhla', 'التميز في قلب الداخلة')}
-              </h2>
-              <p className="text-body-lg text-white/70 mt-5">
-                {getText(
+              <EditableText
+                fieldKey="home.why.eyebrow"
+                label="Why choose eyebrow"
+                as="p"
+                className="eyebrow text-[#5AA8FF]"
+                defaults={loc(
+                  'Pourquoi nous choisir',
+                  'Why Choose Us',
+                  '¿Por qué elegirnos?',
+                  'لماذا تختارنا',
+                )}
+                cms={texts['home.why.eyebrow']}
+              />
+              <EditableText
+                fieldKey="home.why.title"
+                label="Why choose title"
+                as="h2"
+                className="font-heading text-section text-white mt-6 text-balance"
+                defaults={loc(
+                  "L'excellence au cœur de Dakhla",
+                  'Excellence in the Heart of Dakhla',
+                  'Excelencia en el Corazón de Dakhla',
+                  'التميز في قلب الداخلة',
+                )}
+                cms={texts['home.why.title']}
+              />
+              <EditableText
+                fieldKey="home.why.subtitle"
+                label="Why choose subtitle"
+                as="p"
+                className="text-body-lg text-white/70 mt-5"
+                defaults={loc(
                   'Tout est pensé pour votre progression, en sécurité et dans le plaisir.',
                   'Everything is designed for your progress, safely and with fun.',
                   'Todo está pensado para tu progreso, con seguridad y diversión.',
-                  'كل شيء مصمم لتقدمك بأمان ومتعة.'
+                  'كل شيء مصمم لتقدمك بأمان ومتعة.',
                 )}
-              </p>
+                cms={texts['home.why.subtitle']}
+              />
             </div>
           </Reveal>
 
           <div className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
-            {[
-              {
-                icon: Car,
-                title: getText('Transfert aller et retour', 'Round-trip transfer', 'Traslado de ida y vuelta', 'نقل ذهاب وإياب'),
-                desc: getText(
-                  'Prise en charge confortable vers le spot et retour.',
-                  'Comfortable pickup to the spot and back.',
-                  'Recogida cómoda hacia el spot y vuelta.',
-                  'توصيل مريح إلى الموقع والعودة.'
-                ),
-              },
-              {
-                icon: HardHat,
-                title: getText('Casques radio', 'Radio helmets', 'Cascos con radio', 'خوذات راديو'),
-                desc: getText(
-                  'Coaching en temps réel avec casque et walkie-talkie.',
-                  'Real-time coaching with helmet and walkie-talkie.',
-                  'Coaching en tiempo real con casco y walkie-talkie.',
-                  'تدريب فوري بخوذة وجهاز لاسلكي.'
-                ),
-              },
-              {
-                icon: BadgeCheck,
-                title: getText('Moniteurs certifiés IKO', 'IKO-certified instructors', 'Monitores certificados IKO', 'مدربون معتمدون IKO'),
-                desc: getText(
-                  'Une équipe qualifiée pour progresser en toute confiance.',
-                  'A qualified team so you progress with confidence.',
-                  'Un equipo cualificado para progresar con confianza.',
-                  'فريق مؤهل لتتقدم بثقة.'
-                ),
-              },
-              {
-                icon: Ship,
-                title: getText('Bateau de sécurité', 'Safety boat', 'Barco de seguridad', 'قارب الأمان'),
-                desc: getText(
-                  'Assistance rapide sur l\'eau pendant vos sessions.',
-                  'Fast on-water assistance during your sessions.',
-                  'Asistencia rápida en el agua durante tus sesiones.',
-                  'مساعدة سريعة على الماء أثناء جلساتك.'
-                ),
-              },
-              {
-                icon: Award,
-                title: getText('Matériel haut de gamme', 'Premium equipment', 'Material de alta gama', 'معدات فاخرة'),
-                desc: getText(
-                  'Wings, kites et planches récents et bien entretenus.',
-                  'Recent, well-maintained wings, kites and boards.',
-                  'Wings, kites y tablas recientes y bien mantenidos.',
-                  'أجنحة وكايت وألواح حديثة ومعتنى بها.'
-                ),
-              },
-              {
-                icon: Waves,
-                title: getText('Spot facile et eau plate', 'Easy spot & flat water', 'Spot fácil y agua plana', 'موقع سهل وماء مسطح'),
-                desc: getText(
-                  'Lagon idéal pour débuter et monter en niveau.',
-                  'Ideal lagoon for beginners and progressing riders.',
-                  'Laguna ideal para empezar y subir de nivel.',
-                  'بحيرة مثالية للمبتدئين وتطوير المستوى.'
-                ),
-              },
-            ].map(({ icon: Icon, title, desc }, i) => (
-              <Reveal key={title} delay={i * 90} direction={i % 2 === 0 ? 'up' : 'left'}>
+            {(whyChoose.length > 0
+              ? whyChoose.map((item) => ({
+                  id: item.id,
+                  icon: WHY_ICONS[item.icon] || Star,
+                  title: item.title,
+                  desc: item.desc,
+                }))
+              : WHY_FALLBACK.map((item) => ({
+                  id: item.id,
+                  icon: item.icon,
+                  title: item.title,
+                  desc: item.desc,
+                }))
+            ).map(({ id, icon: Icon, title, desc }, i) => (
+              <Reveal key={id} delay={i * 90} direction={i % 2 === 0 ? 'up' : 'left'}>
                 <article className="group relative h-full overflow-hidden rounded-[24px] border border-white/12 bg-white/8 p-6 backdrop-blur-md transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1.5 hover:border-white/25 hover:bg-white/14 hover:shadow-[0_25px_60px_rgba(0,0,0,0.28)] sm:p-7">
                   <span
                     aria-hidden
@@ -484,12 +705,22 @@ export function HomeContent() {
                   <span className="relative flex h-12 w-12 items-center justify-center rounded-[16px] bg-[#C9A66B] text-[#0B1F3B] shadow-[0_10px_30px_rgba(201,166,107,0.35)] transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
                     <Icon className="h-5 w-5" aria-hidden />
                   </span>
-                  <h3 className="relative font-heading text-lg font-bold text-white mt-5">
-                    {title}
-                  </h3>
-                  <p className="relative text-small text-white/65 mt-2 leading-relaxed">
-                    {desc}
-                  </p>
+                  <EditableText
+                    fieldKey={`home.why.${id}.title`}
+                    label={`Why — ${id} title`}
+                    as="h3"
+                    className="relative font-heading text-lg font-bold text-white mt-5"
+                    defaults={title}
+                    cms={texts[`home.why.${id}.title`]}
+                  />
+                  <EditableText
+                    fieldKey={`home.why.${id}.desc`}
+                    label={`Why — ${id} description`}
+                    as="p"
+                    className="relative text-small text-white/65 mt-2 leading-relaxed"
+                    defaults={desc}
+                    cms={texts[`home.why.${id}.desc`]}
+                  />
                 </article>
               </Reveal>
             ))}
@@ -497,13 +728,22 @@ export function HomeContent() {
 
           <Reveal delay={520}>
             <div className="mt-12 flex justify-center">
-              <Link
+              <EditableLink
+                fieldKey="home.why.cta"
+                label="Why choose CTA"
                 href={`/${locale}/safety`}
                 className="group btn-pill bg-[#C9A66B] text-[#0B1F3B] hover:bg-[#C9A66B] shadow-[0_10px_30px_rgba(201,166,107,0.35)]"
-              >
-                {getText('Découvrir sécurité & matériel', 'Explore safety & gear', 'Descubrir seguridad y material', 'اكتشف السلامة والمعدات')}
-                <ArrowRight className="h-5 w-5 transition-transform duration-400 group-hover:translate-x-1" />
-              </Link>
+                defaults={loc(
+                  'Découvrir sécurité & matériel',
+                  'Explore safety & gear',
+                  'Descubrir seguridad y material',
+                  'اكتشف السلامة والمعدات',
+                )}
+                cms={texts['home.why.cta']}
+                after={
+                  <ArrowRight className="h-5 w-5 transition-transform duration-400 group-hover:translate-x-1" />
+                }
+              />
             </div>
           </Reveal>
         </div>
@@ -524,7 +764,14 @@ export function HomeContent() {
                   <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
                   <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                 </svg>
-                <span className="text-small font-semibold text-white">Google Reviews</span>
+                <EditableText
+                  fieldKey="home.reviews.badge"
+                  label="Reviews badge"
+                  as="span"
+                  className="text-small font-semibold text-white"
+                  defaults={loc('Google Reviews', 'Google Reviews', 'Google Reviews', 'Google Reviews')}
+                  cms={texts['home.reviews.badge']}
+                />
                 <span aria-hidden className="h-4 w-px bg-white/20" />
                 <span className="flex gap-0.5">
                   {[...Array(5)].map((_, i) => (
@@ -532,12 +779,32 @@ export function HomeContent() {
                   ))}
                 </span>
               </div>
-              <h2 className="font-heading text-section text-white text-balance">
-                {getText('Ce que disent nos élèves', 'What Our Students Say', 'Qué dicen nuestros estudiantes', 'ما يقوله طلابنا')}
-              </h2>
-              <p className="text-body-lg text-white/65 mt-6">
-                {getText('Découvrez les avis authentiques de nos élèves sur Google.', 'Discover authentic reviews from our students on Google.', 'Descubre las reseñas auténticas de nuestros estudiantes en Google.', 'اكتشف التعليقات الأصلية من طلابنا على Google.')}
-              </p>
+              <EditableText
+                fieldKey="home.reviews.title"
+                label="Reviews title"
+                as="h2"
+                className="font-heading text-section text-white text-balance"
+                defaults={loc(
+                  'Ce que disent nos élèves',
+                  'What Our Students Say',
+                  'Qué dicen nuestros estudiantes',
+                  'ما يقوله طلابنا',
+                )}
+                cms={texts['home.reviews.title']}
+              />
+              <EditableText
+                fieldKey="home.reviews.subtitle"
+                label="Reviews subtitle"
+                as="p"
+                className="text-body-lg text-white/65 mt-6"
+                defaults={loc(
+                  'Découvrez les avis authentiques de nos élèves sur Google.',
+                  'Discover authentic reviews from our students on Google.',
+                  'Descubre las reseñas auténticas de nuestros estudiantes en Google.',
+                  'اكتشف التعليقات الأصلية من طلابنا على Google.',
+                )}
+                cms={texts['home.reviews.subtitle']}
+              />
             </div>
           </Reveal>
 
@@ -551,7 +818,19 @@ export function HomeContent() {
                     ))}
                   </span>
                   <blockquote className="text-small flex-1 leading-relaxed text-white/80 mt-5">
-                    “{locale === 'fr' || locale === 'es' ? (locale === 'es' ? review.text.en : review.text.fr) : review.text.en}”
+                    “
+                    <EditableText
+                      fieldKey={`home.reviews.${i}.text`}
+                      label={`Review ${i + 1} text`}
+                      defaults={loc(
+                        review.text.fr,
+                        review.text.en,
+                        review.text.en,
+                        review.text.en,
+                      )}
+                      cms={texts[`home.reviews.${i}.text`]}
+                    />
+                    ”
                   </blockquote>
                   <hr className="hairline-light my-6" />
                   <figcaption className="flex items-center gap-3.5">
@@ -562,8 +841,22 @@ export function HomeContent() {
                       {review.avatar}
                     </span>
                     <span>
-                      <span className="block font-semibold text-white">{review.name}</span>
-                      <span className="block text-xs text-white/45">{review.date}</span>
+                      <EditableText
+                        fieldKey={`home.reviews.${i}.name`}
+                        label={`Review ${i + 1} name`}
+                        as="span"
+                        className="block font-semibold text-white"
+                        defaults={loc(review.name, review.name, review.name, review.name)}
+                        cms={texts[`home.reviews.${i}.name`]}
+                      />
+                      <EditableText
+                        fieldKey={`home.reviews.${i}.date`}
+                        label={`Review ${i + 1} date`}
+                        as="span"
+                        className="block text-xs text-white/45"
+                        defaults={loc(review.date, review.date, review.date, review.date)}
+                        cms={texts[`home.reviews.${i}.date`]}
+                      />
                     </span>
                   </figcaption>
                 </figure>
@@ -580,7 +873,17 @@ export function HomeContent() {
                 className="btn-pill btn-outline-light text-small shadow-none"
               >
                 <Star className="h-4 w-4 text-[#C9A66B]" />
-                {getText('Laisser un avis sur Google', 'Leave a Google Review', 'Dejar una reseña en Google', 'Laat een Google-review achter')}
+                <EditableText
+                  fieldKey="home.reviews.cta"
+                  label="Leave a Google Review"
+                  defaults={loc(
+                    'Laisser un avis sur Google',
+                    'Leave a Google Review',
+                    'Dejar una reseña en Google',
+                    'اترك تقييماً على Google',
+                  )}
+                  cms={texts['home.reviews.cta']}
+                />
               </a>
             </div>
           </Reveal>
@@ -592,16 +895,18 @@ export function HomeContent() {
         <div className="container-editorial">
           <Reveal>
             <div className="group relative overflow-hidden rounded-[28px] shadow-[0_40px_90px_rgba(0,70,164,0.08)]">
-              <Image
-                src={IMGS.sunset}
-                alt=""
-                aria-hidden
-                fill
-                sizes="(max-width: 1440px) 100vw, 1440px"
-                loading="lazy"
-                quality={75}
-                className="img-zoom object-cover"
-              />
+              <EditableImage fieldKey="homeSunset" src={sunsetSrc} label="Home — Closing CTA" className="absolute inset-0">
+                <Image
+                  src={sunsetSrc}
+                  alt=""
+                  aria-hidden
+                  fill
+                  sizes="(max-width: 1440px) 100vw, 1440px"
+                  loading="lazy"
+                  quality={75}
+                  className="img-zoom object-cover"
+                />
+              </EditableImage>
               <div
                 aria-hidden
                 className="absolute inset-0"
@@ -612,23 +917,47 @@ export function HomeContent() {
               />
               <div className="relative z-10 px-8 py-16 sm:px-14 sm:py-24 lg:px-20">
                 <div className="max-w-2xl">
-                  <p className="eyebrow text-[#C9A66B]">
-                    {getText('Prêt à décoller', 'Ready to fly', 'Listo para despegar', 'مستعد للانطلاق')}
-                  </p>
-                  <h2 className="font-heading text-display-sm text-white mt-6 text-balance">
-                    {getText('Votre première session vous attend.', 'Your first session is waiting.', 'Tu primera sesión te espera.', 'جلستك الأولى تنتظرك.')}
-                  </h2>
+                  <EditableText
+                    fieldKey="home.cta.eyebrow"
+                    label="Home CTA eyebrow"
+                    as="p"
+                    className="eyebrow text-[#C9A66B]"
+                    defaults={loc('Prêt à décoller', 'Ready to fly', 'Listo para despegar', 'مستعد للانطلاق')}
+                    cms={texts['home.cta.eyebrow']}
+                  />
+                  <EditableText
+                    fieldKey="home.cta.title"
+                    label="Home CTA title"
+                    as="h2"
+                    className="font-heading text-display-sm text-white mt-6 text-balance"
+                    defaults={loc(
+                      'Votre première session vous attend.',
+                      'Your first session is waiting.',
+                      'Tu primera sesión te espera.',
+                      'جلستك الأولى تنتظرك.',
+                    )}
+                    cms={texts['home.cta.title']}
+                  />
                   <div className="mt-10 flex flex-wrap items-center gap-4">
-                    <Link
+                    <EditableLink
+                      fieldKey="home.cta.contact"
+                      label="Home CTA contact"
                       href={`/${locale}/contact`}
                       className="group/cta btn-pill bg-white text-[#0B1F3B] hover:bg-white"
-                    >
-                      {getText('Nous contacter', 'Get in touch', 'Contáctanos', 'اتصل بنا')}
-                      <ArrowRight className="h-4 w-4 transition-transform duration-400 group-hover/cta:translate-x-1" />
-                    </Link>
-                    <Link href={`/${locale}/pricing`} className="btn-pill btn-outline-light shadow-none">
-                      {getText('Voir les tarifs', 'View pricing', 'Ver precios', 'عرض الأسعار')}
-                    </Link>
+                      defaults={loc('Nous contacter', 'Get in touch', 'Contáctanos', 'اتصل بنا')}
+                      cms={texts['home.cta.contact']}
+                      after={
+                        <ArrowRight className="h-4 w-4 transition-transform duration-400 group-hover/cta:translate-x-1" />
+                      }
+                    />
+                    <EditableLink
+                      fieldKey="home.cta.pricing"
+                      label="Home CTA pricing"
+                      href={`/${locale}/pricing`}
+                      className="btn-pill btn-outline-light shadow-none"
+                      defaults={loc('Voir les tarifs', 'View pricing', 'Ver precios', 'عرض الأسعار')}
+                      cms={texts['home.cta.pricing']}
+                    />
                   </div>
                 </div>
               </div>

@@ -1,61 +1,50 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { createServerClient } from '@supabase/ssr'
 
-// Country code → locale mapping
-// Only locales that exist under app/ may be used here: fr, en, es, ar.
-// FR: France, Belgium, Switzerland (FR part), Morocco, Luxembourg, Senegal, Ivory Coast, etc.
-// ES: Spain, Mexico, Argentina, Colombia, Chile, etc.
-// EN: everything else
 const COUNTRY_TO_LOCALE: Record<string, string> = {
-  // French
-  FR: 'fr', // France
-  BE: 'fr', // Belgium (defaulting to French — NL speakers can switch)
-  MA: 'fr', // Morocco
-  LU: 'fr', // Luxembourg
-  SN: 'fr', // Senegal
-  CI: 'fr', // Ivory Coast
-  CM: 'fr', // Cameroon
-  TN: 'fr', // Tunisia
-  DZ: 'fr', // Algeria
-  CH: 'fr', // Switzerland
-  MC: 'fr', // Monaco
-
-  // Spanish
-  ES: 'es', // Spain
-  MX: 'es', // Mexico
-  AR: 'es', // Argentina
-  CO: 'es', // Colombia
-  CL: 'es', // Chile
-  PE: 'es', // Peru
-  VE: 'es', // Venezuela
-  EC: 'es', // Ecuador
-  BO: 'es', // Bolivia
-  PY: 'es', // Paraguay
-  UY: 'es', // Uruguay
-  CR: 'es', // Costa Rica
-  PA: 'es', // Panama
-  DO: 'es', // Dominican Republic
-  GT: 'es', // Guatemala
-  HN: 'es', // Honduras
-  NI: 'es', // Nicaragua
-  SV: 'es', // El Salvador
-  CU: 'es', // Cuba
-
-  // Arabic
-  SA: 'ar', // Saudi Arabia
-  AE: 'ar', // United Arab Emirates
-  QA: 'ar', // Qatar
-  KW: 'ar', // Kuwait
-  BH: 'ar', // Bahrain
-  OM: 'ar', // Oman
-  JO: 'ar', // Jordan
-  EG: 'ar', // Egypt
+  FR: 'fr',
+  BE: 'fr',
+  MA: 'fr',
+  LU: 'fr',
+  SN: 'fr',
+  CI: 'fr',
+  CM: 'fr',
+  TN: 'fr',
+  DZ: 'fr',
+  CH: 'fr',
+  MC: 'fr',
+  ES: 'es',
+  MX: 'es',
+  AR: 'es',
+  CO: 'es',
+  CL: 'es',
+  PE: 'es',
+  VE: 'es',
+  EC: 'es',
+  BO: 'es',
+  PY: 'es',
+  UY: 'es',
+  CR: 'es',
+  PA: 'es',
+  DO: 'es',
+  GT: 'es',
+  HN: 'es',
+  NI: 'es',
+  SV: 'es',
+  CU: 'es',
+  SA: 'ar',
+  AE: 'ar',
+  QA: 'ar',
+  KW: 'ar',
+  BH: 'ar',
+  OM: 'ar',
+  JO: 'ar',
+  EG: 'ar',
 }
 
-// Parse Accept-Language header for a best-match locale
 function getLocaleFromAcceptLanguage(header: string | null): string {
   if (!header) return 'en'
-  // Parse "fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7,nl;q=0.6"
   const langs = header
     .split(',')
     .map((l) => {
@@ -73,22 +62,65 @@ function getLocaleFromAcceptLanguage(header: string | null): string {
   return 'en'
 }
 
-export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl
+async function refreshSupabaseSession(request: NextRequest) {
+  let response = NextResponse.next({ request })
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  if (!url || !anon) return response
 
-  // Only intercept the root path "/"
+  const supabase = createServerClient(url, anon, {
+    cookies: {
+      getAll() {
+        return request.cookies.getAll()
+      },
+      setAll(cookiesToSet) {
+        cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
+        response = NextResponse.next({ request })
+        cookiesToSet.forEach(({ name, value, options }) =>
+          response.cookies.set(name, value, options),
+        )
+      },
+    },
+  })
+
+  // Fail-open quickly on network/auth provider hiccups so public routes
+  // (especially /auth/login) are never blocked for 20s+ by retries.
+  try {
+    await Promise.race([
+      supabase.auth.getUser(),
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('supabase auth timeout')), 1500),
+      ),
+    ])
+  } catch {
+    // Keep request flowing; downstream pages can still render.
+  }
+  return response
+}
+
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
+  const isPublicAuthPage = pathname === '/auth/login' || pathname === '/auth/signup'
+
+  // Keep admin / dashboard sessions fresh whenever Supabase is configured
+  if (
+    pathname.startsWith('/admin') ||
+    pathname.startsWith('/api/admin') ||
+    (pathname.startsWith('/auth') && !isPublicAuthPage) ||
+    pathname.startsWith('/account') ||
+    pathname.startsWith('/profile') ||
+    pathname.startsWith('/business')
+  ) {
+    return refreshSupabaseSession(request)
+  }
+
   if (pathname !== '/') return NextResponse.next()
 
-  // 1. Try Vercel's geo header (production on Vercel)
   const country = request.headers.get('x-vercel-ip-country')?.toUpperCase()
   let locale = country ? (COUNTRY_TO_LOCALE[country] ?? null) : null
-
-  // 2. Fallback: Accept-Language header (local dev or non-Vercel hosts)
   if (!locale) {
     locale = getLocaleFromAcceptLanguage(request.headers.get('accept-language'))
   }
-
-  // 3. Final fallback: French (our default)
   if (!locale) locale = 'fr'
 
   const url = request.nextUrl.clone()
@@ -97,6 +129,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // Locale redirect only applies to the bare root — skip every other route.
-  matcher: ['/'],
+  matcher: ['/', '/admin/:path*', '/api/admin/:path*', '/auth/:path*', '/account/:path*', '/profile/:path*', '/business/:path*'],
 }

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import {
@@ -17,6 +17,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
+import { PhoneInput } from '@/components/ui/phone-input'
 import { useTranslations } from '@/lib/i18n-context'
 import { cn } from '@/lib/utils'
 
@@ -59,6 +60,7 @@ export function ContactForm() {
     watch,
     reset,
     getValues,
+    control,
     formState: { errors },
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
@@ -251,10 +253,19 @@ export function ContactForm() {
           </div>
 
           <div className="space-y-2.5">
-            <Label htmlFor="phone" className={LABEL}>
-              {t('contact.form.phone')}
-            </Label>
-            <Input id="phone" type="tel" {...register('phone')} className={FIELD} />
+            <Controller
+              name="phone"
+              control={control}
+              render={({ field }) => (
+                <PhoneInput
+                  label={t('contact.form.phone')}
+                  value={field.value || ''}
+                  onChange={field.onChange}
+                  autoDetect
+                  defaultCountry="MA"
+                />
+              )}
+            />
           </div>
         </div>
       )}
