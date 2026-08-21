@@ -12,6 +12,7 @@ import {
   Star,
   Type,
   ArrowLeft,
+  Images,
   type LucideIcon,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -35,6 +36,13 @@ export const CONTENT_ITEMS: Array<{
     title: 'Activities',
     desc: 'Home gallery photos',
     icon: LayoutGrid,
+    group: 'media',
+  },
+  {
+    href: '/admin/gallery',
+    title: 'Gallery',
+    desc: 'Public gallery page photos',
+    icon: Images,
     group: 'media',
   },
   {

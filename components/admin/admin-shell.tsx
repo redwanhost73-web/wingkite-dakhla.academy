@@ -25,6 +25,7 @@ const CONTENT_PREFIXES = [
   '/admin/media',
   '/admin/images',
   '/admin/activities',
+  '/admin/gallery',
   '/admin/packs',
   '/admin/pricing',
   '/admin/media-pack',

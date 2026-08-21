@@ -8,6 +8,9 @@ export type AdminNotificationType =
   | 'user.role'
   | 'content.published'
   | 'content.seeded'
+  | 'gallery.added'
+  | 'gallery.updated'
+  | 'gallery.deleted'
   | 'system'
 
 export type AdminNotification = {
@@ -28,6 +31,7 @@ export function hrefForNotification(n: Pick<AdminNotification, 'type' | 'meta'>)
 
   if (typeof n.type === 'string' && n.type.startsWith('user.')) return '/admin/users'
   if (n.type === 'content.published' || n.type === 'content.seeded') return '/admin/content'
+  if (typeof n.type === 'string' && n.type.startsWith('gallery.')) return '/admin/gallery'
   return null
 }
 

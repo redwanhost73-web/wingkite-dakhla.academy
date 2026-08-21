@@ -5,6 +5,7 @@ import { emptyCmsBundle, fetchCmsBundle, type CmsBundle, type SiteTexts } from '
 import type { PricingRow, SiteImages } from '@/lib/site-config'
 import type { Activity } from '@/lib/activities'
 import type { Pack } from '@/lib/packages'
+import type { GalleryItem } from '@/lib/gallery'
 
 export type { SiteTexts }
 
@@ -39,6 +40,7 @@ export function useSiteConfig() {
     whyChoose: bundle.whyChoose,
     activities: bundle.activities as Activity[],
     packages: bundle.packages as Pack[],
+    gallery: bundle.gallery as GalleryItem[],
     isLoaded: bundle.loaded,
     cmsConfigured: bundle.configured,
     refresh,

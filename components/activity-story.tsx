@@ -20,6 +20,8 @@ type StoryRequest = {
   images: string[]
   title: string
   startIndex?: number
+  /** Hide contact CTA (gallery story mode). */
+  showBookCta?: boolean
 }
 
 type StoryContextValue = {
@@ -50,6 +52,7 @@ export function ActivityStoryProvider({ children }: { children: ReactNode }) {
           images={story.images}
           title={story.title}
           startIndex={story.startIndex ?? 0}
+          showBookCta={story.showBookCta !== false}
           onClose={close}
         />
       )}
@@ -65,6 +68,7 @@ type Props = {
   images: string[]
   title: string
   startIndex: number
+  showBookCta?: boolean
   onClose: () => void
 }
 
@@ -75,7 +79,7 @@ function bookLabel(locale: string) {
   return 'Book Now'
 }
 
-function ActivityStory({ images, title, startIndex, onClose }: Props) {
+function ActivityStory({ images, title, startIndex, showBookCta = true, onClose }: Props) {
   const locale = useLocale()
   const [index, setIndex] = useState(startIndex)
   const [progress, setProgress] = useState(0)
@@ -230,23 +234,24 @@ function ActivityStory({ images, title, startIndex, onClose }: Props) {
         />
       </div>
 
-      {/* Book CTA — always reachable from story mode */}
       <div className="absolute bottom-6 left-0 right-0 z-30 flex flex-col items-center gap-3 px-6">
         <p className="text-center text-white/70 text-xs font-medium">
           {index + 1} / {images.length}
         </p>
-        <Link
-          href={`/${locale}/contact`}
-          prefetch
-          onClick={(e) => {
-            e.stopPropagation()
-            onClose()
-          }}
-          className="btn-pill-sm bg-[#0046A4] text-white shadow-[0_12px_32px_rgba(0,70,164,0.35)] hover:bg-[#0057D1]"
-        >
-          {bookLabel(locale)}
-          <ArrowRight className="h-4 w-4" />
-        </Link>
+        {showBookCta ? (
+          <Link
+            href={`/${locale}/contact`}
+            prefetch
+            onClick={(e) => {
+              e.stopPropagation()
+              onClose()
+            }}
+            className="btn-pill-sm bg-[#0046A4] text-white shadow-[0_12px_32px_rgba(0,70,164,0.35)] hover:bg-[#0057D1]"
+          >
+            {bookLabel(locale)}
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        ) : null}
       </div>
     </div>
   )

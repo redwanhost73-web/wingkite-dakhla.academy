@@ -6,6 +6,7 @@ import { ACTIVITIES, type Activity, type LocalizedText } from '@/lib/activities'
 import { PACKAGES, type Pack } from '@/lib/packages'
 import { mapActivityRow, mapPackRow } from '@/lib/cms/content-lists'
 import { packCoverFieldKey } from '@/lib/cms/content-lists'
+import { DEFAULT_GALLERY, mapGalleryRow, type GalleryItem } from '@/lib/gallery'
 
 export type SiteTexts = Record<string, Localized>
 
@@ -34,6 +35,7 @@ export type CmsBundle = {
   whyChoose: WhyChooseItem[]
   activities: Activity[]
   packages: Pack[]
+  gallery: GalleryItem[]
   configured: boolean
   loaded: boolean
 }
@@ -59,6 +61,7 @@ export function emptyCmsBundle(loaded = false): CmsBundle {
     whyChoose: [],
     activities: ACTIVITIES,
     packages: PACKAGES,
+    gallery: DEFAULT_GALLERY,
     configured: Boolean(
       process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     ),
@@ -84,6 +87,7 @@ export async function fetchCmsBundle(): Promise<CmsBundle> {
       activitiesRes,
       activityMediaRes,
       stayPacksRes,
+      galleryRes,
     ] = await Promise.all([
       supabase.from('site_images').select('*'),
       supabase.from('site_pricing').select('*').order('sort_order'),
@@ -94,6 +98,7 @@ export async function fetchCmsBundle(): Promise<CmsBundle> {
       supabase.from('activities').select('*').eq('published', true).order('sort_order'),
       supabase.from('activity_media').select('*').order('sort_order'),
       supabase.from('stay_packages').select('*').eq('published', true).order('sort_order'),
+      supabase.from('gallery_items').select('*').eq('published', true).order('sort_order'),
     ])
 
     if (imagesRes.data?.length) {
@@ -203,6 +208,11 @@ export async function fetchCmsBundle(): Promise<CmsBundle> {
       const cover = imageByKey[packCoverFieldKey(pack.id)]
       return cover ? { ...pack, image: cover } : pack
     })
+
+    // Ignore missing-table errors until 007_gallery_items.sql is applied.
+    if (!galleryRes.error && galleryRes.data?.length) {
+      base.gallery = (galleryRes.data as Record<string, unknown>[]).map(mapGalleryRow)
+    }
   } catch (err) {
     console.error('CMS fetch failed, using defaults:', err)
   }
