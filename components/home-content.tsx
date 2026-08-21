@@ -6,6 +6,8 @@ import Link from 'next/link'
 import { ArrowRight, Waves, Star, Car, HardHat, BadgeCheck, Ship, Award, MapPin, Clapperboard, type LucideIcon } from 'lucide-react'
 import { useSiteConfig } from '@/hooks/use-site-config'
 import { PackagesSection } from '@/components/packages-section'
+import { HomePathSection } from '@/components/home-path-section'
+import { HomePricingPreview } from '@/components/home-pricing-preview'
 import { LogoMarquee } from '@/components/logo-marquee'
 import { ActivityCard } from '@/components/activity-card'
 import { ActivityStoryProvider } from '@/components/activity-story'
@@ -343,8 +345,14 @@ export function HomeContent() {
       {/* ══ PARTNERS ══ */}
       <LogoMarquee />
 
-      {/* ══ OFFERS ══ */}
+      {/* ══ OFFERS (packs stay at top) ══ */}
       <PackagesSection />
+
+      {/* ══ PATH — organized journey ══ */}
+      <HomePathSection />
+
+      {/* ══ PRICING PREVIEW ══ */}
+      <HomePricingPreview />
 
       {/* ══ ACTIVITIES ══ Editorial bento */}
       <section id="activities" className="surface-noise relative bg-[#F6F1E8] section-y scroll-mt-28" data-nav-theme="light">

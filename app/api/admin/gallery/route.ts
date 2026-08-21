@@ -138,6 +138,47 @@ export async function POST(request: Request) {
   // Single upsert
   const item = normalizeItem((body.item || body) as Record<string, unknown>)
   if (!item) {
+    // Append-only batch (multi-upload)
+    if (Array.isArray(body.append)) {
+      const normalized = body.append
+        .map((row) => normalizeItem((row || {}) as Record<string, unknown>))
+        .filter(Boolean) as NonNullable<ReturnType<typeof normalizeItem>>[]
+
+      if (!normalized.length) {
+        return NextResponse.json({ error: 'No valid images to append' }, { status: 400 })
+      }
+
+      const { count } = await service
+        .from('gallery_items')
+        .select('*', { count: 'exact', head: true })
+      let sort = count || 0
+
+      const saved = []
+      for (const row of normalized) {
+        sort += 1
+        const payload = { ...row, sort_order: sort }
+        delete (payload as { id?: string }).id
+        const { data, error } = await service
+          .from('gallery_items')
+          .insert(payload)
+          .select('*')
+          .single()
+        if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+        saved.push(mapGalleryRow(data as Record<string, unknown>))
+      }
+
+      await recordAdminNotification(service, {
+        type: 'gallery.added',
+        title: saved.length === 1 ? 'Gallery photo added' : `${saved.length} gallery photos added`,
+        body: saved.map((s) => s.title.en || 'Photo').slice(0, 5).join(', '),
+        actorId: admin.user.id,
+        actorEmail: admin.user.email,
+        meta: { href: '/admin/gallery', count: saved.length },
+      })
+
+      return NextResponse.json({ items: saved })
+    }
+
     return NextResponse.json({ error: 'url is required' }, { status: 400 })
   }
 

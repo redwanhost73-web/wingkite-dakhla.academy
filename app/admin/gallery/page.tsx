@@ -182,39 +182,90 @@ export default function AdminGalleryPage() {
     }
   }
 
-  const uploadFile = async (file: File, opts?: { index?: number; base?: DraftItem }) => {
-    setBusy(true)
-    setStatus('Uploading…')
-    try {
-      const body = new FormData()
-      body.append('file', file)
-      const res = await fetch('/api/admin/upload', { method: 'POST', body })
-      const json = await res.json()
-      if (!res.ok) throw new Error(json.error || 'Upload failed')
+  const uploadOneToBlob = async (file: File) => {
+    const body = new FormData()
+    body.append('file', file)
+    const res = await fetch('/api/admin/upload', { method: 'POST', body })
+    const json = await res.json()
+    if (!res.ok) throw new Error(json.error || `Upload failed for ${file.name}`)
+    return json.url as string
+  }
 
-      const draft: DraftItem = {
-        ...(opts?.base || emptyDraft((opts?.index ?? rows.length) + 1)),
-        url: json.url as string,
-      }
-      const saved = await persistItem(draft)
-      setRows((prev) => {
-        if (typeof opts?.index === 'number' && opts.index < prev.length) {
-          return prev.map((row, i) => (i === opts.index ? saved : row))
+  /** Multi-upload: all files append as new gallery rows (one notification). */
+  const uploadMany = async (fileList: FileList | File[], opts?: { replaceIndex?: number }) => {
+    const files = Array.from(fileList).filter((f) => f.type.startsWith('image/'))
+    if (!files.length) {
+      setStatus('No image files selected')
+      return
+    }
+
+    setBusy(true)
+    const savedAll: DraftItem[] = []
+    let failed = 0
+
+    try {
+      // Optional: first file replaces an existing card
+      let start = 0
+      if (typeof opts?.replaceIndex === 'number' && rows[opts.replaceIndex]) {
+        setStatus(`Uploading 1/${files.length}…`)
+        try {
+          const url = await uploadOneToBlob(files[0])
+          const saved = await persistItem({ ...rows[opts.replaceIndex], url })
+          setRows((prev) => prev.map((row, i) => (i === opts.replaceIndex ? saved : row)))
+          savedAll.push(saved)
+        } catch {
+          failed += 1
         }
-        return [...prev, saved]
-      })
-      setStatus('Uploaded and saved')
-      return saved
+        start = 1
+      }
+
+      const toAppend = files.slice(start)
+      if (toAppend.length) {
+        const urls: string[] = []
+        for (let i = 0; i < toAppend.length; i++) {
+          setStatus(`Uploading ${start + i + 1}/${files.length}…`)
+          try {
+            urls.push(await uploadOneToBlob(toAppend[i]))
+          } catch {
+            failed += 1
+          }
+        }
+
+        if (urls.length) {
+          const res = await fetch('/api/admin/gallery', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              append: urls.map((url, i) => ({
+                url,
+                title_en: toAppend[i]?.name.replace(/\.[^.]+$/, '') || 'Gallery',
+                category: 'school',
+                published: true,
+              })),
+            }),
+          })
+          const json = await res.json()
+          if (!res.ok) throw new Error(json.error || 'Failed to save uploads')
+          const items = ((json.items || []) as GalleryItem[]).map(fromGalleryItem)
+          savedAll.push(...items)
+          setRows((prev) => [...prev, ...items])
+          refreshNotificationsEvent()
+        }
+      }
+
+      const ok = savedAll.length
+      if (ok && !failed) setStatus(`Uploaded ${ok} photo${ok === 1 ? '' : 's'}`)
+      else if (ok && failed) setStatus(`Uploaded ${ok}, ${failed} failed`)
+      else setStatus(failed ? `${failed} upload(s) failed` : 'Nothing uploaded')
     } catch (e) {
       setStatus(e instanceof Error ? e.message : 'Upload failed')
-      return null
     } finally {
       setBusy(false)
     }
   }
 
-  const uploadAt = async (index: number, file: File) => {
-    await uploadFile(file, { index, base: rows[index] })
+  const uploadAt = async (index: number, fileList: FileList | File[]) => {
+    await uploadMany(fileList, { replaceIndex: index })
   }
 
   const deleteAt = async (index: number) => {
@@ -283,7 +334,7 @@ export default function AdminGalleryPage() {
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
       <AdminPageHeader
         title="Gallery"
-        description="Upload or pick site images. Upload and delete save immediately; use Save all to reorder titles/categories."
+        description="Select multiple images at once. Upload and delete save immediately; use Save all for titles/categories/order."
         status={status}
         actions={
           <div className="flex flex-wrap gap-2">
@@ -307,15 +358,15 @@ export default function AdminGalleryPage() {
             </button>
             <label className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-[#D8D0C4] bg-white px-4 py-2 text-xs font-bold text-[#072A5A] hover:bg-[#F7F3EC]">
               <Upload className="h-3.5 w-3.5" />
-              Upload new
+              Upload images
               <input
                 type="file"
                 accept="image/*"
+                multiple
                 className="hidden"
                 disabled={busy}
                 onChange={(e) => {
-                  const file = e.target.files?.[0]
-                  if (file) void uploadFile(file)
+                  if (e.target.files?.length) void uploadMany(e.target.files)
                   e.target.value = ''
                 }}
               />
@@ -332,6 +383,25 @@ export default function AdminGalleryPage() {
         }
       />
       <ContentSubnav />
+
+      <div
+        onDragOver={(e) => {
+          e.preventDefault()
+          e.dataTransfer.dropEffect = 'copy'
+        }}
+        onDrop={(e) => {
+          e.preventDefault()
+          if (busy) return
+          const files = Array.from(e.dataTransfer.files || []).filter((f) =>
+            f.type.startsWith('image/'),
+          )
+          if (files.length) void uploadMany(files)
+        }}
+        className="mb-6 rounded-xl border border-dashed border-[#C9A66B]/60 bg-[#FFFCF7] px-4 py-8 text-center"
+      >
+        <p className="text-sm font-semibold text-[#072A5A]">Drop multiple images here</p>
+        <p className="mt-1 text-xs text-[#5A6B85]">JPEG, PNG, WebP, or GIF — they save automatically</p>
+      </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {rows.map((row, index) => (
@@ -404,11 +474,11 @@ export default function AdminGalleryPage() {
                   <input
                     type="file"
                     accept="image/*"
+                    multiple
                     className="hidden"
                     disabled={busy}
                     onChange={(e) => {
-                      const file = e.target.files?.[0]
-                      if (file) uploadAt(index, file)
+                      if (e.target.files?.length) void uploadAt(index, e.target.files)
                       e.target.value = ''
                     }}
                   />
