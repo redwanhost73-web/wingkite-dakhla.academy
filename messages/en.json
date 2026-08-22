@@ -2,6 +2,10 @@
   "nav": {
     "home": "Home",
     "about": "About",
+    "activities": "Activities",
+    "wingfoil": "Wingfoil lessons",
+    "kitesurf": "Kitesurf lessons",
+    "rental": "Equipment rental",
     "gallery": "Gallery",
     "pricing": "Pricing",
     "safety": "Safety",

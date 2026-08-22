@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { Check, ArrowRight, Wind, Sailboat, Backpack, Waves, Clapperboard } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n-context'
 import { useSiteConfig } from '@/hooks/use-site-config'
@@ -569,6 +570,15 @@ export function PricingContent() {
                       cms={texts['pricing.panel.bookCta']}
                       after={<ArrowRight className="h-4 w-4" />}
                     />
+                    <Link
+                      href={`/${locale}/activities/${sport}`}
+                      className="btn-pill-sm border border-[#072A5A]/15 bg-white text-small text-[#072A5A] hover:bg-[#FAF8F3]"
+                    >
+                      {sport === 'wingfoil'
+                        ? getText('Voir le cours Wingfoil', 'View Wingfoil course', 'Ver curso Wingfoil', 'عرض دورة الوينج فويل')
+                        : getText('Voir le cours Kitesurf', 'View Kitesurf course', 'Ver curso Kitesurf', 'عرض دورة الكايت سيرف')}
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
                     <EditableText
                       fieldKey="pricing.panel.rateNote"
                       label="Same rate card note"
@@ -820,6 +830,46 @@ export function PricingContent() {
               </Reveal>
             ))}
           </div>
+
+          <Reveal delay={100}>
+            <Link
+              href={`/${locale}/activities/equipment-rental`}
+              className="card-premium mt-8 flex flex-col gap-4 p-7 transition-transform duration-450 hover:-translate-y-1 sm:flex-row sm:items-center sm:justify-between sm:gap-8 sm:p-9"
+            >
+              <div>
+                <EditableText
+                  fieldKey="pricing.rental.title"
+                  label="Rental teaser title"
+                  as="h3"
+                  className="font-heading text-card-title text-[#072A5A]"
+                  defaults={loc(
+                    'Location de matériel',
+                    'Equipment rental',
+                    'Alquiler de material',
+                    'تأجير المعدات',
+                  )}
+                  cms={texts['pricing.rental.title']}
+                />
+                <EditableText
+                  fieldKey="pricing.rental.subtitle"
+                  label="Rental teaser subtitle"
+                  as="p"
+                  className="text-small text-[#3D4F6F] mt-2 max-w-xl"
+                  defaults={loc(
+                    'Sets complets kitesurf & wingfoil à la demi-journée ou à la journée. Voir la grille complète.',
+                    'Full kitesurf & wingfoil sets half-day or full day. See the full rate card.',
+                    'Sets completos kitesurf y wingfoil media jornada o día. Ver la tarifa completa.',
+                    'أطقم كايت ووينج كاملة لنصف يوم أو يوم. اطّلع على الشبكة الكاملة.',
+                  )}
+                  cms={texts['pricing.rental.subtitle']}
+                />
+              </div>
+              <span className="inline-flex shrink-0 items-center gap-2 text-small font-bold text-[#0046A4]">
+                {getText('Voir les tarifs location', 'View rental rates', 'Ver tarifas alquiler', 'عرض أسعار التأجير')}
+                <ArrowRight className="h-4 w-4" />
+              </span>
+            </Link>
+          </Reveal>
 
           {/* Note */}
           <Reveal delay={120}>

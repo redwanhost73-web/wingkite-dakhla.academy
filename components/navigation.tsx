@@ -104,6 +104,8 @@ export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
   const [profileOpen, setProfileOpen] = useState(false)
+  const [activitiesOpen, setActivitiesOpen] = useState(false)
+  const [mobileActivitiesOpen, setMobileActivitiesOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [storyOpen, setStoryOpen] = useState(false)
   const [authUser, setAuthUser] = useState<{
@@ -131,6 +133,11 @@ export function Navigation() {
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  useEffect(() => {
+    setActivitiesOpen(false)
+    setMobileActivitiesOpen(false)
+  }, [pathname])
 
   useEffect(() => {
     const supabase = createClient()
@@ -195,7 +202,10 @@ export function Navigation() {
     setProfileOpen(false)
   }, [pathname])
 
-  const closeMenu = useCallback(() => setIsOpen(false), [])
+  const closeMenu = useCallback(() => {
+    setIsOpen(false)
+    setMobileActivitiesOpen(false)
+  }, [])
 
   const signOut = useCallback(async () => {
     const supabase = createClient()
@@ -214,12 +224,18 @@ export function Navigation() {
     .map((p) => p[0]?.toUpperCase() || '')
     .join('') || 'A'
 
+  const activityLinks = [
+    { href: `/${locale}/activities/wingfoil`, label: t('nav.wingfoil') },
+    { href: `/${locale}/activities/kitesurf`, label: t('nav.kitesurf') },
+    { href: `/${locale}/activities/equipment-rental`, label: t('nav.rental') },
+    { href: `/${locale}/safety`, label: t('nav.safety') },
+  ]
+
   const navLinks = [
     { href: `/${locale}`, label: t('nav.home') },
     { href: `/${locale}/about`, label: t('nav.about') },
     { href: `/${locale}/gallery`, label: t('nav.gallery') },
     { href: `/${locale}/pricing`, label: t('nav.pricing') },
-    { href: `/${locale}/safety`, label: t('nav.safety') },
     { href: `/${locale}/contact`, label: t('nav.contact') },
   ]
 
@@ -229,6 +245,8 @@ export function Navigation() {
     }
     return pathname.startsWith(href)
   }
+
+  const activitiesActive = activityLinks.some((l) => isActive(l.href))
 
   const switchLanguage = useCallback(
     (newLocale: string) => {
@@ -300,7 +318,96 @@ export function Navigation() {
 
             {/* Centred link rail */}
             <nav className="hidden lg:flex items-center gap-1">
-              {navLinks.map((link) => (
+              {navLinks.slice(0, 2).map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  prefetch
+                  className={cn(
+                    'relative rounded-full px-4 py-2.5 text-small font-semibold transition-colors duration-450',
+                    barDark
+                      ? isActive(link.href)
+                        ? 'text-white'
+                        : 'text-white/70 hover:text-white'
+                      : isActive(link.href)
+                        ? 'text-[#072A5A]'
+                        : 'text-[#072A5A]/70 hover:text-[#072A5A]',
+                  )}
+                >
+                  {link.label}
+                  <span
+                    aria-hidden
+                    className={cn(
+                      'absolute bottom-1 left-1/2 h-0.75 w-0.75 -translate-x-1/2 rounded-full transition-opacity duration-300',
+                      barDark ? 'bg-[#C9A66B]' : 'bg-[#5AA8FF]',
+                      isActive(link.href) ? 'opacity-100' : 'opacity-0',
+                    )}
+                  />
+                </Link>
+              ))}
+
+              <div className="relative">
+                <button
+                  type="button"
+                  aria-expanded={activitiesOpen}
+                  aria-haspopup="menu"
+                  onClick={() => {
+                    setLangOpen(false)
+                    setProfileOpen(false)
+                    setActivitiesOpen((v) => !v)
+                  }}
+                  className={cn(
+                    'relative inline-flex items-center gap-1 rounded-full px-4 py-2.5 text-small font-semibold transition-colors duration-450',
+                    barDark
+                      ? activitiesActive || activitiesOpen
+                        ? 'text-white'
+                        : 'text-white/70 hover:text-white'
+                      : activitiesActive || activitiesOpen
+                        ? 'text-[#072A5A]'
+                        : 'text-[#072A5A]/70 hover:text-[#072A5A]',
+                  )}
+                >
+                  {t('nav.activities')}
+                  <ChevronDown
+                    className={cn('h-3.5 w-3.5 transition-transform duration-300', activitiesOpen && 'rotate-180')}
+                  />
+                  <span
+                    aria-hidden
+                    className={cn(
+                      'absolute bottom-1 left-1/2 h-0.75 w-0.75 -translate-x-1/2 rounded-full transition-opacity duration-300',
+                      barDark ? 'bg-[#C9A66B]' : 'bg-[#5AA8FF]',
+                      activitiesActive ? 'opacity-100' : 'opacity-0',
+                    )}
+                  />
+                </button>
+                {activitiesOpen && (
+                  <>
+                    <div className="fixed inset-0 z-40" onClick={() => setActivitiesOpen(false)} />
+                    <div
+                      role="menu"
+                      className="absolute left-1/2 top-full z-50 mt-3 w-64 -translate-x-1/2 overflow-hidden rounded-[20px] border border-[rgba(90,168,255,0.20)] bg-white/95 py-1.5 shadow-[0_20px_60px_rgba(0,70,164,0.12)] backdrop-blur-xl"
+                    >
+                      {activityLinks.map((link) => (
+                        <Link
+                          key={link.href}
+                          href={link.href}
+                          role="menuitem"
+                          prefetch
+                          onClick={() => setActivitiesOpen(false)}
+                          className={cn(
+                            'block px-4 py-3 text-small font-semibold transition-colors hover:bg-[#DCEEFF]/50',
+                            isActive(link.href) ? 'text-[#0046A4]' : 'text-[#3D4F6F]',
+                          )}
+                        >
+                          {link.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {navLinks.slice(2).map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
@@ -582,7 +689,63 @@ export function Navigation() {
           </div>
 
           <div className="flex flex-col gap-1">
-            {navLinks.map((link) => (
+            {navLinks.slice(0, 2).map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                prefetch
+                onClick={closeMenu}
+                className={cn(
+                  'rounded-2xl px-4 py-3.5 text-lg font-semibold transition-colors',
+                  isActive(link.href)
+                    ? 'bg-[#0046A4]/8 text-[#0046A4]'
+                    : 'text-[#072A5A] hover:bg-[#DCEEFF]/50',
+                )}
+              >
+                {link.label}
+              </Link>
+            ))}
+
+            <div className="rounded-2xl">
+              <button
+                type="button"
+                onClick={() => setMobileActivitiesOpen((v) => !v)}
+                aria-expanded={mobileActivitiesOpen}
+                className={cn(
+                  'flex w-full items-center justify-between rounded-2xl px-4 py-3.5 text-lg font-semibold transition-colors',
+                  activitiesActive
+                    ? 'bg-[#0046A4]/8 text-[#0046A4]'
+                    : 'text-[#072A5A] hover:bg-[#DCEEFF]/50',
+                )}
+              >
+                {t('nav.activities')}
+                <ChevronDown
+                  className={cn('h-5 w-5 transition-transform', mobileActivitiesOpen && 'rotate-180')}
+                />
+              </button>
+              {mobileActivitiesOpen && (
+                <div className="mb-1 ms-3 flex flex-col gap-0.5 border-s border-[#072A5A]/10 ps-3">
+                  {activityLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      prefetch
+                      onClick={closeMenu}
+                      className={cn(
+                        'rounded-xl px-3 py-2.5 text-base font-semibold transition-colors',
+                        isActive(link.href)
+                          ? 'bg-[#0046A4]/8 text-[#0046A4]'
+                          : 'text-[#3D4F6F] hover:bg-[#DCEEFF]/50',
+                      )}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {navLinks.slice(2).map((link) => (
               <Link
                 key={link.href}
                 href={link.href}

@@ -37,11 +37,11 @@ const VIEW_PHOTOS: Localized = {
   ar: 'عرض كل الصور',
 }
 
-const VIEW_PACK: Localized = {
-  fr: 'Voir le Media pack',
-  en: 'View Media pack',
-  es: 'Ver Media pack',
-  ar: 'عرض Media pack',
+const VIEW_COURSE: Localized = {
+  fr: 'Voir le cours',
+  en: 'View course',
+  es: 'Ver curso',
+  ar: 'عرض الدورة',
 }
 
 export function ActivityCard({ activity, locale, className }: Props) {
@@ -49,7 +49,7 @@ export function ActivityCard({ activity, locale, className }: Props) {
   const story = useActivityStory()
   const { mediaPack, texts } = useSiteConfig()
   const multi = images.length > 1 && story !== null
-  const mediaHref = `/${locale}/pricing#media-pack`
+  const mediaHref = `/${locale}/activities/${id}`
   const [slide, setSlide] = useState(0)
   const [hover, setHover] = useState(false)
 
@@ -200,10 +200,10 @@ export function ActivityCard({ activity, locale, className }: Props) {
           ) : (
             <span className="inline-flex items-center gap-2 text-xs font-semibold text-white/60 transition-colors duration-450 group-hover:text-white">
               <EditableText
-                fieldKey="home.activities.viewPack"
-                label="View Media pack"
-                defaults={VIEW_PACK}
-                cms={texts['home.activities.viewPack']}
+                fieldKey="home.activities.viewCourse"
+                label="View course"
+                defaults={VIEW_COURSE}
+                cms={texts['home.activities.viewCourse']}
               />
               <ArrowRight className="h-3.5 w-3.5 transition-transform duration-450 group-hover:translate-x-0.5" />
             </span>

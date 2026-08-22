@@ -23,6 +23,9 @@ export function Footer() {
   const quickLinks = [
     { href: `/${locale}`, label: t('nav.home') },
     { href: `/${locale}/about`, label: t('nav.about') },
+    { href: `/${locale}/activities/wingfoil`, label: t('nav.wingfoil') },
+    { href: `/${locale}/activities/kitesurf`, label: t('nav.kitesurf') },
+    { href: `/${locale}/activities/equipment-rental`, label: t('nav.rental') },
     { href: `/${locale}/gallery`, label: t('nav.gallery') },
     { href: `/${locale}/pricing`, label: t('nav.pricing') },
     { href: `/${locale}/safety`, label: t('nav.safety') },
