@@ -51,7 +51,12 @@ export const ACTIVITIES: Activity[] = [
   },
   {
     id: 'kitesurf',
-    images: ['/Activities/kitesurf-1.jpeg'],
+    images: [
+      '/Activities/kitesurf-1.jpeg',
+      '/Packs/kitesurf-solo.jpeg',
+      '/Packs/kitesurf-duo.jpeg',
+      '/heroes/about-action.jpg',
+    ],
     badge: { fr: 'Kitesurf', en: 'Kitesurf', es: 'Kitesurf', ar: 'كايت سيرف' },
     badgeTone: 'brand',
     title: {
