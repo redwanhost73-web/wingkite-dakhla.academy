@@ -54,7 +54,7 @@ export const DEFAULT_IMAGES: SiteImages = {
   homeWing1: '/Activities/wingfoil-1.jpeg',
   homeWing2: '/Activities/wingfoil-3.jpeg',
   homeKite1: '/Activities/kitesurf-1.jpeg',
-  homeAction: '/Activities/wingfoil-4.jpeg',
+  homeAction: '/sections/your-stay-wingfoil.jpg',
   homeSunset: '/Activities/wingfoil-6.jpeg',
   homeCoach: '/Activities/wingfoil-2.jpeg',
   homeLagoon: '/Activities/wingfoil-8.jpeg',

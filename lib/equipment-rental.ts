@@ -89,7 +89,7 @@ export const EQUIPMENT_RENTAL_ITEMS: RentalItem[] = [
 ]
 
 export const RENTAL_IMAGES = {
-  hero: '/Activities/rental/hero.webp',
+  hero: '/Activities/rental/cover-celebration.jpg',
   gallery: [
     '/Activities/rental/gear-1.webp',
     '/Activities/rental/gear-2.webp',
