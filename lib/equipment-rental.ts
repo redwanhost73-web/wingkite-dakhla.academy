@@ -72,7 +72,7 @@ export const EQUIPMENT_RENTAL_ITEMS: RentalItem[] = [
       es: 'Tablas Wingfoil',
       ar: 'ألواح وينج فويل',
     },
-    halfDayEur: 40,
+    halfDayEur: 45,
     dayEur: 55,
   },
   {

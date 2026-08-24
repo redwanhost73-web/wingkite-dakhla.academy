@@ -148,10 +148,10 @@ function RentalGallery({ texts }: { texts: Record<string, Localized | undefined>
                 <ul className="mt-8 space-y-3">
                   {[
                     loc(
-                      'Matériel premium (Duotone, North, Naish, F-One)',
-                      'Premium gear (Duotone, North, Naish, F-One)',
-                      'Material premium (Duotone, North, Naish, F-One)',
-                      'معدات فاخرة (Duotone, North, Naish, F-One)',
+                      'Matériel premium (NEILPRYDE Fly, Gong, Duotone Fanatic)',
+                      'Premium gear (NEILPRYDE Fly, Gong, Duotone Fanatic)',
+                      'Material premium (NEILPRYDE Fly, Gong, Duotone Fanatic)',
+                      'معدات فاخرة (NEILPRYDE Fly, Gong, Duotone Fanatic)',
                     ),
                     loc(
                       'Conseils personnalisés sur le choix du matériel',
