@@ -23,6 +23,8 @@ type Props = {
   className?: string
   showBookCta?: boolean
   showRateNote?: boolean
+  /** Activity pages use sky-blue chrome */
+  tone?: 'default' | 'sky'
 }
 
 /**
@@ -33,11 +35,13 @@ export function CoursePricingTable({
   className,
   showBookCta = true,
   showRateNote = true,
+  tone = 'default',
 }: Props) {
   const { locale } = useTranslations()
   const { pricing: cmsPricing, texts } = useSiteConfig()
   const rows = useEditablePricingRows(cmsPricing)
   const [formula, setFormula] = useState<Formula>('private')
+  const sky = tone === 'sky'
 
   const privateLabel = (
     <EditableText
@@ -86,7 +90,10 @@ export function CoursePricingTable({
         <div
           role="tablist"
           aria-label={getText('Formule', 'Formula', 'Fórmula', 'الصيغة')}
-          className="flex gap-2 rounded-full border border-[#072A5A]/8 bg-white/80 p-1"
+          className={cn(
+            'flex gap-2 rounded-full border p-1',
+            sky ? 'border-[#5AA8FF]/25 bg-white/90' : 'border-[#072A5A]/8 bg-white/80',
+          )}
         >
           {(
             [
@@ -106,7 +113,9 @@ export function CoursePricingTable({
                 className={cn(
                   'flex flex-1 flex-col items-center rounded-full px-3 py-2.5 transition-all duration-450',
                   selected
-                    ? 'bg-[#0B1F3B] text-white shadow-[0_8px_20px_rgba(11,31,59,0.22)]'
+                    ? sky
+                      ? 'bg-[#5AA8FF] text-white shadow-[0_8px_20px_rgba(90,168,255,0.35)]'
+                      : 'bg-[#0B1F3B] text-white shadow-[0_8px_20px_rgba(11,31,59,0.22)]'
                     : 'text-[#3D4F6F]',
                 )}
               >
@@ -124,7 +133,12 @@ export function CoursePricingTable({
           })}
         </div>
 
-        <ul className="mt-4 overflow-hidden rounded-[18px] border border-[#072A5A]/8">
+        <ul
+          className={cn(
+            'mt-4 overflow-hidden rounded-[18px] border',
+            sky ? 'border-[#5AA8FF]/20' : 'border-[#072A5A]/8',
+          )}
+        >
           {rows
             .filter((row) => (formula === 'private' ? row.privEur > 0 : row.semiEur > 0))
             .map((row) => {
@@ -137,8 +151,13 @@ export function CoursePricingTable({
                   row={row}
                   allRows={rows}
                   className={cn(
-                    'flex items-center justify-between gap-4 border-t border-[#072A5A]/6 px-5 py-4 first:border-t-0',
-                    row.extra ? 'bg-[#C9A66B]/18' : 'bg-white/70',
+                    'flex items-center justify-between gap-4 border-t px-5 py-4 first:border-t-0',
+                    sky ? 'border-[#5AA8FF]/12' : 'border-[#072A5A]/6',
+                    row.extra
+                      ? sky
+                        ? 'bg-[#5AA8FF]/12'
+                        : 'bg-[#C9A66B]/18'
+                      : 'bg-white/70',
                   )}
                 >
                   <div className="min-w-0">
@@ -158,7 +177,9 @@ export function CoursePricingTable({
                     <p className="font-heading text-xl font-extrabold tracking-tight text-[#072A5A]">
                       {eur}€
                     </p>
-                    <p className="mt-0.5 text-xs font-semibold text-[#B8925A]">{mad} MAD</p>
+                    <p className={cn('mt-0.5 text-xs font-semibold', sky ? 'text-[#5AA8FF]' : 'text-[#B8925A]')}>
+                      {mad} MAD
+                    </p>
                   </div>
                 </EditablePricingRow>
               )
@@ -168,10 +189,15 @@ export function CoursePricingTable({
       </div>
 
       {/* Desktop: both formulas */}
-      <div className="hidden overflow-hidden rounded-[18px] border border-[#072A5A]/8 md:block">
+      <div
+        className={cn(
+          'hidden overflow-hidden rounded-[18px] border md:block',
+          sky ? 'border-[#5AA8FF]/20' : 'border-[#072A5A]/8',
+        )}
+      >
         <table className="w-full border-collapse text-start">
           <thead>
-            <tr className="bg-[#0B1F3B] text-white">
+            <tr className={cn('text-white', sky ? 'bg-[#5AA8FF]' : 'bg-[#0B1F3B]')}>
               <th className="eyebrow px-5 py-3.5 text-start font-bold text-white/80">
                 <EditableText
                   fieldKey="pricing.table.duration"
@@ -202,8 +228,13 @@ export function CoursePricingTable({
                 row={row}
                 allRows={rows}
                 className={cn(
-                  'border-t border-[#072A5A]/6',
-                  row.extra ? 'bg-[#C9A66B]/18' : 'bg-white/60',
+                  'border-t',
+                  sky ? 'border-[#5AA8FF]/12' : 'border-[#072A5A]/6',
+                  row.extra
+                    ? sky
+                      ? 'bg-[#5AA8FF]/12'
+                      : 'bg-[#C9A66B]/18'
+                    : 'bg-white/60',
                 )}
               >
                 <td className="px-5 py-3.5">
@@ -223,7 +254,12 @@ export function CoursePricingTable({
                   <span className="font-heading text-lg font-extrabold text-[#072A5A]">
                     {row.privEur}€
                   </span>
-                  <span className="mt-0.5 block text-[0.7rem] font-semibold text-[#B8925A]">
+                  <span
+                    className={cn(
+                      'mt-0.5 block text-[0.7rem] font-semibold',
+                      sky ? 'text-[#5AA8FF]' : 'text-[#B8925A]',
+                    )}
+                  >
                     {row.privMad} MAD
                   </span>
                 </td>
@@ -233,7 +269,12 @@ export function CoursePricingTable({
                       <span className="font-heading text-lg font-extrabold text-[#072A5A]">
                         {row.semiEur}€
                       </span>
-                      <span className="mt-0.5 block text-[0.7rem] font-semibold text-[#B8925A]">
+                      <span
+                        className={cn(
+                          'mt-0.5 block text-[0.7rem] font-semibold',
+                          sky ? 'text-[#5AA8FF]' : 'text-[#B8925A]',
+                        )}
+                      >
                         {row.semiMad} MAD
                       </span>
                     </>
@@ -245,7 +286,7 @@ export function CoursePricingTable({
             ))}
           </tbody>
         </table>
-        <div className="border-t border-[#072A5A]/8 p-3">
+        <div className={cn('border-t p-3', sky ? 'border-[#5AA8FF]/15' : 'border-[#072A5A]/8')}>
           <AddPricingRowButton allRows={rows} />
         </div>
       </div>
@@ -257,7 +298,10 @@ export function CoursePricingTable({
               fieldKey="pricing.panel.bookCta"
               label="Book this course CTA"
               href={`/${locale}/contact`}
-              className="btn-pill-sm bg-[#0B1F3B] text-small text-white hover:bg-[#0057D1]"
+              className={cn(
+                'btn-pill-sm text-small text-white',
+                sky ? 'bg-[#5AA8FF] hover:bg-[#2D7FF9]' : 'bg-[#0B1F3B] hover:bg-[#0057D1]',
+              )}
               defaults={loc(
                 'Réserver ce cours',
                 'Book this course',

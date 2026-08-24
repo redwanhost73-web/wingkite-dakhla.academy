@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight, Check } from 'lucide-react'
+import { ArrowRight, Check, Images } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n-context'
 import { useSiteConfig } from '@/hooks/use-site-config'
 import {
@@ -12,11 +12,21 @@ import {
 } from '@/lib/equipment-rental'
 import { PageHero } from '@/components/page-hero'
 import { Reveal } from '@/components/reveal'
+import { ActivityStoryProvider, useActivityStory } from '@/components/activity-story'
 import { EditableLink, EditableText } from '@/components/edit-mode/editable'
 import type { Localized } from '@/lib/cms/types'
 import { pickLocale } from '@/lib/cms/types'
+import { cn } from '@/lib/utils'
 
 const loc = (fr: string, en: string, es: string, ar: string): Localized => ({ fr, en, es, ar })
+
+const GALLERY_ALTS = [
+  'Wingfoil gear on the beach — Wing Kite Dakhla Academy',
+  'Duotone Unit wing rental',
+  'Learning with rental wing on the sand',
+  'Academy gear setup at the spot',
+  'Wingfoil session with rental equipment',
+]
 
 function useLoc() {
   const { locale } = useTranslations()
@@ -28,78 +38,68 @@ function useLoc() {
   }
 }
 
-export function EquipmentRentalContent() {
-  const { locale } = useTranslations()
-  const { texts } = useSiteConfig()
+function RentalPhoto({
+  src,
+  alt,
+  index,
+  className,
+  priority,
+}: {
+  src: string
+  alt: string
+  index: number
+  className?: string
+  priority?: boolean
+}) {
+  const story = useActivityStory()
+  const photos = RENTAL_IMAGES.gallery
+
+  return (
+    <button
+      type="button"
+      onClick={() =>
+        story?.openStory({
+          images: [...photos],
+          title: 'Equipment rental',
+          startIndex: index,
+          showBookCta: true,
+        })
+      }
+      className={cn(
+        'group relative overflow-hidden rounded-[24px] text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0046A4]',
+        className,
+      )}
+    >
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        sizes="(max-width: 768px) 100vw, 50vw"
+        priority={priority}
+        loading={priority ? undefined : 'lazy'}
+        quality={78}
+        className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
+      />
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0B1F3B]/35 via-transparent to-transparent opacity-60 transition-opacity group-hover:opacity-80"
+      />
+    </button>
+  )
+}
+
+function RentalGallery({ texts }: { texts: Record<string, Localized | undefined> }) {
   const getText = useLoc()
-  const contactHref = `/${locale}/contact`
+  const story = useActivityStory()
+  const photos = RENTAL_IMAGES.gallery
 
   return (
     <>
-      <PageHero
-        image={RENTAL_IMAGES.hero}
-        eyebrow={
-          <EditableText
-            fieldKey="activities.rental.hero.eyebrow"
-            label="Rental hero eyebrow"
-            defaults={loc(
-              'Location de matériel',
-              'Equipment rental',
-              'Alquiler de material',
-              'تأجير المعدات',
-            )}
-            cms={texts['activities.rental.hero.eyebrow']}
-          />
-        }
-        title={
-          <EditableText
-            fieldKey="activities.rental.hero.title"
-            label="Rental hero title"
-            defaults={loc(
-              'Équipez-vous et partez',
-              'Gear up and go',
-              'Equípate y sal',
-              'جهّز نفسك وانطلق',
-            )}
-            cms={texts['activities.rental.hero.title']}
-          />
-        }
-        subtitle={
-          <EditableText
-            fieldKey="activities.rental.hero.subtitle"
-            label="Rental hero subtitle"
-            defaults={loc(
-              'Kites, planches, ailes, foils et combinaisons — matériel premium entretenu, à la demi-journée ou à la journée.',
-              'Kites, boards, wings, foils and wetsuits — premium gear maintained, half-day or full day.',
-              'Kites, tablas, alas, foils y trajes — material premium mantenido, media jornada o día.',
-              'كايت وألواح وأجنحة وفويلات وبدلات — معدات فاخرة معتنى بها، نصف يوم أو يوم كامل.',
-            )}
-            cms={texts['activities.rental.hero.subtitle']}
-          />
-        }
-      >
-        <div className="mt-8">
-          <EditableLink
-            fieldKey="activities.rental.hero.cta"
-            label="Rental hero CTA"
-            href={contactHref}
-            className="btn-pill bg-white text-[#072A5A] hover:bg-white/90"
-            defaults={loc(
-              'Réserver du matériel',
-              'Book equipment',
-              'Reservar material',
-              'احجز معدات',
-            )}
-            cms={texts['activities.rental.hero.cta']}
-            after={<ArrowRight className="h-4 w-4" />}
-          />
-        </div>
-      </PageHero>
-
+      {/* Part 1 — intro + landscape trio */}
       <section className="section-y bg-[#FAF8F3]" data-nav-theme="light">
         <div className="container-editorial">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center lg:gap-16">
-            <div className="lg:col-span-6">
+            <div className="lg:col-span-5">
               <Reveal>
                 <p className="eyebrow text-[#0046A4]">
                   {getText('Parc matériel', 'Gear fleet', 'Parque de material', 'أسطول المعدات')}
@@ -185,33 +185,161 @@ export function EquipmentRentalContent() {
                     </li>
                   ))}
                 </ul>
+                <button
+                  type="button"
+                  onClick={() =>
+                    story?.openStory({
+                      images: [...photos],
+                      title: getText('Location', 'Rental', 'Alquiler', 'تأجير'),
+                      startIndex: 0,
+                    })
+                  }
+                  className="mt-8 inline-flex items-center gap-2 text-small font-bold text-[#0046A4]"
+                >
+                  <Images className="h-4 w-4" />
+                  {getText('Voir toutes les photos', 'View all photos', 'Ver todas las fotos', 'عرض كل الصور')}
+                </button>
               </Reveal>
             </div>
-            <div className="lg:col-span-6">
+
+            <div className="lg:col-span-7">
               <Reveal delay={80}>
-                <div className="grid grid-cols-2 gap-3">
-                  {RENTAL_IMAGES.gallery.slice(0, 4).map((src, i) => (
-                    <div
-                      key={src}
-                      className={`relative overflow-hidden rounded-[22px] ${i === 0 ? 'col-span-2 min-h-56' : 'min-h-40'}`}
-                    >
-                      <Image
-                        src={src}
-                        alt=""
-                        fill
-                        sizes={i === 0 ? '(max-width: 1024px) 100vw, 50vw' : '(max-width: 1024px) 50vw, 25vw'}
-                        className="object-cover"
-                        loading="lazy"
-                        quality={75}
-                      />
-                    </div>
-                  ))}
+                <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                  <RentalPhoto
+                    src={photos[0]}
+                    alt={GALLERY_ALTS[0]}
+                    index={0}
+                    priority
+                    className="col-span-2 aspect-[16/10]"
+                  />
+                  <RentalPhoto
+                    src={photos[1]}
+                    alt={GALLERY_ALTS[1]}
+                    index={1}
+                    className="aspect-[4/3]"
+                  />
+                  <RentalPhoto
+                    src={photos[4]}
+                    alt={GALLERY_ALTS[4]}
+                    index={4}
+                    className="aspect-[4/3]"
+                  />
                 </div>
               </Reveal>
             </div>
           </div>
         </div>
       </section>
+
+      {/* Part 2 — portrait pair, full width, shorter */}
+      <section className="bg-white pb-16 pt-4 sm:pb-20 sm:pt-6" data-nav-theme="light">
+        <div className="container-editorial">
+          <Reveal>
+            <div className="mb-6 flex items-end justify-between gap-4">
+              <p className="eyebrow text-[#0046A4]">
+                {getText('Sur le spot', 'At the spot', 'En el spot', 'في الموقع')}
+              </p>
+            </div>
+          </Reveal>
+          <Reveal delay={60}>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
+              <RentalPhoto
+                src={photos[2]}
+                alt={GALLERY_ALTS[2]}
+                index={2}
+                className="aspect-[4/5] sm:aspect-[3/4]"
+              />
+              <RentalPhoto
+                src={photos[3]}
+                alt={GALLERY_ALTS[3]}
+                index={3}
+                className="aspect-[4/5] sm:aspect-[3/4]"
+              />
+            </div>
+          </Reveal>
+        </div>
+      </section>
+    </>
+  )
+}
+
+export function EquipmentRentalContent() {
+  return (
+    <ActivityStoryProvider>
+      <EquipmentRentalInner />
+    </ActivityStoryProvider>
+  )
+}
+
+function EquipmentRentalInner() {
+  const { locale } = useTranslations()
+  const { texts } = useSiteConfig()
+  const getText = useLoc()
+  const contactHref = `/${locale}/contact`
+
+  return (
+    <>
+      <PageHero
+        image={RENTAL_IMAGES.hero}
+        eyebrow={
+          <EditableText
+            fieldKey="activities.rental.hero.eyebrow"
+            label="Rental hero eyebrow"
+            defaults={loc(
+              'Location de matériel',
+              'Equipment rental',
+              'Alquiler de material',
+              'تأجير المعدات',
+            )}
+            cms={texts['activities.rental.hero.eyebrow']}
+          />
+        }
+        title={
+          <EditableText
+            fieldKey="activities.rental.hero.title"
+            label="Rental hero title"
+            defaults={loc(
+              'Équipez-vous et partez',
+              'Gear up and go',
+              'Equípate y sal',
+              'جهّز نفسك وانطلق',
+            )}
+            cms={texts['activities.rental.hero.title']}
+          />
+        }
+        subtitle={
+          <EditableText
+            fieldKey="activities.rental.hero.subtitle"
+            label="Rental hero subtitle"
+            defaults={loc(
+              'Kites, planches, ailes, foils et combinaisons — matériel premium entretenu, à la demi-journée ou à la journée.',
+              'Kites, boards, wings, foils and wetsuits — premium gear maintained, half-day or full day.',
+              'Kites, tablas, alas, foils y trajes — material premium mantenido, media jornada o día.',
+              'كايت وألواح وأجنحة وفويلات وبدلات — معدات فاخرة معتنى بها، نصف يوم أو يوم كامل.',
+            )}
+            cms={texts['activities.rental.hero.subtitle']}
+          />
+        }
+      >
+        <div className="mt-8">
+          <EditableLink
+            fieldKey="activities.rental.hero.cta"
+            label="Rental hero CTA"
+            href={contactHref}
+            className="btn-pill bg-white text-[#072A5A] hover:bg-white/90"
+            defaults={loc(
+              'Réserver du matériel',
+              'Book equipment',
+              'Reservar material',
+              'احجز معدات',
+            )}
+            cms={texts['activities.rental.hero.cta']}
+            after={<ArrowRight className="h-4 w-4" />}
+          />
+        </div>
+      </PageHero>
+
+      <RentalGallery texts={texts} />
 
       <section className="section-y bg-white" data-nav-theme="light">
         <div className="container-editorial">

@@ -186,7 +186,7 @@ function PhotoThumb({
       type="button"
       onClick={onOpen}
       className={cn(
-        'group relative shrink-0 overflow-hidden rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0046A4]',
+        'group relative shrink-0 overflow-hidden rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5AA8FF]',
         className,
       )}
     >
@@ -248,7 +248,14 @@ function ActivityCourseInner({ sport }: { sport: ActivitySport }) {
   }
 
   return (
-    <div className="bg-[#FAF8F3]" data-nav-theme="light">
+    <div
+      className="bg-[#EAF4FF]"
+      data-nav-theme="light"
+      style={{
+        backgroundImage:
+          'radial-gradient(ellipse 80% 50% at 50% -10%, rgba(90,168,255,0.28), transparent 60%)',
+      }}
+    >
       {/* —— Simple light cover (no cinematic hero) —— */}
       <header className="container-editorial pt-32 pb-10 sm:pt-36 sm:pb-12">
         <Reveal>
@@ -256,7 +263,7 @@ function ActivityCourseInner({ sport }: { sport: ActivitySport }) {
             fieldKey={`activities.${sport}.cover.eyebrow`}
             label={`${meta.label} cover eyebrow`}
             as="p"
-            className="eyebrow text-[#0046A4]"
+            className="eyebrow text-[#5AA8FF]"
             defaults={meta.coverEyebrow}
             cms={texts[`activities.${sport}.cover.eyebrow`]}
           />
@@ -264,7 +271,7 @@ function ActivityCourseInner({ sport }: { sport: ActivitySport }) {
             fieldKey={`activities.${sport}.cover.title`}
             label={`${meta.label} cover title`}
             as="h1"
-            className="font-heading mt-4 text-[clamp(2.75rem,8vw,5.5rem)] font-extrabold leading-[0.95] tracking-tight text-[#0B1F3B] text-balance"
+            className="font-heading mt-4 text-[clamp(2.75rem,8vw,5.5rem)] font-extrabold leading-[0.95] tracking-tight text-[#0046A4] text-balance"
             defaults={meta.coverTitle}
             cms={texts[`activities.${sport}.cover.title`]}
           />
@@ -272,7 +279,7 @@ function ActivityCourseInner({ sport }: { sport: ActivitySport }) {
             fieldKey={`activities.${sport}.cover.lead`}
             label={`${meta.label} cover lead`}
             as="p"
-            className="mt-6 max-w-lg text-body-lg text-[#3D4F6F]"
+            className="mt-6 max-w-lg text-body-lg text-[#3D5A80]"
             defaults={meta.coverLead}
             cms={texts[`activities.${sport}.cover.lead`]}
           />
@@ -281,7 +288,7 @@ function ActivityCourseInner({ sport }: { sport: ActivitySport }) {
               fieldKey={`activities.${sport}.cover.cta`}
               label={`${meta.label} cover CTA`}
               href={contactHref}
-              className="btn-pill bg-[#0B1F3B] text-white hover:bg-[#0057D1]"
+              className="btn-pill bg-[#5AA8FF] text-white hover:bg-[#2D7FF9]"
               defaults={loc(
                 'Réserver un cours',
                 'Book a lesson',
@@ -293,7 +300,7 @@ function ActivityCourseInner({ sport }: { sport: ActivitySport }) {
             />
             <Link
               href={pricingHref}
-              className="btn-pill border border-[#0B1F3B]/12 bg-white text-[#0B1F3B] hover:bg-white/80"
+              className="btn-pill border border-[#5AA8FF]/35 bg-white/80 text-[#0046A4] hover:bg-white"
             >
               {tLoc(locale, 'Packages', 'Packages', 'Paquetes', 'الباقات')}
             </Link>
@@ -305,7 +312,7 @@ function ActivityCourseInner({ sport }: { sport: ActivitySport }) {
       <section className="container-editorial pb-16 sm:pb-20">
         <Reveal delay={60}>
           <div className="mb-6 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-small font-semibold text-[#7A8AA3]">
+            <p className="text-small font-semibold text-[#5A7AA3]">
               {tLoc(
                 locale,
                 'Choisissez votre niveau',
@@ -317,7 +324,7 @@ function ActivityCourseInner({ sport }: { sport: ActivitySport }) {
             <div
               role="tablist"
               aria-label={tLoc(locale, 'Niveau', 'Level', 'Nivel', 'المستوى')}
-              className="inline-flex gap-1 rounded-full bg-[#E8E0D4] p-1"
+              className="inline-flex gap-1 rounded-full bg-white/80 p-1 ring-1 ring-[#5AA8FF]/20"
             >
               {(
                 [
@@ -336,8 +343,8 @@ function ActivityCourseInner({ sport }: { sport: ActivitySport }) {
                     className={cn(
                       'rounded-full px-4 py-2 text-small font-bold transition-colors sm:px-5',
                       active
-                        ? 'bg-[#0B1F3B] text-white shadow-sm'
-                        : 'text-[#3D4F6F] hover:text-[#0B1F3B]',
+                        ? 'bg-[#5AA8FF] text-white shadow-[0_8px_20px_rgba(90,168,255,0.35)]'
+                        : 'text-[#3D5A80] hover:text-[#0046A4]',
                     )}
                   >
                     <EditableText
@@ -352,8 +359,7 @@ function ActivityCourseInner({ sport }: { sport: ActivitySport }) {
             </div>
           </div>
 
-          {/* Split cover card */}
-          <div className="overflow-hidden rounded-[28px] bg-[#EFE8DC]">
+          <div className="overflow-hidden rounded-[28px] bg-white shadow-[0_20px_50px_rgba(90,168,255,0.12)] ring-1 ring-[#5AA8FF]/15">
             <div className="grid grid-cols-1 lg:grid-cols-2">
               <div className="relative min-h-[280px] sm:min-h-[360px] lg:min-h-[520px]">
                 <EditableImage
@@ -374,9 +380,9 @@ function ActivityCourseInner({ sport }: { sport: ActivitySport }) {
                 </EditableImage>
               </div>
 
-              <div className="flex flex-col justify-center px-6 py-8 sm:px-9 sm:py-10 lg:px-10 lg:py-12">
-                <div className="mb-5 flex flex-wrap items-center justify-between gap-2 border-b border-[#0B1F3B]/10 pb-4">
-                  <p className="eyebrow text-[#7A8AA3]">
+              <div className="flex flex-col justify-center bg-[#F3F9FF] px-6 py-8 sm:px-9 sm:py-10 lg:px-10 lg:py-12">
+                <div className="mb-5 flex flex-wrap items-center justify-between gap-2 border-b border-[#5AA8FF]/20 pb-4">
+                  <p className="eyebrow text-[#5AA8FF]">
                     {level === 'beginner'
                       ? tLoc(locale, 'Niveau I', 'Level I', 'Nivel I', 'المستوى I')
                       : tLoc(locale, 'Niveau II', 'Level II', 'Nivel II', 'المستوى II')}
@@ -385,7 +391,7 @@ function ActivityCourseInner({ sport }: { sport: ActivitySport }) {
                     fieldKey={`pricing.${sport}.gear`}
                     label={`${meta.label} gear`}
                     as="p"
-                    className="text-[0.7rem] font-bold uppercase tracking-[0.16em] text-[#7A8AA3]"
+                    className="text-[0.7rem] font-bold uppercase tracking-[0.16em] text-[#5A7AA3]"
                     defaults={meta.gearDefaults}
                     cms={texts[`pricing.${sport}.gear`]}
                   />
@@ -395,7 +401,7 @@ function ActivityCourseInner({ sport }: { sport: ActivitySport }) {
                   fieldKey={`activities.${sport}.${level}.title`}
                   label={`${meta.label} ${level} title`}
                   as="h2"
-                  className="font-heading text-card-title text-[#0B1F3B]"
+                  className="font-heading text-card-title text-[#0046A4]"
                   defaults={course.title}
                   cms={texts[`activities.${sport}.${level}.title`]}
                 />
@@ -404,7 +410,7 @@ function ActivityCourseInner({ sport }: { sport: ActivitySport }) {
                   fieldKey={`activities.${sport}.${level}.desc`}
                   label={`${meta.label} ${level} desc`}
                   as="p"
-                  className="mt-4 max-w-md text-small text-[#3D4F6F]"
+                  className="mt-4 max-w-md text-small text-[#3D5A80]"
                   defaults={course.desc}
                   cms={texts[`activities.${sport}.${level}.desc`]}
                 />
@@ -414,6 +420,7 @@ function ActivityCourseInner({ sport }: { sport: ActivitySport }) {
                   className="mt-8"
                   showBookCta
                   showRateNote={false}
+                  tone="sky"
                 />
               </div>
             </div>
@@ -421,8 +428,7 @@ function ActivityCourseInner({ sport }: { sport: ActivitySport }) {
         </Reveal>
       </section>
 
-      {/* —— Short intro —— */}
-      <section className="border-t border-[#0B1F3B]/6 bg-white">
+      <section className="border-t border-[#5AA8FF]/15 bg-white">
         <div className="container-editorial section-y-sm">
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
             <div className="lg:col-span-5">
@@ -431,7 +437,7 @@ function ActivityCourseInner({ sport }: { sport: ActivitySport }) {
                   fieldKey={`activities.${sport}.intro.title`}
                   label={`${meta.label} intro title`}
                   as="h2"
-                  className="font-heading text-section text-[#0B1F3B] text-balance"
+                  className="font-heading text-section text-[#0046A4] text-balance"
                   defaults={meta.introTitle}
                   cms={texts[`activities.${sport}.intro.title`]}
                 />
@@ -443,7 +449,7 @@ function ActivityCourseInner({ sport }: { sport: ActivitySport }) {
                   fieldKey={`activities.${sport}.intro.body`}
                   label={`${meta.label} intro body`}
                   as="p"
-                  className="text-body-lg text-[#3D4F6F]"
+                  className="text-body-lg text-[#3D5A80]"
                   defaults={meta.introBody}
                   cms={texts[`activities.${sport}.intro.body`]}
                 />
@@ -451,9 +457,9 @@ function ActivityCourseInner({ sport }: { sport: ActivitySport }) {
                   {meta.why.map((item, i) => (
                     <li
                       key={i}
-                      className="flex items-start gap-2.5 text-small font-semibold text-[#0B1F3B]"
+                      className="flex items-start gap-2.5 text-small font-semibold text-[#0046A4]"
                     >
-                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#0046A4]" />
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#5AA8FF]" />
                       <EditableText
                         fieldKey={`activities.${sport}.why.${i}`}
                         label={`${meta.label} why ${i}`}
@@ -465,7 +471,7 @@ function ActivityCourseInner({ sport }: { sport: ActivitySport }) {
                 </ul>
                 <Link
                   href={safetyHref}
-                  className="mt-8 inline-flex items-center gap-2 text-small font-bold text-[#0046A4]"
+                  className="mt-8 inline-flex items-center gap-2 text-small font-bold text-[#5AA8FF]"
                 >
                   {tLoc(locale, 'Sécurité & protocoles', 'Safety & protocols', 'Seguridad y protocolos', 'الأمان والبروتوكولات')}
                   <ArrowRight className="h-4 w-4" />
@@ -476,19 +482,18 @@ function ActivityCourseInner({ sport }: { sport: ActivitySport }) {
         </div>
       </section>
 
-      {/* —— Simple photo strip —— */}
       {photoUrls.length > 1 && (
-        <section className="bg-[#FAF8F3] pb-16 pt-4 sm:pb-20">
+        <section className="bg-[#EAF4FF] pb-16 pt-4 sm:pb-20">
           <div className="container-editorial">
             <Reveal>
               <div className="mb-6 flex items-center justify-between gap-4">
-                <p className="eyebrow text-[#0046A4]">
+                <p className="eyebrow text-[#5AA8FF]">
                   {tLoc(locale, 'En images', 'In pictures', 'En imágenes', 'بالصور')}
                 </p>
                 <button
                   type="button"
                   onClick={() => openPhotos(0)}
-                  className="inline-flex items-center gap-2 text-small font-bold text-[#0B1F3B]"
+                  className="inline-flex items-center gap-2 text-small font-bold text-[#0046A4]"
                 >
                   <Images className="h-4 w-4" />
                   {tLoc(locale, 'Tout voir', 'View all', 'Ver todo', 'عرض الكل')}
@@ -512,17 +517,16 @@ function ActivityCourseInner({ sport }: { sport: ActivitySport }) {
         </section>
       )}
 
-      {/* —— Minimal cross-links —— */}
-      <section className="border-t border-[#0B1F3B]/6 bg-white">
+      <section className="border-t border-[#5AA8FF]/15 bg-white">
         <div className="container-editorial py-12 sm:py-14">
           <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
-            <p className="text-small text-[#7A8AA3]">
+            <p className="text-small text-[#5A7AA3]">
               {tLoc(locale, 'Continuer', 'Explore more', 'Explorar más', 'المزيد')}
             </p>
             <div className="flex flex-wrap gap-2">
               <Link
                 href={otherHref}
-                className="rounded-full bg-[#EFE8DC] px-4 py-2 text-small font-bold text-[#0B1F3B] hover:bg-[#E8E0D4]"
+                className="rounded-full bg-[#DCEEFF] px-4 py-2 text-small font-bold text-[#0046A4] hover:bg-[#5AA8FF] hover:text-white"
               >
                 {tLoc(
                   locale,
@@ -534,13 +538,13 @@ function ActivityCourseInner({ sport }: { sport: ActivitySport }) {
               </Link>
               <Link
                 href={rentalHref}
-                className="rounded-full bg-[#EFE8DC] px-4 py-2 text-small font-bold text-[#0B1F3B] hover:bg-[#E8E0D4]"
+                className="rounded-full bg-[#DCEEFF] px-4 py-2 text-small font-bold text-[#0046A4] hover:bg-[#5AA8FF] hover:text-white"
               >
                 {tLoc(locale, 'Location de matériel', 'Equipment rental', 'Alquiler de material', 'تأجير المعدات')}
               </Link>
               <Link
                 href={pricingHref}
-                className="rounded-full bg-[#EFE8DC] px-4 py-2 text-small font-bold text-[#0B1F3B] hover:bg-[#E8E0D4]"
+                className="rounded-full bg-[#DCEEFF] px-4 py-2 text-small font-bold text-[#0046A4] hover:bg-[#5AA8FF] hover:text-white"
               >
                 {tLoc(locale, 'Packages & tarifs', 'Packages & pricing', 'Paquetes y tarifas', 'الباقات والأسعار')}
               </Link>

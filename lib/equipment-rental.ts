@@ -89,13 +89,14 @@ export const EQUIPMENT_RENTAL_ITEMS: RentalItem[] = [
 ]
 
 export const RENTAL_IMAGES = {
-  hero: '/Activities/rental/cover-celebration.jpg',
+  /** Landscape action — hero cover */
+  hero: '/Activities/rental/rental-05.jpg',
   gallery: [
-    '/Activities/rental/gear-1.webp',
-    '/Activities/rental/gear-2.webp',
-    '/Activities/rental/gear-3.webp',
-    '/Activities/rental/gear-4.webp',
-    '/Activities/rental/duotone-gear-rental.webp',
+    '/Activities/rental/rental-01.jpg',
+    '/Activities/rental/rental-02.jpg',
+    '/Activities/rental/rental-03.jpg',
+    '/Activities/rental/rental-04.jpg',
+    '/Activities/rental/rental-05.jpg',
   ],
 } as const
 
