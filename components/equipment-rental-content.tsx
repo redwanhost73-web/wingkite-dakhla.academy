@@ -66,7 +66,7 @@ function RentalPhoto({
         })
       }
       className={cn(
-        'group relative overflow-hidden rounded-[24px] text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0046A4]',
+        'group relative overflow-hidden rounded-[24px] text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#5AA8FF]',
         className,
       )}
     >
@@ -82,7 +82,7 @@ function RentalPhoto({
       />
       <span
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0B1F3B]/35 via-transparent to-transparent opacity-60 transition-opacity group-hover:opacity-80"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0046A4]/40 via-transparent to-transparent opacity-60 transition-opacity group-hover:opacity-80"
       />
     </button>
   )
@@ -96,19 +96,19 @@ function RentalGallery({ texts }: { texts: Record<string, Localized | undefined>
   return (
     <>
       {/* Part 1 — intro + landscape trio */}
-      <section className="section-y bg-[#FAF8F3]" data-nav-theme="light">
+      <section className="section-y bg-[#EAF4FF]" data-nav-theme="light">
         <div className="container-editorial">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center lg:gap-16">
             <div className="lg:col-span-5">
               <Reveal>
-                <p className="eyebrow text-[#0046A4]">
+                <p className="eyebrow text-[#5AA8FF]">
                   {getText('Parc matériel', 'Gear fleet', 'Parque de material', 'أسطول المعدات')}
                 </p>
                 <EditableText
                   fieldKey="activities.rental.intro.title"
                   label="Rental intro title"
                   as="h2"
-                  className="font-heading text-section text-[#072A5A] mt-4 text-balance"
+                  className="font-heading text-section text-[#0046A4] mt-4 text-balance"
                   defaults={loc(
                     'Du matériel pro, prêt à rider',
                     'Pro gear, ready to ride',
@@ -121,7 +121,7 @@ function RentalGallery({ texts }: { texts: Record<string, Localized | undefined>
                   fieldKey="activities.rental.intro.body1"
                   label="Rental intro body 1"
                   as="p"
-                  className="text-body-lg text-[#3D4F6F] mt-6"
+                  className="text-body-lg text-[#3D5A80] mt-6"
                   defaults={loc(
                     'Pas besoin de voyager avec tout votre matériel. Nous mettons à disposition un parc d’équipements premium, entretenu quotidiennement et renouvelé chaque saison.',
                     'No need to travel with all your gear. We offer a premium fleet, maintained daily and refreshed each season.',
@@ -134,7 +134,7 @@ function RentalGallery({ texts }: { texts: Record<string, Localized | undefined>
                   fieldKey="activities.rental.intro.body2"
                   label="Rental intro body 2"
                   as="p"
-                  className="text-body-lg text-[#3D4F6F] mt-4"
+                  className="text-body-lg text-[#3D5A80] mt-4"
                   defaults={loc(
                     'Notre équipe vous aide à choisir le setup parfait selon votre niveau et les conditions du jour.',
                     'Our team helps you pick the perfect setup for your level and the day’s conditions.',
@@ -172,8 +172,8 @@ function RentalGallery({ texts }: { texts: Record<string, Localized | undefined>
                       'بدلات وإكسسوارات حسب الطلب',
                     ),
                   ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-3 text-small text-[#3D4F6F]">
-                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#0046A4]/12 text-[#0046A4]">
+                    <li key={i} className="flex items-start gap-3 text-small text-[#3D5A80]">
+                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#5AA8FF]/15 text-[#5AA8FF]">
                         <Check className="h-3 w-3" aria-hidden />
                       </span>
                       <EditableText
@@ -194,7 +194,7 @@ function RentalGallery({ texts }: { texts: Record<string, Localized | undefined>
                       startIndex: 0,
                     })
                   }
-                  className="mt-8 inline-flex items-center gap-2 text-small font-bold text-[#0046A4]"
+                  className="mt-8 inline-flex items-center gap-2 text-small font-bold text-[#5AA8FF]"
                 >
                   <Images className="h-4 w-4" />
                   {getText('Voir toutes les photos', 'View all photos', 'Ver todas las fotos', 'عرض كل الصور')}
@@ -232,11 +232,11 @@ function RentalGallery({ texts }: { texts: Record<string, Localized | undefined>
       </section>
 
       {/* Part 2 — portrait pair, full width, shorter */}
-      <section className="bg-white pb-16 pt-4 sm:pb-20 sm:pt-6" data-nav-theme="light">
+      <section className="bg-[#F3F9FF] pb-16 pt-4 sm:pb-20 sm:pt-6" data-nav-theme="light">
         <div className="container-editorial">
           <Reveal>
             <div className="mb-6 flex items-end justify-between gap-4">
-              <p className="eyebrow text-[#0046A4]">
+              <p className="eyebrow text-[#5AA8FF]">
                 {getText('Sur le spot', 'At the spot', 'En el spot', 'في الموقع')}
               </p>
             </div>
@@ -326,7 +326,7 @@ function EquipmentRentalInner() {
             fieldKey="activities.rental.hero.cta"
             label="Rental hero CTA"
             href={contactHref}
-            className="btn-pill bg-white text-[#072A5A] hover:bg-white/90"
+            className="btn-pill bg-[#5AA8FF] text-white hover:bg-[#2D7FF9]"
             defaults={loc(
               'Réserver du matériel',
               'Book equipment',
@@ -341,18 +341,18 @@ function EquipmentRentalInner() {
 
       <RentalGallery texts={texts} />
 
-      <section className="section-y bg-white" data-nav-theme="light">
+      <section className="section-y bg-[#F3F9FF]" data-nav-theme="light">
         <div className="container-editorial">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <p className="eyebrow text-[#0046A4]">
+              <p className="eyebrow text-[#5AA8FF]">
                 {getText('Tarifs location', 'Rental rates', 'Tarifas alquiler', 'أسعار التأجير')}
               </p>
               <EditableText
                 fieldKey="activities.rental.table.title"
                 label="Rental table title"
                 as="h2"
-                className="font-heading text-section text-[#072A5A] mt-4 text-balance"
+                className="font-heading text-section text-[#0046A4] mt-4 text-balance"
                 defaults={loc(
                   'Location d’équipement',
                   'Equipment rental',
@@ -365,7 +365,7 @@ function EquipmentRentalInner() {
                 fieldKey="activities.rental.table.subtitle"
                 label="Rental table subtitle"
                 as="p"
-                className="text-body-lg text-[#3D4F6F] mt-5"
+                className="text-body-lg text-[#3D5A80] mt-5"
                 defaults={loc(
                   'Tout l’équipement nécessaire pour vos sessions, du set complet aux planches seules.',
                   'Everything you need for your sessions — from full sets to boards only.',
@@ -378,10 +378,10 @@ function EquipmentRentalInner() {
           </Reveal>
 
           <Reveal delay={100}>
-            <div className="mx-auto mt-12 max-w-3xl overflow-hidden rounded-[22px] border border-[#072A5A]/8 shadow-[0_20px_50px_rgba(0,70,164,0.08)]">
+            <div className="mx-auto mt-12 max-w-3xl overflow-hidden rounded-[22px] border border-[#5AA8FF]/25 shadow-[0_20px_50px_rgba(90,168,255,0.15)]">
               <table className="w-full border-collapse text-start">
                 <thead>
-                  <tr className="bg-[#0B1F3B] text-white">
+                  <tr className="bg-[#5AA8FF] text-white">
                     <th className="eyebrow px-5 py-3.5 text-start font-bold text-white/80">
                       {getText('Matériel', 'Equipment', 'Material', 'المعدات')}
                     </th>
@@ -399,17 +399,17 @@ function EquipmentRentalInner() {
                       key={item.id}
                       className={
                         i % 2 === 0
-                          ? 'border-t border-[#072A5A]/6 bg-white'
-                          : 'border-t border-[#072A5A]/6 bg-[#FAF8F3]'
+                          ? 'border-t border-[#5AA8FF]/12 bg-white'
+                          : 'border-t border-[#5AA8FF]/12 bg-[#EAF4FF]'
                       }
                     >
-                      <td className="px-5 py-3.5 font-heading text-small font-bold text-[#072A5A]">
+                      <td className="px-5 py-3.5 font-heading text-small font-bold text-[#0046A4]">
                         {pickLocale(item.name, locale)}
                       </td>
-                      <td className="px-5 py-3.5 text-end font-heading text-lg font-extrabold text-[#072A5A]">
+                      <td className="px-5 py-3.5 text-end font-heading text-lg font-extrabold text-[#0046A4]">
                         {item.halfDayEur}€
                       </td>
-                      <td className="px-5 py-3.5 text-end font-heading text-lg font-extrabold text-[#072A5A]">
+                      <td className="px-5 py-3.5 text-end font-heading text-lg font-extrabold text-[#0046A4]">
                         {item.dayEur}€
                       </td>
                     </tr>
@@ -424,7 +424,7 @@ function EquipmentRentalInner() {
               {RENTAL_NOTES.map((note, i) => (
                 <li
                   key={i}
-                  className="rounded-full border border-[#072A5A]/10 bg-[#FAF8F3] px-4 py-2 text-xs font-semibold text-[#3D4F6F]"
+                  className="rounded-full border border-[#5AA8FF]/20 bg-[#EAF4FF] px-4 py-2 text-xs font-semibold text-[#3D5A80]"
                 >
                   {pickLocale(note, locale)}
                 </li>
@@ -436,20 +436,20 @@ function EquipmentRentalInner() {
             <div className="mt-12 flex flex-wrap items-center justify-center gap-3">
               <Link
                 href={contactHref}
-                className="btn-pill bg-[#0B1F3B] text-white hover:bg-[#0057D1]"
+                className="btn-pill bg-[#5AA8FF] text-white hover:bg-[#2D7FF9]"
               >
                 {getText('Demander une location', 'Request a rental', 'Solicitar alquiler', 'اطلب تأجيراً')}
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 href={`/${locale}/activities/wingfoil`}
-                className="btn-pill border border-[#072A5A]/15 bg-white text-[#072A5A] hover:bg-[#FAF8F3]"
+                className="btn-pill border border-[#5AA8FF]/30 bg-white text-[#0046A4] hover:bg-[#DCEEFF]"
               >
                 {getText('Cours Wingfoil', 'Wingfoil lessons', 'Clases Wingfoil', 'دروس وينج فويل')}
               </Link>
               <Link
                 href={`/${locale}/activities/kitesurf`}
-                className="btn-pill border border-[#072A5A]/15 bg-white text-[#072A5A] hover:bg-[#FAF8F3]"
+                className="btn-pill border border-[#5AA8FF]/30 bg-white text-[#0046A4] hover:bg-[#DCEEFF]"
               >
                 {getText('Cours Kitesurf', 'Kitesurf lessons', 'Clases Kitesurf', 'دروس كايت سيرف')}
               </Link>
