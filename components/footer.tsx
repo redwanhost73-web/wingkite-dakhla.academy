@@ -28,6 +28,7 @@ export function Footer() {
     { href: `/${locale}/activities/equipment-rental`, label: t('nav.rental') },
     { href: `/${locale}/gallery`, label: t('nav.gallery') },
     { href: `/${locale}/pricing`, label: t('nav.pricing') },
+    { href: `/${locale}/accommodation`, label: t('nav.accommodation') },
     { href: `/${locale}/safety`, label: t('nav.safety') },
     { href: `/${locale}/contact`, label: t('nav.contact') },
     { href: `/${locale}/privacy`, label: getText('Politique de confidentialité', 'Privacy Policy', 'Política de privacidad', 'سياسة الخصوصية') },

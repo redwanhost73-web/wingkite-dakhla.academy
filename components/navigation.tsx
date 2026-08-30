@@ -236,6 +236,7 @@ export function Navigation() {
     { href: `/${locale}/about`, label: t('nav.about') },
     { href: `/${locale}/gallery`, label: t('nav.gallery') },
     { href: `/${locale}/pricing`, label: t('nav.pricing') },
+    { href: `/${locale}/accommodation`, label: t('nav.accommodation') },
     { href: `/${locale}/contact`, label: t('nav.contact') },
   ]
 

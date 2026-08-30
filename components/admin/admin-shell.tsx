@@ -13,6 +13,7 @@ import {
   Layers,
   Pencil,
   ExternalLink,
+  BedDouble,
 } from 'lucide-react'
 import { Toaster } from 'sonner'
 import { createClient } from '@/lib/supabase/client'
@@ -60,6 +61,12 @@ const MANAGE: NavItem[] = [
     label: 'Content',
     icon: Layers,
     match: (p) => CONTENT_PREFIXES.some((prefix) => p === prefix || p.startsWith(prefix + '/')),
+  },
+  {
+    href: '/admin/reservations',
+    label: 'Reservations',
+    icon: BedDouble,
+    match: (p) => p.startsWith('/admin/reservations'),
   },
   {
     href: '/admin/users',

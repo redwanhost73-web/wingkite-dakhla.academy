@@ -11,6 +11,7 @@ import {
   Settings,
   ChevronRight,
   Database,
+  BedDouble,
 } from 'lucide-react'
 import { refreshNotificationsEvent } from '@/components/admin/notification-center'
 
@@ -22,6 +23,12 @@ const QUICK = [
     icon: Pencil,
     external: true,
     accent: true,
+  },
+  {
+    href: '/admin/reservations',
+    title: 'Reservations',
+    desc: 'Stay requests from Hébergement',
+    icon: BedDouble,
   },
   {
     href: '/admin/content',

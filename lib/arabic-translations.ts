@@ -4,6 +4,7 @@ export const arabicTranslations = {
   'nav.home': 'الرئيسية',
   'nav.about': 'من نحن',
   'nav.pricing': 'الأسعار',
+  'nav.accommodation': 'الإقامة',
   'nav.safety': 'السلامة',
   'nav.contact': 'اتصل بنا',
   'nav.book': 'احجز الآن',
