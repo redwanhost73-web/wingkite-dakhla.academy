@@ -11,7 +11,8 @@ import { PageHero } from '@/components/page-hero'
 import { Reveal } from '@/components/reveal'
 import { cn } from '@/lib/utils'
 
-import { DEFAULT_IMAGES } from '@/lib/site-config'
+import { DEFAULT_IMAGES, pricingForSport, type PricingRow } from '@/lib/site-config'
+import type { ReactNode } from 'react'
 import type { Localized } from '@/lib/cms/types'
 import { EditableImage, EditableLink, EditableText, useEditableImageSrc, useEditableTextValue } from '@/components/edit-mode/editable'
 import {
@@ -25,10 +26,40 @@ type Formula = 'private' | 'semi'
 
 const loc = (fr: string, en: string, es: string, ar: string): Localized => ({ fr, en, es, ar })
 
+function PricingRowShell({
+  cmsEditable,
+  row,
+  allRows,
+  className,
+  as,
+  children,
+}: {
+  cmsEditable: boolean
+  row: PricingRow
+  allRows: PricingRow[]
+  className?: string
+  as: 'tr' | 'li'
+  children: ReactNode
+}) {
+  if (cmsEditable) {
+    return (
+      <EditablePricingRow row={row} allRows={allRows} className={className} as={as}>
+        {children}
+      </EditablePricingRow>
+    )
+  }
+  if (as === 'tr') return <tr className={className}>{children}</tr>
+  return <li className={className}>{children}</li>
+}
+
 export function PricingContent() {
   const { locale } = useTranslations()
   const { pricing: cmsPricing, images, mediaPack, texts } = useSiteConfig()
-  const rows = useEditablePricingRows(cmsPricing)
+  const [sport, setSport] = useState<Sport>('wingfoil')
+  const [formula, setFormula] = useState<Formula>('private')
+  const cmsRows = useEditablePricingRows(cmsPricing)
+  const rows = pricingForSport(sport, cmsRows)
+  const cmsEditable = sport === 'wingfoil'
   const pack = {
     priceLabel: `€${mediaPack.priceEur}`,
     title: mediaPack.title,
@@ -38,8 +69,6 @@ export function PricingContent() {
     cta: mediaPack.cta,
     features: mediaPack.features,
   }
-  const [sport, setSport] = useState<Sport>('wingfoil')
-  const [formula, setFormula] = useState<Formula>('private')
   const heroBg = images.pricingHero || DEFAULT_IMAGES.pricingHero
   const ctaImg = images.pricingAction || DEFAULT_IMAGES.pricingAction
   const ctaSrc = useEditableImageSrc('pricingAction', ctaImg)
@@ -410,11 +439,12 @@ export function PricingContent() {
                         const eur = formula === 'private' ? row.privEur : row.semiEur
                         const mad = formula === 'private' ? row.privMad : row.semiMad
                         return (
-                          <EditablePricingRow
+                          <PricingRowShell
                             key={`m-${sport}-${formula}-${row.id || row.hours}`}
+                            cmsEditable={cmsEditable}
                             as="li"
                             row={row}
-                            allRows={rows}
+                            allRows={cmsRows}
                             className={cn(
                               'flex items-center justify-between gap-4 border-t border-[#072A5A]/6 px-5 py-4 first:border-t-0',
                               row.extra ? 'bg-[#C9A66B]/18' : 'bg-white/70',
@@ -443,11 +473,11 @@ export function PricingContent() {
                                 {mad} MAD
                               </p>
                             </div>
-                          </EditablePricingRow>
+                          </PricingRowShell>
                         )
                       })}
                     </ul>
-                    <AddPricingRowButton allRows={rows} />
+                    {cmsEditable && <AddPricingRowButton allRows={cmsRows} />}
                   </div>
 
                   {/* Desktop: both formulas side by side */}
@@ -499,11 +529,12 @@ export function PricingContent() {
                       </thead>
                       <tbody>
                         {rows.map((row) => (
-                          <EditablePricingRow
+                          <PricingRowShell
                             key={`${sport}-${row.id || row.hours}`}
+                            cmsEditable={cmsEditable}
                             as="tr"
                             row={row}
-                            allRows={rows}
+                            allRows={cmsRows}
                             className={cn(
                               'border-t border-[#072A5A]/6',
                               row.extra ? 'bg-[#C9A66B]/18' : 'bg-white/60',
@@ -546,13 +577,15 @@ export function PricingContent() {
                                 <span className="text-small text-[#7A8AA3]">—</span>
                               )}
                             </td>
-                          </EditablePricingRow>
+                          </PricingRowShell>
                         ))}
                       </tbody>
                     </table>
-                    <div className="border-t border-[#072A5A]/8 p-3 md:block">
-                      <AddPricingRowButton allRows={rows} />
-                    </div>
+                    {cmsEditable && (
+                      <div className="border-t border-[#072A5A]/8 p-3 md:block">
+                        <AddPricingRowButton allRows={cmsRows} />
+                      </div>
+                    )}
                   </div>
 
                   <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -579,19 +612,30 @@ export function PricingContent() {
                         : getText('Voir le cours Kitesurf', 'View Kitesurf course', 'Ver curso Kitesurf', 'عرض دورة الكايت سيرف')}
                       <ArrowRight className="h-4 w-4" />
                     </Link>
-                    <EditableText
-                      fieldKey="pricing.panel.rateNote"
-                      label="Same rate card note"
-                      as="p"
-                      className="text-xs text-[#7A8AA3]"
-                      defaults={loc(
-                        'Même grille pour Wingfoil et Kitesurf.',
-                        'Same rate card for Wingfoil and Kitesurf.',
-                        'Misma tarifa para Wingfoil y Kitesurf.',
-                        'نفس الأسعار للوينج فويل والكايت سيرف.',
-                      )}
-                      cms={texts['pricing.panel.rateNote']}
-                    />
+                    {sport === 'wingfoil' ? (
+                      <EditableText
+                        fieldKey="pricing.panel.rateNote"
+                        label="Same rate card note"
+                        as="p"
+                        className="text-xs text-[#7A8AA3]"
+                        defaults={loc(
+                          'Grille tarifs wingfoil — matériel inclus.',
+                          'Wingfoil rate card — gear included.',
+                          'Tarifa wingfoil — material incluido.',
+                          'أسعار الوينج فويل — المعدات مشمولة.',
+                        )}
+                        cms={texts['pricing.panel.rateNote']}
+                      />
+                    ) : (
+                      <p className="text-xs text-[#7A8AA3]">
+                        {getText(
+                          'Grille tarifs kitesurf — matériel inclus.',
+                          'Kitesurf rate card — gear included.',
+                          'Tarifa kitesurf — material incluido.',
+                          'أسعار الكايت سيرف — المعدات مشمولة.',
+                        )}
+                      </p>
+                    )}
                   </div>
 
                   {/* Media pack option on each activity / sport */}

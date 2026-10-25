@@ -137,10 +137,10 @@ const SPORT_META: Record<
     beginner: {
       title: loc('Cours Débutant', 'Beginner course', 'Curso principiante', 'دورة المبتدئين'),
       desc: loc(
-        'Apprenez de zéro : setup, pilotage à terre, nage tractée puis waterstart.',
-        'Learn from scratch: setup, land flying, body drag, then waterstart.',
-        'Aprende desde cero: montaje, piloto en tierra, body drag y waterstart.',
-        'تعلّم من الصفر: التجهيز، الطيران على البر، السحب بالجسم ثم الانطلاقة المائية.',
+        'Apprenez tout de zéro : préparer votre matériel, piloter l’aile sur la plage, puis la contrôler dans l’eau avec la nage tractée.',
+        'Learn from scratch: rig your gear, fly the kite on the beach, then control it in the water with body drag.',
+        'Aprende desde cero: prepara el material, pilota la cometa en la playa y contrólala en el agua con body drag.',
+        'تعلّم من الصفر: جهّز معداتك، تحكم بالطائرة على الشاطئ ثم في الماء مع السحب بالجسم.',
       ),
     },
     intermediate: {
@@ -417,6 +417,7 @@ function ActivityCourseInner({ sport }: { sport: ActivitySport }) {
 
                 <CoursePricingTable
                   idPrefix={`${sport}-${level}`}
+                  sport={sport}
                   className="mt-8"
                   showBookCta
                   showRateNote={false}

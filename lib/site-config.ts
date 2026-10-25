@@ -87,6 +87,25 @@ export const DEFAULT_PRICING: PricingRow[] = [
   { hours: '20h', semiEur: 0,   semiMad: 0,    privEur: 1000, privMad: 11000, extra: true },
 ]
 
+/** Kitesurf lesson grid (Dakhla Camp reference) — wingfoil uses DEFAULT_PRICING / CMS. */
+export const DEFAULT_KITESURF_PRICING: PricingRow[] = [
+  { id: 'kite_2h', hours: '2h', semiEur: 75, semiMad: 825, privEur: 115, privMad: 1265 },
+  { id: 'kite_4h', hours: '4h', semiEur: 155, semiMad: 1705, privEur: 235, privMad: 2585 },
+  { id: 'kite_6h', hours: '6h', semiEur: 225, semiMad: 2475, privEur: 355, privMad: 3905 },
+  { id: 'kite_8h', hours: '8h', semiEur: 298, semiMad: 3278, privEur: 465, privMad: 5115 },
+  { id: 'kite_10h', hours: '10h', semiEur: 370, semiMad: 4070, privEur: 545, privMad: 5995 },
+  { id: 'kite_12h', hours: '12h', semiEur: 425, semiMad: 4675, privEur: 645, privMad: 7095 },
+  { id: 'kite_extra_1h', hours: '+1h', semiEur: 30, semiMad: 330, privEur: 46, privMad: 506, extra: true },
+  { id: 'kite_extra_2h', hours: '+2h', semiEur: 60, semiMad: 660, privEur: 92, privMad: 1012, extra: true },
+]
+
+export function pricingForSport(
+  sport: 'wingfoil' | 'kitesurf',
+  cmsOrDefault: PricingRow[],
+): PricingRow[] {
+  return sport === 'kitesurf' ? DEFAULT_KITESURF_PRICING : cmsOrDefault
+}
+
 const STORAGE_KEY = 'wingkite-site-config'
 
 // Get config from localStorage (client-side only)

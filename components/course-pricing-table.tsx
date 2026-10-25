@@ -1,5 +1,6 @@
 'use client'
 
+import type React from 'react'
 import { useState } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n-context'
@@ -11,6 +12,8 @@ import {
   useEditablePricingRows,
 } from '@/components/edit-mode/editable-pricing'
 import type { Localized } from '@/lib/cms/types'
+import { pricingForSport } from '@/lib/site-config'
+import type { PricingRow } from '@/lib/site-config'
 import { cn } from '@/lib/utils'
 
 const loc = (fr: string, en: string, es: string, ar: string): Localized => ({ fr, en, es, ar })
@@ -25,6 +28,7 @@ type Props = {
   showRateNote?: boolean
   /** Activity pages use sky-blue chrome */
   tone?: 'default' | 'sky'
+  sport?: 'wingfoil' | 'kitesurf'
 }
 
 /**
@@ -36,12 +40,36 @@ export function CoursePricingTable({
   showBookCta = true,
   showRateNote = true,
   tone = 'default',
+  sport = 'wingfoil',
 }: Props) {
   const { locale } = useTranslations()
   const { pricing: cmsPricing, texts } = useSiteConfig()
-  const rows = useEditablePricingRows(cmsPricing)
+  const cmsRows = useEditablePricingRows(cmsPricing)
+  const rows = pricingForSport(sport, cmsRows)
+  const cmsEditable = sport === 'wingfoil'
   const [formula, setFormula] = useState<Formula>('private')
   const sky = tone === 'sky'
+
+  const RowWrap = ({
+    row,
+    className: rowClass,
+    as,
+    children,
+  }: {
+    row: PricingRow
+    className?: string
+    as: 'tr' | 'li'
+    children: React.ReactNode
+  }) =>
+    cmsEditable ? (
+      <EditablePricingRow row={row} allRows={cmsRows} className={rowClass} as={as}>
+        {children}
+      </EditablePricingRow>
+    ) : as === 'tr' ? (
+      <tr className={rowClass}>{children}</tr>
+    ) : (
+      <li className={rowClass}>{children}</li>
+    )
 
   const privateLabel = (
     <EditableText
@@ -145,11 +173,10 @@ export function CoursePricingTable({
               const eur = formula === 'private' ? row.privEur : row.semiEur
               const mad = formula === 'private' ? row.privMad : row.semiMad
               return (
-                <EditablePricingRow
+                <RowWrap
                   key={`m-${idPrefix}-${formula}-${row.id || row.hours}`}
                   as="li"
                   row={row}
-                  allRows={rows}
                   className={cn(
                     'flex items-center justify-between gap-4 border-t px-5 py-4 first:border-t-0',
                     sky ? 'border-[#5AA8FF]/12' : 'border-[#072A5A]/6',
@@ -181,11 +208,11 @@ export function CoursePricingTable({
                       {mad} MAD
                     </p>
                   </div>
-                </EditablePricingRow>
+                </RowWrap>
               )
             })}
         </ul>
-        <AddPricingRowButton allRows={rows} />
+        {cmsEditable && <AddPricingRowButton allRows={cmsRows} />}
       </div>
 
       {/* Desktop: both formulas */}
@@ -222,11 +249,10 @@ export function CoursePricingTable({
           </thead>
           <tbody>
             {rows.map((row) => (
-              <EditablePricingRow
+              <RowWrap
                 key={`${idPrefix}-${row.id || row.hours}`}
                 as="tr"
                 row={row}
-                allRows={rows}
                 className={cn(
                   'border-t',
                   sky ? 'border-[#5AA8FF]/12' : 'border-[#072A5A]/6',
@@ -282,13 +308,15 @@ export function CoursePricingTable({
                     <span className="text-small text-[#7A8AA3]">—</span>
                   )}
                 </td>
-              </EditablePricingRow>
+              </RowWrap>
             ))}
           </tbody>
         </table>
-        <div className={cn('border-t p-3', sky ? 'border-[#5AA8FF]/15' : 'border-[#072A5A]/8')}>
-          <AddPricingRowButton allRows={rows} />
-        </div>
+        {cmsEditable && (
+          <div className={cn('border-t p-3', sky ? 'border-[#5AA8FF]/15' : 'border-[#072A5A]/8')}>
+            <AddPricingRowButton allRows={cmsRows} />
+          </div>
+        )}
       </div>
 
       {(showBookCta || showRateNote) && (
